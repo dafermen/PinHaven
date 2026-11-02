@@ -1,0 +1,95 @@
+PASS: Python syntax: generate_project.py
+PASS: Python syntax: validate_repository.py
+PASS: Valid plist: Info.plist
+PASS: Valid plist: PrivacyInfo.xcprivacy
+PASS: Foreground location permission description present
+PASS: No background-location permission in Info.plist
+PASS: Xcode project OpenStep syntax consumed completely
+PASS: App and test targets present
+PASS: File reference exists: PinHaven/Models/Place.swift
+PASS: File reference exists: PinHaven/Models/PlaceRecord.swift
+PASS: File reference exists: PinHaven/PinHavenApp.swift
+PASS: File reference exists: PinHaven/Services/LocalStore.swift
+PASS: File reference exists: PinHaven/Services/LocationService.swift
+PASS: File reference exists: PinHaven/Services/MapLinks.swift
+PASS: File reference exists: PinHaven/Services/PlaceMapping.swift
+PASS: File reference exists: PinHaven/Views/BackupView.swift
+PASS: File reference exists: PinHaven/Views/HomeView.swift
+PASS: File reference exists: PinHaven/Views/MapPicker.swift
+PASS: File reference exists: PinHaven/Views/PlaceDetail.swift
+PASS: File reference exists: PinHaven/Views/PlaceEditor.swift
+PASS: File reference exists: PinHavenTests/PinHavenTests.swift
+PASS: File reference exists: PinHaven/Resources/Info.plist
+PASS: File reference exists: PinHaven/Resources/PrivacyInfo.xcprivacy
+PASS: References children in FBDC4F23F93125BBEEAE800C resolve
+PASS: References children in 870B3294C0CBD48AF6BBCC1B resolve
+PASS: Reference fileRef in AFBFE4D6CD414589990F1728 resolves
+PASS: Reference fileRef in CA7F82C17BE7D71063B19402 resolves
+PASS: Reference fileRef in 5AF4C284FD1335B0EC26592B resolves
+PASS: Reference fileRef in AC502EC73AA5B52EE3C871D2 resolves
+PASS: Reference fileRef in 78FAA5C6625B78C747D54675 resolves
+PASS: Reference fileRef in 0967DF636E48B0FB83C7AC02 resolves
+PASS: Reference fileRef in 877E922C09CE6CCA27F1ED91 resolves
+PASS: Reference fileRef in 07BA6456F1DC403EBD5DED90 resolves
+PASS: Reference fileRef in 5804C6C19C7AAD452434EF32 resolves
+PASS: Reference fileRef in A95DBED6CB1945C654B5E5AF resolves
+PASS: Reference fileRef in C5DA25AE51DB1D73FE022972 resolves
+PASS: Reference fileRef in 63D66B716DE8E9FFB0E35709 resolves
+PASS: References files in 949D493B91791558E87BC5D7 resolve
+PASS: Reference fileRef in 144C475A0FD374A4B85178FE resolves
+PASS: References files in 77A03FEE20FE96AD9384861E resolve
+PASS: Reference fileRef in 3543CCD6ECE27E13DAC88C5D resolves
+PASS: References files in 8ECC8B5D05B79F879ACDF1A2 resolve
+PASS: References files in BD92572B49AC16A86614498D resolve
+PASS: References files in E05DB79C430AA1B0BA487AFC resolve
+PASS: References buildConfigurations in 5810B6B376A3FEBC7E94DC88 resolve
+PASS: References buildConfigurations in 388C1FCB1C8BF19EBF062851 resolve
+PASS: References buildConfigurations in FE6C5493F35638D6443F069D resolve
+PASS: Reference buildConfigurationList in F75109BEB4DD8800DA6B45F8 resolves
+PASS: References buildPhases in F75109BEB4DD8800DA6B45F8 resolve
+PASS: References dependencies in F75109BEB4DD8800DA6B45F8 resolve
+PASS: Reference productReference in F75109BEB4DD8800DA6B45F8 resolves
+PASS: Reference containerPortal in D799BAE6088A90139B415FCC resolves
+PASS: Reference remoteGlobalIDString in D799BAE6088A90139B415FCC resolves
+PASS: Reference target in DE58E2B17C19600779694943 resolves
+PASS: Reference targetProxy in DE58E2B17C19600779694943 resolves
+PASS: Reference buildConfigurationList in C062A5A4A7F4F37DD90F54CB resolves
+PASS: References buildPhases in C062A5A4A7F4F37DD90F54CB resolve
+PASS: References dependencies in C062A5A4A7F4F37DD90F54CB resolve
+PASS: Reference productReference in C062A5A4A7F4F37DD90F54CB resolves
+PASS: Reference buildConfigurationList in 98F54143AB4E86B28C3AFEE0 resolves
+PASS: Reference mainGroup in 98F54143AB4E86B28C3AFEE0 resolves
+PASS: Reference productRefGroup in 98F54143AB4E86B28C3AFEE0 resolves
+PASS: References targets in 98F54143AB4E86B28C3AFEE0 resolve
+PASS: Every Swift app file included in project
+PASS: Exact source build membership: PinHaven
+PASS: Exact source build membership: PinHavenTests
+PASS: Scheme target resolves
+PASS: Scheme target resolves
+PASS: Scheme target resolves
+PASS: Scheme target resolves
+PASS: Shared scheme contains test target
+PASS: Document link: README.md -> docs/01_REQUISITOS.md
+PASS: Document link: README.md -> docs/03_GUIA_PRINCIPIANTE.md
+PASS: Document link: README.md -> docs/00_VISION.md
+PASS: Document link: README.md -> docs/01_REQUISITOS.md
+PASS: Document link: README.md -> docs/02_ARQUITECTURA.md
+PASS: Document link: README.md -> docs/03_GUIA_PRINCIPIANTE.md
+PASS: Document link: README.md -> docs/04_FASES_Y_TAREAS.md
+PASS: Document link: README.md -> docs/05_PLAN_DE_PRUEBAS.md
+PASS: Document link: README.md -> docs/06_PRIVACIDAD.md
+PASS: Document link: README.md -> docs/07_GITHUB_Y_COLABORACION.md
+PASS: Document link: README.md -> docs/08_INSTRUCCIONES_CODEX.md
+PASS: Document link: README.md -> docs/09_ESTADO_ENTREGA.md
+PASS: Document link: README.md -> docs/10_FUENTES.md
+PASS: Document link: README.md -> docs/11_IDIOMAS.md
+PASS: Document link: README.md -> docs/BACKLOG.csv
+PASS: Document link: README.md -> docs/06_PRIVACIDAD.md
+PASS: Document link: 01_REQUISITOS.md -> 11_IDIOMAS.md
+PASS: 36 uniquely identified backlog tasks
+PASS: Backlog tasks correspond to roadmap
+PASS: iOS test shell script syntax
+PASS: Workflow YAML syntax and test job
+PASS: Project generator reproducible
+
+93 structural checks passed. Swift compilation and XCTest NOT executed.

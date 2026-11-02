@@ -1,0 +1,37 @@
+id,fase,titulo,estado,dependencias,aceptacion
+F0-T01,F0,"Definir visión, usuarios y alcance",Documentación entregada,,Visión y MVP delimitados
+F0-T02,F0,Escribir historias y criterios,Documentación entregada,,Cada comportamiento tiene aceptación
+F0-T03,F0,Diseñar modelo y arquitectura,Documentación entregada,,"Campos, DTO, persistencia y flujos explicados"
+F0-T04,F0,Crear proyecto Xcode y esquema compartido,Implementado; validación iOS pendiente,,Abrir y listar targets en Xcode; validar en F1-T08
+F0-T05,F0,"Preparar README, guía y plantillas GitHub",Documentación entregada,,Un estudiante puede seguir el inicio
+F1-T01,F1,Persistencia local y errores de apertura,Implementado; validación iOS pendiente,F0-T04,Reabrir sin perder datos; sin CloudKit
+F1-T02,F1,"Formulario, edición y borrado",Implementado; validación iOS pendiente,F0-T04,Validaciones; cancelar no modifica; borrado confirmado
+F1-T03,F1,Captura GPS y permisos,Implementado; validación iOS pendiente,F0-T04,"Rechazo, timeout y precisión visibles"
+F1-T04,F1,Selección y búsqueda MapKit,Implementado; validación iOS pendiente,F0-T04,Revisar punto antes de guardar; error de red claro
+F1-T05,F1,"Lista, mapa, búsqueda y filtros",Implementado; validación iOS pendiente,F0-T04,"Mismos resultados, tildes y favoritos"
+F1-T06,F1,"Enlaces, compartir e indicaciones",Implementado; validación iOS pendiente,F0-T04,Abrir destino correcto; sin notas privadas por defecto
+F1-T07,F1,Respaldo JSON e importación,Implementado; validación iOS pendiente,F0-T04,"Restaurar, rechazar inválidos y omitir UUID existentes"
+F1-T08,F1,Compilar y ejecutar XCTest en Mac,Pendiente,F0-T04,Build y pruebas verdes; registrar Xcode/iOS
+F1-T09,F1,Aceptación manual en iPhone,Pendiente,F0-T04,Matriz de pruebas; privacidad y GPS reales
+F1-T10,F1,Inglés principal y español opcional,Pendiente,F0-T04,"Localizar interfaz, permisos, errores y accesibilidad; comprobar ambos idiomas sin modificar datos guardados"
+F2-T01,F2,Migración versionada del modelo,Pendiente,F1-T08;F1-T09;F1-T10,Datos 0.1 se abren sin pérdida
+F2-T02,F2,Seleccionar foto con PhotosPicker,Pendiente,F1-T08;F1-T09;F1-T10,"Copia local, cancelar y borrar sin archivos huérfanos"
+F2-T03,F2,Capturar foto con cámara,Pendiente,F1-T08;F1-T09;F1-T10,Permiso contextual; rechazo recuperable
+F2-T04,F2,Miniaturas y almacenamiento de imágenes,Pendiente,F1-T08;F1-T09;F1-T10,"Compresión, límites y EXIF/ubicación revisados"
+F2-T05,F2,Colecciones y estado quiero ir/ya fui,Pendiente,F1-T08;F1-T09;F1-T10,Filtros combinables y migración
+F2-T06,F2,Respaldo con imágenes y nueva versión,Pendiente,F1-T08;F1-T09;F1-T10,Recuperación completa y límites contra archivos dañados
+F3-T01,F3,Target Share Extension y App Groups,Pendiente,F1-T08;F1-T09;F1-T10,"Firma correcta, contenedor compartido y pruebas"
+F3-T02,F3,Bandeja local de entradas pendientes,Pendiente,F1-T08;F1-T09;F1-T10,Escritura atómica y consumo sin duplicados; migrar base existente
+F3-T03,F3,Leer URL/texto con NSItemProvider,Pendiente,F1-T08;F1-T09;F1-T10,"Casos reales de Maps, Google Maps y Safari"
+F3-T04,F3,Resolución segura de enlaces cortos,Pendiente,F1-T08;F1-T09;F1-T10,"Allowlist, HTTPS, límite de redirecciones/tiempo/tamaño; confirmación si falta punto"
+F3-T05,F3,Formulario breve de confirmación,Pendiente,F1-T08;F1-T09;F1-T10,"Nombre, categoría, guardar o cancelar"
+F3-T06,F3,Fixtures de enlaces y pruebas reales,Pendiente,F1-T08;F1-T09;F1-T10,Ningún viewport se presenta como destino exacto
+F4-T01,F4,Orden por distancia con GPS puntual,Pendiente,F1-T08;F1-T09;F1-T10,Sin permiso funciona agenda; distancia en línea recta claramente identificada
+F4-T02,F4,Aviso por posible duplicado geográfico,Pendiente,F1-T08;F1-T09;F1-T10,"Ofrecer conservar, editar o cancelar; nunca fusionar sin elección"
+F4-T03,F4,Resolver conflictos al importar,Pendiente,F1-T08;F1-T09;F1-T10,Comparar versiones; elegir conservar/reemplazar/duplicar
+F4-T04,F4,Medir rendimiento y accesibilidad,Pendiente,F1-T08;F1-T09;F1-T10,"Datos de prueba grandes, VoiceOver y tamaños de texto"
+F5-T01,F5,"Confirmar disponibilidad de PinHaven, licencia e identidad",Pendiente,F2;F3;F4,"Nombre elegido confirmado en App Store Connect, bundle ID propio e icono"
+F5-T02,F5,Auditar privacidad y manifest,Pendiente,F2;F3;F4,Declaraciones App Store coherentes con todas las dependencias
+F5-T03,F5,Material de tienda y soporte,Pendiente,F2;F3;F4,"Política de privacidad, URL soporte, capturas y descripción"
+F5-T04,F5,TestFlight y correcciones,Pendiente,F2;F3;F4,"Pruebas reales, recuperación y migraciones verificadas"
+F5-T05,F5,Publicar con aprobación del propietario,Pendiente,F2;F3;F4,Checklist completo y versión firmada

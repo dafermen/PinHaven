@@ -1,0 +1,17 @@
+name: iOS build and tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: macos-15
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate repository
+        run: python3 scripts/validate_repository.py
+      - name: Build and run iOS tests
+        run: bash scripts/test_ios.sh

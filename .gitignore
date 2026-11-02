@@ -1,0 +1,20 @@
+.DS_Store
+DerivedData/
+.build/
+*.xcuserstate
+xcuserdata/
+*.ipa
+*.dSYM/
+*.xcarchive
+*.xcresult
+__pycache__/
+
+# Local tools and credentials
+.vscode/
+.idea/
+.env
+.env.*
+!.env.example
+*.p12
+*.mobileprovision
+*.cer
