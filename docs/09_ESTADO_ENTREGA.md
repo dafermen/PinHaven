@@ -19,7 +19,7 @@ Crear/editar/borrar, GPS puntual, pin manual, búsqueda MapKit, lista/mapa, favo
 
 Documentación, carpeta, proyecto Xcode, targets, tests, generador, configuración y ejemplos de GitHub actualizados a PinHaven. Se mantiene el nombre en ambos idiomas. Inglés principal y español como opción están definidos; implementación de localización pendiente en F1-T10. Esta actualización cambia la identidad del proyecto y la especificación; no afirma que todos los textos del código inicial ya estén traducidos.
 
-## Validación realizada en esta sesión
+## Validación heredada del paquete original (Linux)
 
 Verificación estructural automatizada de Python, XML/plist, esquema y referencias del proyecto, enlaces internos de documentación y correspondencia del backlog. El generador Xcode se ejecutó y su salida se verificó como reproducible. Ver `VALIDACION_ESTRUCTURAL.txt` en la raíz para el resultado concreto.
 
@@ -27,7 +27,7 @@ Verificación estructural automatizada de Python, XML/plist, esquema y referenci
 
 No hay Swift, Xcode, simulador ni SDK iOS en este entorno Linux. No se compiló el código Swift ni se ejecutó XCTest. La revisión estática y la estructura correcta no demuestran compilación. F1-T10 (idiomas), F1-T08 y F1-T09 siguen pendientes: build, siete pruebas, uso real, GPS, WhatsApp, accesibilidad, persistencia y exclusión de respaldos.
 
-No hay repositorio remoto creado ni push realizado. No existe build firmado, IPA, TestFlight ni publicación App Store. La búsqueda pública preliminar no encontró una ficha con el nombre exacto; falta confirmar disponibilidad en App Store Connect. No se ha reservado el nombre. No se promete un proyecto libre de errores de compilación antes de abrirlo en Xcode.
+El paquete original no incluía un push. El 2 de noviembre de 2026 se publicó la base en https://github.com/dafermen/PinHaven, rama main, commit inicial bd8c0a6. No existe build firmado, IPA, TestFlight ni publicación App Store. La búsqueda pública preliminar no encontró una ficha con el nombre exacto; falta confirmar disponibilidad en App Store Connect. No se ha reservado el nombre. No se promete un proyecto libre de errores de compilación antes de abrirlo en Xcode.
 
 ## Próxima acción concreta
 
@@ -38,3 +38,5 @@ En un Mac: abrir `PinHaven.xcodeproj`, seleccionar simulador iPhone, pulsar ⌘R
 El ZIP de referencia se importó como base, sin activar por sus instrucciones nuevas fases del producto. Se adaptaron los scripts para rutas Windows/POSIX, UTF-8/LF y uso del intérprete Python actual; se añadió la guía Windows/Mac/Cloud. El repositorio remoto dafermen/PinHaven existe y es público; se encontró vacío al iniciar. El informe heredado de Linux corresponde al paquete original, no a esta sesión.
 
 La evidencia actual se registra en VALIDACION_WINDOWS.txt. No se dispone de Swift, Xcode ni simulador iOS en Windows; compilación y XCTest siguen sin ejecutar. El backlog funcional conserva sus estados: la preparación de herramientas no equivale a aceptación de las funciones. Xcode Cloud no está configurado.
+
+Resultado Windows: 93 comprobaciones estructurales aprobadas. Sintaxis Bash comprobada con Git Bash; analizador YAML no disponible. Proyecto Xcode reproducible. Base subida a origin/main; no se afirma resultado de GitHub Actions, compilación iOS ni XCTest.
