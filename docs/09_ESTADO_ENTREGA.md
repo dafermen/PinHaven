@@ -74,3 +74,13 @@ El propietario completó la conexión de PinHaven a Xcode Cloud. Los artefactos 
 La configuración local seleccionada en Xcode por el propietario usa `com.innovalogic.pinhaven` y Team `7799N4RYUG`. Se trasladaron esos valores al generador y se regeneró el proyecto; tests usa `com.innovalogic.pinhaven.tests`. Debug y Release conservan firma automática. La validación estructural posterior aprobó 93 comprobaciones y reproducibilidad. No se repitieron localmente build/XCTest tras cambiar identidad; la siguiente ejecución Cloud debe validar esta revisión.
 
 La captura del editor de workflow muestra Test iOS con esquema PinHaven, Required to Pass, Use Scheme Setting y un destino, además de Archive. El propietario debe guardar el workflow; no hay evidencia todavía de una ejecución remota de los siete casos. Distribution Preparation se dejó en None en el editor para esta etapa. Sin resultado Cloud aprobado ni distribución/TestFlight confirmados.
+
+## Build 5 e icono para distribución — 3 de noviembre de 2026
+
+La captura del propietario muestra Test iOS aprobado en Cloud para 4eb5c9b. El xcresult adjunto de Archive no contiene pruebas: confirma build succeeded, cero errores y cero advertencias. Los logs confirman Archive y tres exportaciones aprobados; el IPA App Store usa com.innovalogic.pinhaven, versión 0.1.0 y build 5. Falló Prepare Build for App Store Connect con mensaje genérico, sin causa definitiva en los artefactos recibidos.
+
+El IPA inspeccionado no incluía iconos ni catálogo compilado. Se añadió Assets.xcassets/AppIcon.appiconset con PNG RGB opaco de 1024×1024, pin blanco con casa sobre fondo verde azulado; se selecciona AppIcon en Debug/Release y se incluye el catálogo en Resources. Generador y proyecto regenerado sincronizados. No se modifican firma ni identificadores. El validador comprueba formato/tamaño, selección del icono y pertenencia a Resources; 99 comprobaciones estructurales aprobadas. Inspección visual del PNG realizada.
+
+La falta de icono es un defecto confirmado del paquete; no se presenta como causa definitiva del mensaje genérico de Cloud. Se debe ejecutar una nueva revisión con Test y Archive y comprobar preparación y procesamiento en TestFlight. No se afirma distribución ni build completo aprobado tras este cambio.
+
+Comprobación adicional: actool generó las entradas CFBundleIcons/CFBundleIconName y PNG derivados, pero terminó con código 1 al no poder localizar un runtime Simulator 17.2 en el entorno restringido. No se considera compilación completa del catálogo aprobada. El nuevo build Cloud debe confirmarla.

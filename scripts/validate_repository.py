@@ -75,7 +75,25 @@ for oid,obj in objects.items():
         if key in list_keys:
             check(all(v in objects for v in value), f'References {key} in {oid} resolve')
     if obj['isa']=='PBXFileReference' and obj.get('sourceTree')=='<group>':
-        check((ROOT/obj['path']).is_file(), f'File reference exists: {obj["path"]}')
+        check((ROOT/obj['path']).is_dir() if obj.get('lastKnownFileType')=='folder.assetcatalog' else (ROOT/obj['path']).is_file(), f'File reference exists: {obj["path"]}')
+# App icon must be included in app resources and selected in both configurations.
+icon_root=ROOT/'PinHaven/Resources/Assets.xcassets'
+icon_set=icon_root/'AppIcon.appiconset'
+icon_manifest=json.loads((icon_set/'Contents.json').read_text(encoding='utf-8'))
+icon=icon_set/icon_manifest['images'][0]['filename']
+import struct
+header=icon.read_bytes()[:33]
+check(header[:8]==b'\x89PNG\r\n\x1a\n' and struct.unpack('>II', header[16:24])==(1024,1024)
+      and header[25]==2, 'App icon is opaque RGB PNG at 1024x1024')
+app_target=next(objects[t] for t in root['targets'] if objects[t]['name']=='PinHaven')
+for config_id in objects[app_target['buildConfigurationList']]['buildConfigurations']:
+    check(objects[config_id]['buildSettings'].get('ASSETCATALOG_COMPILER_APPICON_NAME')=='AppIcon',
+          'AppIcon selected: '+objects[config_id]['name'])
+resource_paths={objects[objects[f]['fileRef']]['path']
+    for phase_id in app_target['buildPhases'] if objects[phase_id]['isa']=='PBXResourcesBuildPhase'
+    for f in objects[phase_id]['files']}
+check('PinHaven/Resources/Assets.xcassets' in resource_paths, 'App asset catalog included in resources')
+
 expected={p.relative_to(ROOT).as_posix() for p in (ROOT/'PinHaven').rglob('*.swift')}
 actual={obj['path'] for obj in objects.values() if obj['isa']=='PBXFileReference' and obj.get('path') in expected}
 check(actual==expected, 'Every Swift app file included in project')

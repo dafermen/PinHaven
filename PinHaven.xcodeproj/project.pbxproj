@@ -95,6 +95,12 @@
 			"path" = "PinHaven/Resources/PrivacyInfo.xcprivacy";
 			"sourceTree" = "<group>";
 		};
+		"87171774A817400F179BD2AE" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "folder.assetcatalog";
+			"path" = "PinHaven/Resources/Assets.xcassets";
+			"sourceTree" = "<group>";
+		};
 		"4E783A9E10D2A8ABA38CD11C" = {
 			"isa" = "PBXFileReference";
 			"explicitFileType" = "wrapper.application";
@@ -136,6 +142,7 @@
 				"CC11C0C34A18207485E4A135",
 				"E96480163DCA40C7BFB20238",
 				"5A8F10FED88B53786992BA43",
+				"87171774A817400F179BD2AE",
 				"FBDC4F23F93125BBEEAE800C",
 			);
 			"sourceTree" = "<group>";
@@ -223,11 +230,16 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "5A8F10FED88B53786992BA43";
 		};
+		"49A3C9FDFFA726BC9F93A1FD" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "87171774A817400F179BD2AE";
+		};
 		"8ECC8B5D05B79F879ACDF1A2" = {
 			"isa" = "PBXResourcesBuildPhase";
 			"buildActionMask" = 2147483647;
 			"files" = (
 				"3543CCD6ECE27E13DAC88C5D",
+				"49A3C9FDFFA726BC9F93A1FD",
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
@@ -310,6 +322,7 @@
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"INFOPLIST_FILE" = "PinHaven/Resources/Info.plist";
 				"GENERATE_INFOPLIST_FILE" = "NO";
+				"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
 				"CURRENT_PROJECT_VERSION" = "1";
 				"MARKETING_VERSION" = "0.1.0";
 				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks";
@@ -337,6 +350,7 @@
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"INFOPLIST_FILE" = "PinHaven/Resources/Info.plist";
 				"GENERATE_INFOPLIST_FILE" = "NO";
+				"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
 				"CURRENT_PROJECT_VERSION" = "1";
 				"MARKETING_VERSION" = "0.1.0";
 				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks";

@@ -19,8 +19,8 @@ def add(label, isa, **fields):
 sources = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / 'PinHaven').rglob('*.swift'))
 tests = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / 'PinHavenTests').rglob('*.swift'))
 refs = {}
-for path in sources + tests + ['PinHaven/Resources/Info.plist', 'PinHaven/Resources/PrivacyInfo.xcprivacy']:
-    kind = 'sourcecode.swift' if path.endswith('.swift') else 'text.plist.xml'
+for path in sources + tests + ['PinHaven/Resources/Info.plist', 'PinHaven/Resources/PrivacyInfo.xcprivacy', 'PinHaven/Resources/Assets.xcassets']:
+    kind = 'folder.assetcatalog' if path.endswith('.xcassets') else ('sourcecode.swift' if path.endswith('.swift') else 'text.plist.xml')
     refs[path] = add(path, 'PBXFileReference', lastKnownFileType=kind, path=path, sourceTree='<group>')
 app_product = add('app-product', 'PBXFileReference', explicitFileType='wrapper.application',
                   includeInIndex=0, path='PinHaven.app', sourceTree='BUILT_PRODUCTS_DIR')
@@ -35,7 +35,7 @@ def phase(label, paths, isa):
 
 app_src = phase('app-sources', sources, 'PBXSourcesBuildPhase')
 test_src = phase('test-sources', tests, 'PBXSourcesBuildPhase')
-app_res = phase('app-resources', ['PinHaven/Resources/PrivacyInfo.xcprivacy'], 'PBXResourcesBuildPhase')
+app_res = phase('app-resources', ['PinHaven/Resources/PrivacyInfo.xcprivacy', 'PinHaven/Resources/Assets.xcassets'], 'PBXResourcesBuildPhase')
 app_fw = phase('app-frameworks', [], 'PBXFrameworksBuildPhase')
 test_fw = phase('test-frameworks', [], 'PBXFrameworksBuildPhase')
 
@@ -61,6 +61,7 @@ def configs(label, extra):
 project_configs = configs('project', {})
 app_configs = configs('app', dict(PRODUCT_BUNDLE_IDENTIFIER='com.innovalogic.pinhaven', PRODUCT_NAME='$(TARGET_NAME)',
     INFOPLIST_FILE='PinHaven/Resources/Info.plist', GENERATE_INFOPLIST_FILE='NO',
+    ASSETCATALOG_COMPILER_APPICON_NAME='AppIcon',
     CURRENT_PROJECT_VERSION='1', MARKETING_VERSION='0.1.0',
     LD_RUNPATH_SEARCH_PATHS='$(inherited) @executable_path/Frameworks'))
 test_configs = configs('tests', dict(PRODUCT_BUNDLE_IDENTIFIER='com.innovalogic.pinhaven.tests',
@@ -119,5 +120,5 @@ path=folder/'xcshareddata/xcschemes/PinHaven.xcscheme'
 path.parent.mkdir(parents=True,exist_ok=True); path.write_text(scheme+'\n', encoding='utf-8', newline='\n')
 # Structural data used only by the validator; not a second app configuration.
 assert len(objects)==len(set(objects))
-for path in refs: assert (ROOT/path).is_file(), path
+for path in refs: assert (ROOT/path).exists(), path
 print(f'Generated {folder.name}: {len(sources)} app sources, {len(tests)} test sources, {len(objects)} objects')

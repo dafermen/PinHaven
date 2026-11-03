@@ -1,5 +1,9 @@
 # Cambios
 
+## Icono de aplicación para distribución — 2026-11-03
+
+Añadido AppIcon de 1024×1024 RGB opaco al catálogo de recursos y seleccionado en Debug/Release. Generador actualizado y validaciones de formato y pertenencia al target para evitar volver a exportar una app sin icono. Aceptación de App Store Connect pendiente de nuevo build.
+
 ## Identidad de firma para Xcode Cloud — 2026-11-03
 
 Sincronizados proyecto y generador con com.innovalogic.pinhaven y el Team seleccionado por el propietario; tests con sufijo .tests. Registrado Archive remoto aprobado y exportaciones fallidas del Build 1 por identificador de ejemplo. Nueva ejecución Cloud pendiente.
