@@ -2,7 +2,7 @@
 
 ## Estados
 
-**I:** implementado, pendiente de compilación y aceptación iOS. **D:** documentación entregada. **P:** pendiente. Ninguna tarea I debe considerarse terminada para una publicación hasta completar F1-T08, F1-T09 y la localización F1-T10.
+**I:** implementado, pendiente de compilación y aceptación iOS. **D:** documentación entregada. **P:** pendiente. **A:** validado con evidencia indicada en el estado de entrega. Ninguna tarea I debe considerarse terminada para una publicación hasta completar F1-T08, F1-T09 y la localización F1-T10.
 
 ## F0 — Definición y preparación
 
@@ -29,7 +29,7 @@
 | F1-T05 | Lista, mapa, búsqueda y filtros | I | Mismos resultados, tildes y favoritos |
 | F1-T06 | Enlaces, compartir e indicaciones | I | Abrir destino correcto; sin notas privadas por defecto |
 | F1-T07 | Respaldo JSON e importación | I | Restaurar, rechazar inválidos y omitir UUID existentes |
-| F1-T08 | Compilar y ejecutar XCTest en Mac | P | Build y pruebas verdes; registrar Xcode/iOS |
+| F1-T08 | Compilar y ejecutar XCTest en Mac | A | Build y 7 XCTest aprobados el 2026-11-03; Xcode 15.2, iPhone SE (3rd generation), iOS 17.2; ver estado |
 | F1-T09 | Aceptación manual en iPhone | P | Matriz de pruebas; privacidad y GPS reales |
 | F1-T10 | Inglés principal y español opcional | P | Localizar interfaz, permisos, errores y accesibilidad; comprobar ambos idiomas sin modificar datos guardados |
 

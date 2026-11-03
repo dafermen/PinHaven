@@ -42,7 +42,8 @@ test_fw = phase('test-frameworks', [], 'PBXFrameworksBuildPhase')
 common = dict(SWIFT_VERSION='5.0', IPHONEOS_DEPLOYMENT_TARGET='17.0', SDKROOT='iphoneos',
               CLANG_ENABLE_MODULES='YES', CLANG_ENABLE_OBJC_ARC='YES',
               TARGETED_DEVICE_FAMILY='1', SUPPORTED_PLATFORMS='iphoneos iphonesimulator',
-              CODE_SIGN_STYLE='Automatic', ENABLE_USER_SCRIPT_SANDBOXING='YES')
+              CODE_SIGN_STYLE='Automatic', DEVELOPMENT_TEAM='7799N4RYUG',
+              ENABLE_USER_SCRIPT_SANDBOXING='YES')
 
 def configs(label, extra):
     keys = []
@@ -58,11 +59,11 @@ def configs(label, extra):
                defaultConfigurationIsVisible=0, defaultConfigurationName='Release')
 
 project_configs = configs('project', {})
-app_configs = configs('app', dict(PRODUCT_BUNDLE_IDENTIFIER='com.example.pinhaven', PRODUCT_NAME='$(TARGET_NAME)',
+app_configs = configs('app', dict(PRODUCT_BUNDLE_IDENTIFIER='com.innovalogic.pinhaven', PRODUCT_NAME='$(TARGET_NAME)',
     INFOPLIST_FILE='PinHaven/Resources/Info.plist', GENERATE_INFOPLIST_FILE='NO',
     CURRENT_PROJECT_VERSION='1', MARKETING_VERSION='0.1.0',
     LD_RUNPATH_SEARCH_PATHS='$(inherited) @executable_path/Frameworks'))
-test_configs = configs('tests', dict(PRODUCT_BUNDLE_IDENTIFIER='com.example.pinhaven.tests',
+test_configs = configs('tests', dict(PRODUCT_BUNDLE_IDENTIFIER='com.innovalogic.pinhaven.tests',
     PRODUCT_NAME='$(TARGET_NAME)', GENERATE_INFOPLIST_FILE='YES',
     TEST_HOST='$(BUILT_PRODUCTS_DIR)/PinHaven.app/PinHaven',
     BUNDLE_LOADER='$(TEST_HOST)', LD_RUNPATH_SEARCH_PATHS='$(inherited) @executable_path/Frameworks @loader_path/Frameworks'))

@@ -256,6 +256,7 @@
 				"TARGETED_DEVICE_FAMILY" = "1";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"CODE_SIGN_STYLE" = "Automatic";
+				"DEVELOPMENT_TEAM" = "7799N4RYUG";
 				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
 				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
 				"DEBUG_INFORMATION_FORMAT" = "dwarf";
@@ -275,6 +276,7 @@
 				"TARGETED_DEVICE_FAMILY" = "1";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"CODE_SIGN_STYLE" = "Automatic";
+				"DEVELOPMENT_TEAM" = "7799N4RYUG";
 				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
 				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
 				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
@@ -302,8 +304,9 @@
 				"TARGETED_DEVICE_FAMILY" = "1";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"CODE_SIGN_STYLE" = "Automatic";
+				"DEVELOPMENT_TEAM" = "7799N4RYUG";
 				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
-				"PRODUCT_BUNDLE_IDENTIFIER" = "com.example.pinhaven";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.innovalogic.pinhaven";
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"INFOPLIST_FILE" = "PinHaven/Resources/Info.plist";
 				"GENERATE_INFOPLIST_FILE" = "NO";
@@ -328,8 +331,9 @@
 				"TARGETED_DEVICE_FAMILY" = "1";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"CODE_SIGN_STYLE" = "Automatic";
+				"DEVELOPMENT_TEAM" = "7799N4RYUG";
 				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
-				"PRODUCT_BUNDLE_IDENTIFIER" = "com.example.pinhaven";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.innovalogic.pinhaven";
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"INFOPLIST_FILE" = "PinHaven/Resources/Info.plist";
 				"GENERATE_INFOPLIST_FILE" = "NO";
@@ -362,8 +366,9 @@
 				"TARGETED_DEVICE_FAMILY" = "1";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"CODE_SIGN_STYLE" = "Automatic";
+				"DEVELOPMENT_TEAM" = "7799N4RYUG";
 				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
-				"PRODUCT_BUNDLE_IDENTIFIER" = "com.example.pinhaven.tests";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.innovalogic.pinhaven.tests";
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"GENERATE_INFOPLIST_FILE" = "YES";
 				"TEST_HOST" = "$(BUILT_PRODUCTS_DIR)/PinHaven.app/PinHaven";
@@ -387,8 +392,9 @@
 				"TARGETED_DEVICE_FAMILY" = "1";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"CODE_SIGN_STYLE" = "Automatic";
+				"DEVELOPMENT_TEAM" = "7799N4RYUG";
 				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
-				"PRODUCT_BUNDLE_IDENTIFIER" = "com.example.pinhaven.tests";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.innovalogic.pinhaven.tests";
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"GENERATE_INFOPLIST_FILE" = "YES";
 				"TEST_HOST" = "$(BUILT_PRODUCTS_DIR)/PinHaven.app/PinHaven";

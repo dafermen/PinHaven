@@ -1,5 +1,17 @@
 # Cambios
 
+## Identidad de firma para Xcode Cloud — 2026-11-03
+
+Sincronizados proyecto y generador con com.innovalogic.pinhaven y el Team seleccionado por el propietario; tests con sufijo .tests. Registrado Archive remoto aprobado y exportaciones fallidas del Build 1 por identificador de ejemplo. Nueva ejecución Cloud pendiente.
+
+## Primera compilación y XCTest aprobados — 2026-11-03
+
+Ejecución desde Terminal confirmada mediante xcresult: build y siete pruebas aprobados con Xcode 15.2 e iPhone SE (3rd generation), iOS 17.2. F1-T08 aprobada; aceptación manual y localización pendientes. README actualizado con el entorno comprobado.
+
+## Diagnóstico inicial Mac — 2026-11-03
+
+El script de pruebas conserva los fallos de CoreSimulator sin añadir un traceback JSON; comprueba Python 3 y respuestas inválidas. Cuatro escenarios de control del script verificados con herramientas simuladas. Registrada validación estructural y los bloqueos reales de CoreSimulator/macros SwiftData en el entorno restringido; build y XCTest continúan pendientes.
+
 ## Preparación Windows/Mac — 2026-11-02
 
 Importación de la base 0.1.0; guía para Windows, Mac y Xcode Cloud; reglas del repositorio, UTF-8/LF y exclusión de credenciales. Generador y validador adaptados a Windows con rutas POSIX y el mismo intérprete Python. Funciones iOS y localización pendientes de validación en Mac.

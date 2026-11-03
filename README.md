@@ -2,7 +2,7 @@
 
 **Your places, always close.** Agenda personal de ubicaciones para iPhone, desarrollada en Swift y SwiftUI. Guarda un restaurante, una entrada o un punto sin dirección postal y recupéralo por su nombre, notas o etiquetas.
 
-**Estado: 0.1.0 — implementación inicial pendiente de compilar y validar en Xcode.** El paquete se preparó en Linux, sin Swift ni SDK de Apple. Las comprobaciones de estructura no sustituyen la compilación ni las pruebas en un iPhone. No es una versión publicada ni un instalador IPA.
+**Estado: 0.1.0 — compilación y siete XCTest aprobados en simulador el 3 de noviembre de 2026.** Entorno validado: Xcode 15.2, iPhone SE (3rd generation), iOS 17.2. Siguen pendientes localización y aceptación manual en iPhone real. No es una versión publicada ni un instalador IPA.
 
 ## Identidad e idiomas
 
@@ -30,12 +30,12 @@ Fotos y cámara, extensión «Compartir → PinHaven», resolución de enlaces c
 
 ## Ejecutar
 
-Necesitas **Mac, Xcode 16 o posterior con SDK de iOS 17 o superior, y simulador o iPhone con iOS 17+**. No hay paquetes externos que instalar.
+Necesitas **Mac con Xcode y SDK de iOS 17 o superior, y simulador o iPhone con iOS 17+**. La base actual se compiló y pasó sus siete pruebas con Xcode 15.2; valida cualquier otra versión antes de darla por compatible. No hay paquetes externos que instalar.
 
 1. Clona `https://github.com/dafermen/PinHaven.git` y abre `PinHaven.xcodeproj`.
 2. Selecciona el esquema `PinHaven` y un simulador iPhone.
 3. Pulsa **Run** (⌘R).
-4. Para iPhone físico, selecciona tu equipo en **Signing & Capabilities** y cambia `com.example.pinhaven` por un identificador propio. No actives iCloud.
+4. La configuración del propietario usa `com.innovalogic.pinhaven` y su equipo en **Signing & Capabilities**. Para otro propietario, cambia equipo e identificador también en el generador. No actives iCloud.
 5. Guarda un sitio de prueba, cierra y abre la app y verifica su persistencia.
 6. Ejecuta las pruebas con **Product → Test** (⌘U).
 

@@ -51,3 +51,9 @@ Referencias oficiales consultadas el 2 de noviembre de 2026:
 3. Resolver hallazgos antes de marcar el MVP como validado.
 4. Implementar localización inglés/español en una tarea posterior.
 5. Configurar Xcode Cloud con la cuenta del propietario.
+
+## Configuración realizada el 3 de noviembre de 2026
+
+PinHaven ya está conectado a Xcode Cloud por el propietario. Proyecto y generador usan `com.innovalogic.pinhaven` (app), `com.innovalogic.pinhaven.tests` (tests), Team `7799N4RYUG` y firma automática. No regenerar con una copia antigua del generador: restauraría la identidad de ejemplo.
+
+Build 1 aprobó Archive, pero falló exportación con `com.example.pinhaven`; ver evidencia en el estado de entrega. Para la siguiente ejecución, guardar el workflow con Test iOS, esquema PinHaven, un simulador disponible y Required to Pass. El editor muestra Distribution Preparation None; las pruebas remotas y una exportación corregida todavía deben verificarse.

@@ -40,3 +40,37 @@ El ZIP de referencia se importó como base, sin activar por sus instrucciones nu
 La evidencia actual se registra en VALIDACION_WINDOWS.txt. No se dispone de Swift, Xcode ni simulador iOS en Windows; compilación y XCTest siguen sin ejecutar. El backlog funcional conserva sus estados: la preparación de herramientas no equivale a aceptación de las funciones. Xcode Cloud no está configurado.
 
 Resultado Windows: 93 comprobaciones estructurales aprobadas. Sintaxis Bash comprobada con Git Bash; analizador YAML no disponible. Proyecto Xcode reproducible. Base subida a origin/main; no se afirma resultado de GitHub Actions, compilación iOS ni XCTest.
+
+## Primera validación Mac — 3 de noviembre de 2026
+
+Entorno observado: macOS 13.7.8 (22H730), Xcode 15.2 (15C500b), SDK iOS Simulator 17.2. El README solicita Xcode 16 o posterior; solo se encontró Xcode 15.2 en /Applications. No se cambió el Xcode activo ni la configuración de firma.
+
+- `python3 scripts/validate_repository.py`: 93 comprobaciones estructurales aprobadas; parser YAML no disponible.
+- `bash scripts/test_ios.sh`: no inició XCTest. CoreSimulatorService rechazó la conexión incluso después de conceder acceso a sus carpetas de datos y logs.
+- Compilación directa con `xcodebuild -project PinHaven.xcodeproj -scheme PinHaven -sdk iphonesimulator -configuration Debug -derivedDataPath /private/tmp/pinhaven-derived CODE_SIGNING_ALLOWED=NO build`: terminó con código 65. `sandbox-exec: sandbox_apply: Operation not permitted` impidió cargar el plugin de macros SwiftData; después aparecieron errores de macros y conformidad de Place. No se atribuyen esos diagnósticos derivados a defectos confirmados del modelo.
+- Se corrigió el script para detenerse ante un fallo de simctl, conservar el diagnóstico original y evitar un traceback JSON secundario. También comprueba Python 3 y detecta respuestas JSON inválidas.
+- Validación del script: sintaxis Bash aprobada y cuatro escenarios con herramientas simuladas aprobados (fallo de servicio, JSON inválido, sin iPhone y selección de iPhone disponible). Estos escenarios no ejecutan ni sustituyen XCTest.
+
+F1-T08 continúa pendiente; F1-T09 y F1-T10 también. No hay compilación aprobada ni prueba funcional de la app. El proyecto generado y los archivos Swift no se modificaron.
+
+Próximo paso: ejecutar `bash scripts/test_ios.sh` desde Terminal en la carpeta del proyecto, fuera del entorno restringido de esta sesión, y comprobar si CoreSimulator y las macros funcionan allí. Si falla también, abrir Xcode/Simulator y revisar instalación y runtime. Preparar un entorno que cumpla Xcode 16+ según README, comprobando antes sus requisitos de macOS. No se instaló ni actualizó software del sistema en esta sesión.
+
+## Validación desde Terminal confirmada — 3 de noviembre de 2026
+
+El propietario ejecutó `bash scripts/test_ios.sh` desde Terminal, fuera del entorno restringido, y obtuvo `** TEST SUCCEEDED **`. Se inspeccionó el resultado con `xcrun xcresulttool`, incluidos los estados individuales de las siete pruebas.
+
+- Xcode 15.2 (15C500b), macOS 13.7.8; simulador iPhone SE (3rd generation), iOS 17.2.
+- Build: succeeded. XCTest: 7 casos Success, sin fallos.
+- Cobertura funcional de los casos: límites de coordenadas/nombres; búsqueda sin tildes ni mayúsculas; enlaces admitidos/no confiables; destinos compartidos; respaldo JSON y corrupción; importación sin sobrescribir; persistencia al reabrir el almacén.
+- Ocho advertencias de build: `not stripping binary because it is signed`, correspondientes a bibliotecas de XCTest incluidas por Xcode.
+- Evidencia local (ignorada por Git): `DerivedData/Logs/Test/Test-PinHaven-2026.11.03_08-55-15--0500.xcresult`.
+
+F1-T08 queda aprobada para este entorno y revisión. Los bloqueos descritos en el intento anterior corresponden a la ejecución restringida del agente; no impidieron la ejecución desde Terminal. Esta evidencia confirma que la base actual compila y pasa XCTest con Xcode 15.2; no se necesita actualizar Xcode para reproducir este resultado concreto. F1-T09 (aceptación manual en iPhone real) y F1-T10 (localización) siguen pendientes. No implica validación de GPS real, permisos, accesibilidad ni publicación.
+
+## Xcode Cloud: configuración y primer Archive — 3 de noviembre de 2026
+
+El propietario completó la conexión de PinHaven a Xcode Cloud. Los artefactos de Build 1 muestran `ARCHIVE SUCCEEDED` con Xcode 27.2 y SDK iOS 27.2; las exportaciones fallaron al buscar perfiles y registrar `com.example.pinhaven`. El Archive descargado conserva ese identificador de ejemplo. No ejecutó XCTest.
+
+La configuración local seleccionada en Xcode por el propietario usa `com.innovalogic.pinhaven` y Team `7799N4RYUG`. Se trasladaron esos valores al generador y se regeneró el proyecto; tests usa `com.innovalogic.pinhaven.tests`. Debug y Release conservan firma automática. La validación estructural posterior aprobó 93 comprobaciones y reproducibilidad. No se repitieron localmente build/XCTest tras cambiar identidad; la siguiente ejecución Cloud debe validar esta revisión.
+
+La captura del editor de workflow muestra Test iOS con esquema PinHaven, Required to Pass, Use Scheme Setting y un destino, además de Archive. El propietario debe guardar el workflow; no hay evidencia todavía de una ejecución remota de los siete casos. Distribution Preparation se dejó en None en el editor para esta etapa. Sin resultado Cloud aprobado ni distribución/TestFlight confirmados.
