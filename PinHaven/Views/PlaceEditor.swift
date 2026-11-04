@@ -33,7 +33,7 @@ struct PlaceEditor: View {
                     TextField("Dirección, ciudad o código postal", text: $draft.address, axis: .vertical)
                         .focused($addressFocused)
                         .onChange(of: draft.address) { _, value in
-                            if addressFocused { addresses.update(value, near: point) }
+                            if addressFocused { gps.cancel(); addresses.update(value, near: point) }
                         }
                     if addressFocused {
                         ForEach(Array(addresses.suggestions.enumerated()), id: \.offset) { _, suggestion in
@@ -70,7 +70,7 @@ struct PlaceEditor: View {
                     Button { addressFocused = false; addresses.stop(); gps.request() } label: {
                         Label(gps.isLoading ? "Obteniendo ubicación…" : "Usar mi ubicación actual", systemImage: "location.fill")
                     }.disabled(gps.isLoading)
-                    Button { addressFocused = false; addresses.stop(); showMap = true } label: {
+                    Button { addressFocused = false; addresses.stop(); gps.cancel(); showMap = true } label: {
                         Label("Buscar o seleccionar en el mapa", systemImage: "map")
                     }
                     TextField("Latitud: -90 a 90", text: $latitudeText)
@@ -108,7 +108,7 @@ struct PlaceEditor: View {
                     if let address { draft.address = address }
                 }
             }
-            .onDisappear { addresses.stop() }
+            .onDisappear { addresses.stop(); gps.cancel() }
             .onReceive(gps.$location.compactMap { $0 }) { fix in
                 setPoint(fix.coordinate); accuracy = fix.horizontalAccuracy
             }
@@ -126,6 +126,7 @@ struct PlaceEditor: View {
     }
 
     private func setPoint(_ coordinate: CLLocationCoordinate2D) {
+        gps.cancel()
         latitudeText = String(coordinate.latitude); longitudeText = String(coordinate.longitude)
         accuracy = nil
     }

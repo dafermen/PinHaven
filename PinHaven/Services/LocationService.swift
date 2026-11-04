@@ -52,6 +52,13 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
         fail("No se pudo obtener la ubicación: \(error.localizedDescription)")
     }
 
+    /// Ignore late GPS callbacks after the user chooses another source.
+    func cancel() {
+        timeout?.invalidate(); timeout = nil
+        manager.stopUpdatingLocation()
+        isLoading = false
+    }
+
     private func fail(_ message: String) {
         timeout?.invalidate(); timeout = nil
         manager.stopUpdatingLocation()
