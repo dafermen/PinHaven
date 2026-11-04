@@ -10,6 +10,7 @@ struct PlaceDetail: View {
     let place: Place
     @State private var editing = false
     @State private var deleting = false
+    @State private var showingGoogleWeb = false
     @State private var errorMessage: String?
 
     var body: some View {
@@ -30,12 +31,15 @@ struct PlaceDetail: View {
                 LabeledContent("Guardado", value: place.createdAt.formatted(date: .abbreviated, time: .omitted))
             }
             Section("Compartir y llegar") {
-                ShareLink(item: MapLinks.shareText(name: place.name, address: place.address,
-                    latitude: place.latitude, longitude: place.longitude)) {
+                ShareLink(item: MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: true)) {
                     Label("Compartir sitio", systemImage: "square.and.arrow.up")
                 }
                 Button("Cómo llegar con Apple Maps") { navigate(google: false) }
-                Button("Cómo llegar con Google Maps") { navigate(google: true) }
+                Button("Ver punto en Google Maps") { openGoogle(directions: false) }
+                Button("Cómo llegar con Google Maps") { openGoogle(directions: true) }
+                Button("Abrir Google Maps en la web") {
+                    showingGoogleWeb = true
+                }
                 Button("Copiar dirección y enlace") {
                     UIPasteboard.general.string = MapLinks.shareText(name: place.name, address: place.address,
                         latitude: place.latitude, longitude: place.longitude)
@@ -53,6 +57,9 @@ struct PlaceDetail: View {
             }
         }
         .sheet(isPresented: $editing) { PlaceEditor(place: place) }
+        .sheet(isPresented: $showingGoogleWeb) {
+            MapsWebView(url: MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: true))
+        }
         .confirmationDialog("¿Eliminar este sitio?", isPresented: $deleting, titleVisibility: .visible) {
             Button("Eliminar", role: .destructive) {
                 do { context.delete(place); try context.save(); dismiss() }
@@ -67,6 +74,23 @@ struct PlaceDetail: View {
     private func navigate(google: Bool) {
         openURL(MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: google, directions: true))
     }
+    private func openGoogle(directions: Bool) {
+        guard MapPoint(latitude: place.latitude, longitude: place.longitude).isValid else {
+            errorMessage = "Las coordenadas guardadas no son válidas. Edita el sitio y elige una dirección o un punto."
+            return
+        }
+        let appURL = MapLinks.googleAppURL(latitude: place.latitude, longitude: place.longitude, directions: directions)
+        if UIApplication.shared.canOpenURL(appURL) {
+            UIApplication.shared.open(appURL, options: [:]) { opened in
+                if !opened {
+                    openURL(MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: true, directions: directions))
+                }
+            }
+        } else {
+            openURL(MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: true, directions: directions))
+        }
+    }
+
     private func toggleFavorite() {
         place.isFavorite.toggle(); place.updatedAt = .now
         do { try context.save() } catch { context.rollback(); errorMessage = "No se pudo actualizar el favorito." }

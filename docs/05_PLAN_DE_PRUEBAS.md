@@ -55,3 +55,16 @@ Para cada ejecución anota fecha, commit, versión de Xcode, iOS, dispositivo, I
 ## Puerta de salida del MVP
 
 Build y siete pruebas verdes en Xcode; M01–M29 y M31 aceptados o excepciones justificadas; copia local de recuperación comprobada; ningún fallo que pierda datos; privacidad real coherente con lo anunciado. App Store tiene además su propia fase de preparación, firma y revisión.
+
+## Regresión: direcciones y Google Maps (2026-11-04)
+
+1. Escribir una dirección de prueba con ciudad o ZIP. Elegir una sugerencia: comprobar calle, ciudad/estado/ZIP cuando estén disponibles y pin en el mapa. Guardar y reabrir; coordenadas y texto deben persistir juntos.
+2. Escribir una calle común sin ciudad: comprobar desambiguación con subtítulos. Si no hay un único punto, usar búsqueda de mapa; nunca elegir silenciosamente un candidato.
+3. Editar rápidamente el texto durante una resolución y cerrar/cancelar el editor: ninguna respuesta antigua debe reemplazar el borrador ni guardar datos.
+4. Probar sin internet y resolución fallida: mensaje recuperable; el registro guardado permanece intacto. Recuperar conexión y volver a elegir una sugerencia.
+5. Seleccionar un punto manual y guardar sin dirección: sigue permitido. Una edición meramente textual no debe mover el punto.
+6. Con Google Maps instalado: Ver punto y Cómo llegar deben apuntar al mismo destino guardado. Repetir sin Google Maps instalado y con Abrir Google Maps en la web. Probar coordenadas negativas y 0,0.
+7. Compartir sitio a Mensajes/WhatsApp y abrir el enlace recibido; al compartir hacia Google Maps se entrega un URL y no una consulta con nombre+dirección+enlace. Copiar dirección y enlace conserva los tres elementos.
+8. Ejecutar los nueve XCTest con `bash scripts/test_ios.sh`. Los dos nuevos verifican formato postal y construcción/decodificación de enlaces; no sustituyen las pruebas reales de MapKit ni Google Maps.
+
+Usar datos públicos de prueba; no adjuntar ubicaciones personales a logs ni casos de prueba.

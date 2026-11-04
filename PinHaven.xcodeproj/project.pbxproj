@@ -23,6 +23,12 @@
 			"path" = "PinHaven/PinHavenApp.swift";
 			"sourceTree" = "<group>";
 		};
+		"7D7E47D174691DF4B716F160" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "PinHaven/Services/AddressSearch.swift";
+			"sourceTree" = "<group>";
+		};
 		"0D9DD14DCA46FBC38C1A6419" = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -63,6 +69,12 @@
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "PinHaven/Views/MapPicker.swift";
+			"sourceTree" = "<group>";
+		};
+		"A7F48BA74C40FECDDDCBE80F" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "PinHaven/Views/MapsWebView.swift";
 			"sourceTree" = "<group>";
 		};
 		"8701E5188CF5CF72A2EE69CC" = {
@@ -130,6 +142,7 @@
 				"A37A5DEEC35C697BB3A0E55D",
 				"359A71400221CBD595048A47",
 				"B17ACC396A947A0C22A0F3E6",
+				"7D7E47D174691DF4B716F160",
 				"0D9DD14DCA46FBC38C1A6419",
 				"96570E35C15DD662B8892B3F",
 				"15D64E99A4DA7A991BA4407F",
@@ -137,6 +150,7 @@
 				"E6B3368A35AA0DAF75C2AB70",
 				"8410B4273BB8337540C8F910",
 				"8E59D6E6F6BCE2A41FDD3E06",
+				"A7F48BA74C40FECDDDCBE80F",
 				"8701E5188CF5CF72A2EE69CC",
 				"6DC5566A5A217342C795BBE8",
 				"CC11C0C34A18207485E4A135",
@@ -158,6 +172,10 @@
 		"5AF4C284FD1335B0EC26592B" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "B17ACC396A947A0C22A0F3E6";
+		};
+		"28792AEF65BC29ECB929B6E0" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "7D7E47D174691DF4B716F160";
 		};
 		"AC502EC73AA5B52EE3C871D2" = {
 			"isa" = "PBXBuildFile";
@@ -187,6 +205,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "8E59D6E6F6BCE2A41FDD3E06";
 		};
+		"F37A6AD40BF03DCFCBEA97C5" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "A7F48BA74C40FECDDDCBE80F";
+		};
 		"C5DA25AE51DB1D73FE022972" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "8701E5188CF5CF72A2EE69CC";
@@ -202,6 +224,7 @@
 				"AFBFE4D6CD414589990F1728",
 				"CA7F82C17BE7D71063B19402",
 				"5AF4C284FD1335B0EC26592B",
+				"28792AEF65BC29ECB929B6E0",
 				"AC502EC73AA5B52EE3C871D2",
 				"78FAA5C6625B78C747D54675",
 				"0967DF636E48B0FB83C7AC02",
@@ -209,6 +232,7 @@
 				"07BA6456F1DC403EBD5DED90",
 				"5804C6C19C7AAD452434EF32",
 				"A95DBED6CB1945C654B5E5AF",
+				"F37A6AD40BF03DCFCBEA97C5",
 				"C5DA25AE51DB1D73FE022972",
 				"63D66B716DE8E9FFB0E35709",
 			);

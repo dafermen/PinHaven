@@ -84,3 +84,13 @@ El IPA inspeccionado no incluía iconos ni catálogo compilado. Se añadió Asse
 La falta de icono es un defecto confirmado del paquete; no se presenta como causa definitiva del mensaje genérico de Cloud. Se debe ejecutar una nueva revisión con Test y Archive y comprobar preparación y procesamiento en TestFlight. No se afirma distribución ni build completo aprobado tras este cambio.
 
 Comprobación adicional: actool generó las entradas CFBundleIcons/CFBundleIconName y PNG derivados, pero terminó con código 1 al no poder localizar un runtime Simulator 17.2 en el entorno restringido. No se considera compilación completa del catálogo aprobada. El nuevo build Cloud debe confirmarla.
+
+## Direcciones y Google Maps — 4 de noviembre de 2026
+
+Tras sincronizar origin/main (ab9efc9), se implementaron sugerencias con MKLocalSearchCompleter y resolución mediante MKLocalSearch.Request(completion:). La elección explícita actualiza dirección y coordenadas; ciudad, estado, código postal y país se conservan cuando MapKit los proporciona. Si la respuesta es ambigua se pide seleccionar el punto en el mapa. Errores, respuestas obsoletas y cancelación no reemplazan el borrador. Resolución limitada a 15 segundos.
+
+La dirección escrita a mano sigue siendo descriptiva: no se geocodifica automáticamente ni se sobrescribe la posición guardada sin selección. Los registros anteriores no cambian. Editar un registro y elegir una sugerencia permite corregirlo. Escribir ciudad o ZIP mejora la desambiguación; el proveedor puede omitir datos postales y no se inventan.
+
+Se conserva el destino por coordenadas al abrir Google Maps. Se codifica la coma según documentación, se añade apertura por comgooglemaps con comprobación de instalación/fallback, vista del punto separada de indicaciones y alternativa web. Compartir sitio comparte un URL; Copiar dirección y enlace mantiene texto y enlace. La captura muestra coordenadas válidas en rango, pero no confirma su correspondencia con la dirección ni la causa del error en Google Maps.
+
+Validación Windows: 103 comprobaciones estructurales aprobadas y proyecto reproducible. Nueve XCTest preparados (dos nuevos), sin ejecutar en esta sesión Windows. La evidencia anterior de Mac/Cloud no valida estos cambios. Ver pasos de prueba añadidos al plan. Firma, icono y bundle identifiers existentes conservados.

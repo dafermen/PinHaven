@@ -54,6 +54,18 @@ enum MapLinks {
             components.queryItems = [URLQueryItem(name: directions ? "daddr" : "ll", value: coordinates)]
         }
         // Constant scheme/hosts/path plus URLQueryItem guarantee a well-formed URL.
+        // Google requires an encoded comma even though RFC URL queries allow it.
+        components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: ",", with: "%2C")
+        return components.url!
+    }
+
+    static func googleAppURL(latitude: Double, longitude: Double, directions: Bool) -> URL {
+        var components = URLComponents()
+        components.scheme = "comgooglemaps"
+        components.host = ""
+        components.queryItems = [URLQueryItem(name: directions ? "daddr" : "q",
+            value: "\(latitude),\(longitude)")]
+        components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: ",", with: "%2C")
         return components.url!
     }
 

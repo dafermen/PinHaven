@@ -15,6 +15,7 @@ La localización de la interfaz todavía está pendiente en F1-T10; el código i
 - Lista de sitios y vista de mapa con acceso a sus fichas.
 - Crear, editar y eliminar sitios con confirmación; almacenamiento local SwiftData.
 - Captura puntual de GPS, selección tocando el mapa y búsqueda con MapKit.
+- Sugerencias al escribir la dirección: elegir una actualiza dirección postal y coordenadas juntas (por validar en iPhone).
 - Nombre, dirección opcional, coordenadas, notas, categoría, etiquetas y favorito.
 - Búsqueda sin distinguir mayúsculas ni tildes; filtros combinables por categoría y favorito.
 - Orden por modificación reciente o por nombre.

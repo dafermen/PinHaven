@@ -41,7 +41,7 @@ struct MapPicker: View {
                         Button {
                             selected = item.placemark.coordinate
                             selectedName = item.name
-                            selectedAddress = item.placemark.title
+                            selectedAddress = AddressSearch.fullAddress(item.placemark)
                             camera = .region(MKCoordinateRegion(center: item.placemark.coordinate,
                                 span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)))
                             results = []

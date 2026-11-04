@@ -28,3 +28,11 @@ Nombre elegido: **PinHaven**. Documentación, archivos, targets, esquema Xcode, 
 ## 0.1.0 — 2026-10-31 — implementación inicial, no publicada
 
 Agenda local SwiftData; captura GPS, selección y búsqueda MapKit; fichas con notas, etiquetas, categoría y favorito; búsqueda/filtros; lista/mapa; compartir y abrir indicaciones; lectura limitada de enlaces; exportación/importación JSON. Proyecto Xcode, pruebas preparadas y documentación en español para estudiantes. Compilación y aceptación iOS pendientes.
+
+## Direcciones y apertura de mapas — 2026-11-04
+
+Sugerencias MapKit en el campo dirección; resolución explícita con cancelación y límite de 15 segundos. Al elegir un resultado se actualizan coordenadas y dirección postal, incluida ciudad/estado/ZIP cuando el proveedor los devuelve. La selección de mapa usa el mismo formateador. No cambia la base ni el formato del respaldo.
+
+Google Maps: coma codificada en URLs, apertura directa de la aplicación con fallback universal, acciones separadas para ver el punto y calcular ruta y alternativa web. Compartir sitio entrega un URL, evitando enviar texto completo a una aplicación de mapas como consulta. Copiar dirección y enlace conserva el formato de texto.
+
+Dos casos XCTest nuevos para enlaces/coordenadas y dirección postal. Comprobación estructural aprobada en Windows; compilación y nueve XCTest de esta revisión pendientes de Mac/CI. No se confirma una causa única del error mostrado en Google Maps.

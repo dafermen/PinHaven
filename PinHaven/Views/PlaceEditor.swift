@@ -5,6 +5,8 @@ import CoreLocation
 struct PlaceEditor: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
+    @StateObject private var addresses = AddressSearch()
+    @FocusState private var addressFocused: Bool
     @StateObject private var gps = LocationService()
     let place: Place?
     @State private var draft: PlaceRecord
@@ -28,17 +30,47 @@ struct PlaceEditor: View {
             Form {
                 Section("El lugar") {
                     TextField("Nombre para recordarlo", text: $draft.name)
-                    TextField("Dirección (opcional)", text: $draft.address, axis: .vertical)
+                    TextField("Dirección, ciudad o código postal", text: $draft.address, axis: .vertical)
+                        .focused($addressFocused)
+                        .onChange(of: draft.address) { _, value in
+                            if addressFocused { addresses.update(value, near: point) }
+                        }
+                    if addressFocused {
+                        ForEach(Array(addresses.suggestions.enumerated()), id: \.offset) { _, suggestion in
+                            Button {
+                                Task { @MainActor in
+                                    guard let item = await addresses.resolve(suggestion) else { return }
+                                    addressFocused = false
+                                    setPoint(item.placemark.coordinate)
+                                    draft.address = AddressSearch.fullAddress(item.placemark)
+                                    if draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                                        draft.name = item.name ?? suggestion.title
+                                    }
+                                }
+                            } label: {
+                                VStack(alignment: .leading) {
+                                    Text(suggestion.title)
+                                    Text(suggestion.subtitle).font(.caption).foregroundStyle(.secondary)
+                                }
+                            }.disabled(addresses.isResolving)
+                        }
+                    }
+                    if addresses.isResolving { ProgressView("Completando dirección…") }
+                    if let message = addresses.errorMessage {
+                        Text(message).font(.caption).foregroundStyle(.secondary)
+                    }
+                    Text("Elige una sugerencia para actualizar dirección y coordenadas juntas. Incluye ciudad o código postal para distinguir calles con el mismo nombre. Revisa el punto en el mapa antes de guardar.")
+                        .font(.caption).foregroundStyle(.secondary)
                     Picker("Categoría", selection: $draft.category) {
                         ForEach(Array(Set(Self.categories + [draft.category])).sorted(), id: \.self) { Text($0) }
                     }
                     Toggle("Favorito", isOn: $draft.isFavorite)
                 }
                 Section {
-                    Button { gps.request() } label: {
+                    Button { addressFocused = false; addresses.stop(); gps.request() } label: {
                         Label(gps.isLoading ? "Obteniendo ubicación…" : "Usar mi ubicación actual", systemImage: "location.fill")
                     }.disabled(gps.isLoading)
-                    Button { showMap = true } label: {
+                    Button { addressFocused = false; addresses.stop(); showMap = true } label: {
                         Label("Buscar o seleccionar en el mapa", systemImage: "map")
                     }
                     TextField("Latitud: -90 a 90", text: $latitudeText)
@@ -66,7 +98,7 @@ struct PlaceEditor: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Guardar") { save() }.disabled(draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    Button("Guardar") { save() }.disabled(addresses.isResolving || draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
             }
             .sheet(isPresented: $showMap) {
@@ -76,6 +108,7 @@ struct PlaceEditor: View {
                     if let address { draft.address = address }
                 }
             }
+            .onDisappear { addresses.stop() }
             .onReceive(gps.$location.compactMap { $0 }) { fix in
                 setPoint(fix.coordinate); accuracy = fix.horizontalAccuracy
             }
@@ -98,6 +131,7 @@ struct PlaceEditor: View {
     }
 
     private func parseLink() {
+        addressFocused = false; addresses.stop()
         guard let p = MapLinks.point(from: draft.sourceURL) else {
             errorMessage = "Este enlace no contiene un punto compatible. Consérvalo como referencia y selecciona el lugar en el mapa."
             return

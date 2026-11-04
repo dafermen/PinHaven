@@ -1,5 +1,7 @@
 import XCTest
 import SwiftData
+import MapKit
+import Contacts
 @testable import PinHaven
 
 final class PinHavenTests: XCTestCase {
@@ -35,6 +37,38 @@ final class PinHavenTests: XCTestCase {
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
         XCTAssertEqual(items?.first(where: { $0.name == "destination" })?.value, "-3.5,-76.5")
         XCTAssertEqual(url.host, "www.google.com")
+    }
+
+    func testCoordinateURLsUseEncodedCommaAndRoundTrip() {
+        for point in [MapPoint(latitude: 0, longitude: 0), MapPoint(latitude: -3.5, longitude: -76.5)] {
+            for directions in [false, true] {
+                let url = MapLinks.url(latitude: point.latitude, longitude: point.longitude, google: true, directions: directions)
+                XCTAssertTrue(url.absoluteString.contains("%2C"))
+                XCTAssertEqual(MapLinks.point(from: url.absoluteString), point)
+                let native = MapLinks.googleAppURL(latitude: point.latitude, longitude: point.longitude, directions: directions)
+                XCTAssertEqual(native.scheme, "comgooglemaps")
+                let items = URLComponents(url: native, resolvingAgainstBaseURL: false)?.queryItems
+                XCTAssertEqual(items?.first?.name, directions ? "daddr" : "q")
+                XCTAssertEqual(items?.first?.value, "\(point.latitude),\(point.longitude)")
+            }
+        }
+    }
+
+    @MainActor
+    func testPostalAddressKeepsCityStateAndZip() {
+        let postal = CNMutablePostalAddress()
+        postal.street = "123 Example Street"
+        postal.city = "Example City"
+        postal.state = "NY"
+        postal.postalCode = "10001"
+        postal.country = "United States"
+        postal.isoCountryCode = "US"
+        let placemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 40, longitude: -73), postalAddress: postal)
+        let address = AddressSearch.fullAddress(placemark)
+        for component in ["123 Example Street", "Example City", "NY", "10001"] {
+            XCTAssertTrue(address.contains(component))
+        }
+        XCTAssertFalse(address.contains("\n"))
     }
 
     func testBackupRoundTripAndCorruption() throws {

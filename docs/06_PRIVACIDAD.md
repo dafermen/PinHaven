@@ -39,3 +39,9 @@ Desinstalar o perder el iPhone puede eliminar la única copia. Mantener respaldo
 ## App Store
 
 El manifest inicial declara ausencia de tracking y recopilación propia; debe auditarse junto con el comportamiento real y las futuras APIs/dependencias antes de publicar. No equivale a una aprobación de Apple. Faltan URL de soporte, política pública final y declaraciones de privacidad en App Store Connect.
+
+## Sugerencias de dirección (2026-11-04)
+
+Mientras se escribe en el campo dirección (desde tres caracteres), el texto se consulta con MapKit de Apple para mostrar sugerencias. Si ya hay un punto en el borrador se usa como preferencia regional. Elegir una sugerencia solicita a MapKit el punto y la dirección postal. Requiere conexión; no se añade un servidor propio ni Google Places. El formato postal usa Contacts solo como formateador, sin leer contactos ni pedir permiso de contactos.
+
+Compartir sitio entrega el enlace por coordenadas a la aplicación elegida. Copiar dirección y enlace incluye también el nombre y dirección. Abrir Google Maps o la alternativa web envía el destino a Google por acción explícita.
