@@ -94,3 +94,13 @@ La dirección escrita a mano sigue siendo descriptiva: no se geocodifica automá
 Se conserva el destino por coordenadas al abrir Google Maps. Se codifica la coma según documentación, se añade apertura por comgooglemaps con comprobación de instalación/fallback, vista del punto separada de indicaciones y alternativa web. Compartir sitio comparte un URL; Copiar dirección y enlace mantiene texto y enlace. La captura muestra coordenadas válidas en rango, pero no confirma su correspondencia con la dirección ni la causa del error en Google Maps.
 
 Validación Windows: 103 comprobaciones estructurales aprobadas y proyecto reproducible. Nueve XCTest preparados (dos nuevos), sin ejecutar en esta sesión Windows. La evidencia anterior de Mac/Cloud no valida estos cambios. Ver pasos de prueba añadidos al plan. Firma, icono y bundle identifiers existentes conservados.
+
+## GPS para sugerencias y menú de compartir — 4 de noviembre de 2026
+
+Solicitud del propietario: sugerencias locales en vez de otros estados, y acceso a Google Maps desde Compartir. Implementado un GPS puntual separado que solo cambia la referencia de búsqueda; no escribe en coordenadas/dirección del borrador. Se activa mediante Buscar direcciones cerca de mí y usa el permiso de ubicación al usar la app. Al obtener el GPS se repite la consulta actual. El punto del sitio se usa como referencia inicial cuando existe; sin ninguno la UI lo explica. Se puede desactivar Priorizar direcciones cercanas para buscar en otra ciudad.
+
+La zona de 40 km de lado se aplica a MKLocalSearchCompleter y a la resolución. En iOS 18+ con compilador/SDK compatible se exige regionPriority.required; en iOS 17 solo se da preferencia regional, por lo que podrían aparecer coincidencias lejanas. No se garantiza que Apple tenga todas las direcciones ni que una dirección de casa coincida exactamente: comprobar pin y ZIP sigue siendo necesario.
+
+Compartir sitio ahora muestra un menú propio con Abrir ubicación en Google Maps y Cómo llegar con Google Maps, además de Compartir con otras apps y copiar. No se promete insertar Google Maps en la hoja nativa de iOS ni guardar automáticamente el sitio en favoritos de Google.
+
+Se añade prueba de región con referencia ausente, inválida, válida y 0,0. Diez XCTest preparados; la revisión previa 3bf4119 está aprobada en GitHub Actions. Esta revisión requiere su propia compilación y prueba, y un nuevo build para iPhone/TestFlight.

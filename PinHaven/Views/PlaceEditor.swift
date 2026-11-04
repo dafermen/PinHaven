@@ -8,6 +8,10 @@ struct PlaceEditor: View {
     @StateObject private var addresses = AddressSearch()
     @FocusState private var addressFocused: Bool
     @StateObject private var gps = LocationService()
+    @StateObject private var searchGPS = LocationService()
+    @State private var searchReference: CLLocationCoordinate2D?
+    @State private var searchAccuracy: Double?
+    @State private var nearbySearch = true
     let place: Place?
     @State private var draft: PlaceRecord
     @State private var latitudeText: String
@@ -33,8 +37,9 @@ struct PlaceEditor: View {
                     TextField("Dirección, ciudad o código postal", text: $draft.address, axis: .vertical)
                         .focused($addressFocused)
                         .onChange(of: draft.address) { _, value in
-                            if addressFocused { gps.cancel(); addresses.update(value, near: point) }
+                            if addressFocused { gps.cancel(); addresses.update(value, near: addressSearchReference) }
                         }
+                    addressAreaControls
                     if addressFocused {
                         ForEach(Array(addresses.suggestions.enumerated()), id: \.offset) { _, suggestion in
                             Button {
@@ -108,7 +113,18 @@ struct PlaceEditor: View {
                     if let address { draft.address = address }
                 }
             }
-            .onDisappear { addresses.stop(); gps.cancel() }
+            .onDisappear { addresses.stop(); gps.cancel(); searchGPS.cancel() }
+            .onReceive(searchGPS.$location.compactMap { $0 }) { fix in
+                searchReference = fix.coordinate
+                searchAccuracy = fix.horizontalAccuracy
+                nearbySearch = true
+                refreshAddressSuggestions()
+            }
+            .onReceive(searchGPS.$errorMessage.compactMap { $0 }) { errorMessage = $0 }
+            .onChange(of: nearbySearch) { _, _ in refreshAddressSuggestions() }
+            .onChange(of: addressFocused) { _, focused in
+                if focused { refreshAddressSuggestions() }
+            }
             .onReceive(gps.$location.compactMap { $0 }) { fix in
                 setPoint(fix.coordinate); accuracy = fix.horizontalAccuracy
             }
@@ -117,6 +133,43 @@ struct PlaceEditor: View {
                 Button("Aceptar", role: .cancel) { errorMessage = nil }
             } message: { Text(errorMessage ?? "") }
         }
+    }
+
+    private var addressSearchReference: CLLocationCoordinate2D? {
+        nearbySearch ? (searchReference ?? point) : nil
+    }
+
+    private var addressAreaControls: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Button {
+                addressFocused = true
+                searchGPS.request()
+            } label: {
+                Label(searchGPS.isLoading ? "Localizando zona de búsqueda…" : "Buscar direcciones cerca de mí",
+                    systemImage: "location.magnifyingglass")
+            }.disabled(searchGPS.isLoading || addresses.isResolving)
+            Toggle("Priorizar direcciones cercanas", isOn: $nearbySearch)
+            if nearbySearch, addressSearchReference != nil {
+                Text(searchReference == nil ? "Zona: alrededor del punto del sitio." : "Zona: alrededor de tu ubicación actual.")
+                    .font(.caption).foregroundStyle(.secondary)
+                if let searchAccuracy {
+                    Text("Precisión del GPS de referencia: ±\(Int(searchAccuracy)) m.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            } else if nearbySearch {
+                Text("Todavía no hay una ubicación de referencia. Pulsa Buscar direcciones cerca de mí o añade ciudad y ZIP.")
+                    .font(.caption).foregroundStyle(.secondary)
+            } else {
+                Text("Búsqueda sin límite de zona: incluye ciudad, estado o ZIP.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            Text("Este GPS solo orienta la búsqueda; no mueve el punto del sitio. Desactiva la búsqueda cercana para buscar en otra ciudad.")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+    }
+
+    private func refreshAddressSuggestions() {
+        addresses.update(draft.address, near: addressSearchReference)
     }
 
     private var point: CLLocationCoordinate2D? {

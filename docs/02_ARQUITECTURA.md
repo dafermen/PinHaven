@@ -81,3 +81,7 @@ La versión inicial consulta todos los sitios y filtra en memoria; adecuada como
 AddressSearch mantiene sugerencias MapKit y resuelve únicamente la elección explícita. Un token invalida respuestas antiguas y la operación se cancela al salir o cambiar la consulta. CNPostalAddressFormatter conserva los componentes postales disponibles sin requerir acceso a la agenda. No cambia el esquema SwiftData. MapsWebView presenta la alternativa web con SFSafariViewController.
 
 Compartir usa un URL universal por coordenadas. Google Maps instalado puede abrirse por comgooglemaps (declarado en LSApplicationQueriesSchemes); si no está disponible se usa el enlace universal. El punto guardado es el destino, independientemente del texto descriptivo.
+
+## Referencia de búsqueda separada del sitio
+
+PlaceEditor mantiene una instancia LocationService independiente para searchReference, sin mezclar sus callbacks con el GPS que fija el punto del sitio. Cambiar referencia o alcance vuelve a consultar AddressSearch; se conserva la misma región para resolver la sugerencia. regionPriority.required se protege por versión de compilador y disponibilidad iOS 18 para conservar compatibilidad Xcode 15/iOS 17. El menú de compartir reutiliza la apertura de Google existente.

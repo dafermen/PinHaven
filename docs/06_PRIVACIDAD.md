@@ -45,3 +45,7 @@ El manifest inicial declara ausencia de tracking y recopilación propia; debe au
 Mientras se escribe en el campo dirección (desde tres caracteres), el texto se consulta con MapKit de Apple para mostrar sugerencias. Si ya hay un punto en el borrador se usa como preferencia regional. Elegir una sugerencia solicita a MapKit el punto y la dirección postal. Requiere conexión; no se añade un servidor propio ni Google Places. El formato postal usa Contacts solo como formateador, sin leer contactos ni pedir permiso de contactos.
 
 Compartir sitio entrega el enlace por coordenadas a la aplicación elegida. Copiar dirección y enlace incluye también el nombre y dirección. Abrir Google Maps o la alternativa web envía el destino a Google por acción explícita.
+
+## Referencia cercana para direcciones
+
+Buscar direcciones cerca de mí solicita GPS una vez por acción del usuario. Se mantiene como referencia temporal del editor y se pasa como región a MapKit; no mueve ni guarda el sitio y no activa seguimiento. Se cancela al cerrar el editor. La descripción del permiso incluye este uso y se puede buscar sin permiso indicando ciudad/ZIP.

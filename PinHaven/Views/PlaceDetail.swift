@@ -31,9 +31,18 @@ struct PlaceDetail: View {
                 LabeledContent("Guardado", value: place.createdAt.formatted(date: .abbreviated, time: .omitted))
             }
             Section("Compartir y llegar") {
-                ShareLink(item: MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: true)) {
+                Menu {
+                    Button("Abrir ubicación en Google Maps") { openGoogle(directions: false) }
+                    Button("Cómo llegar con Google Maps") { openGoogle(directions: true) }
+                    ShareLink(item: MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: true)) {
+                        Label("Compartir con otras apps", systemImage: "square.and.arrow.up")
+                    }
+                    Button("Copiar dirección y enlace") { copyLocation() }
+                } label: {
                     Label("Compartir sitio", systemImage: "square.and.arrow.up")
                 }
+                Text("Para enviar el punto a Google Maps, elígelo en este menú. La lista de otras apps la gestiona iOS.")
+                    .font(.caption).foregroundStyle(.secondary)
                 Button("Cómo llegar con Apple Maps") { navigate(google: false) }
                 Button("Ver punto en Google Maps") { openGoogle(directions: false) }
                 Button("Cómo llegar con Google Maps") { openGoogle(directions: true) }
@@ -41,8 +50,7 @@ struct PlaceDetail: View {
                     showingGoogleWeb = true
                 }
                 Button("Copiar dirección y enlace") {
-                    UIPasteboard.general.string = MapLinks.shareText(name: place.name, address: place.address,
-                        latitude: place.latitude, longitude: place.longitude)
+                    copyLocation()
                 }
             }
             Section { Button("Eliminar sitio", role: .destructive) { deleting = true } }
@@ -69,6 +77,11 @@ struct PlaceDetail: View {
         .alert("No se completó la operación", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
             Button("Aceptar", role: .cancel) { errorMessage = nil }
         } message: { Text(errorMessage ?? "") }
+    }
+
+    private func copyLocation() {
+        UIPasteboard.general.string = MapLinks.shareText(name: place.name, address: place.address,
+            latitude: place.latitude, longitude: place.longitude)
     }
 
     private func navigate(google: Bool) {

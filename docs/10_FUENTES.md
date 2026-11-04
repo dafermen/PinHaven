@@ -22,3 +22,9 @@ Las referencias son documentación técnica, no autorización para copiar fichas
 - https://developer.apple.com/documentation/mapkit/mklocalsearch/request/init(completion:)
 - https://developers.google.com/maps/documentation/urls/get-started
 - https://developers.google.com/maps/documentation/urls/ios-urlscheme
+
+Referencias para búsqueda regional y compartir (2026-11-04):
+
+- https://developer.apple.com/documentation/mapkit/mklocalsearchcompleter/region
+- https://developer.apple.com/documentation/mapkit/mklocalsearchcompleter/regionpriority
+- https://developer.apple.com/documentation/uikit/collaborating-and-sharing-copies-of-your-data

@@ -13,7 +13,7 @@
 | HU05 | Encontrar registros | Buscar nombre, dirección, notas, categoría o etiquetas; ignorar tildes y mayúsculas; combinar filtros | Implementado, por validar |
 | HU06 | Consultar lista y mapa | Mismos resultados filtrados; abrir ficha desde lista o marcador; vacío con acción clara | Implementado, por validar |
 | HU07 | Editar y eliminar | Cancelar edición conserva datos; borrar exige confirmación; error de guardado no se oculta | Implementado, por validar |
-| HU08 | Compartir sitio | Compartir nombre, dirección si existe y enlace universal; notas privadas no se incluyen automáticamente | Implementado, por validar |
+| HU08 | Compartir sitio | Menú con Google Maps y hoja para otras apps; compartir URL universal; copiar nombre/dirección/enlace; no incluir notas privadas | Implementado, por validar |
 | HU09 | Iniciar indicaciones | Abrir destino en Apple Maps o Google Maps mediante URL; navegador como alternativa del enlace | Implementado, por validar |
 | HU10 | Respaldar y restaurar | Exportar todos; validar JSON y versión; confirmar importación; mismo UUID se omite | Implementado, por validar |
 | HU11 | Aprovechar enlace pegado | Extraer coordenadas explícitas de formatos admitidos; sin resolver enlaces cortos; revisar antes de guardar | Implementado, por validar |

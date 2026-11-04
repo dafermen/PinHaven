@@ -71,6 +71,20 @@ final class PinHavenTests: XCTestCase {
         XCTAssertFalse(address.contains("\n"))
     }
 
+    @MainActor
+    func testAddressSearchRegionRequiresExplicitValidReference() {
+        XCTAssertNil(AddressSearch.region(near: nil))
+        XCTAssertNil(AddressSearch.region(near: CLLocationCoordinate2D(latitude: 91, longitude: 0)))
+        for coordinate in [CLLocationCoordinate2D(latitude: 0, longitude: 0),
+                           CLLocationCoordinate2D(latitude: 40, longitude: -73)] {
+            let region = AddressSearch.region(near: coordinate)
+            XCTAssertEqual(region?.center.latitude, coordinate.latitude)
+            XCTAssertEqual(region?.center.longitude, coordinate.longitude)
+            XCTAssertGreaterThan(region?.span.latitudeDelta ?? 0, 0)
+            XCTAssertLessThan(region?.span.latitudeDelta ?? 180, 1)
+        }
+    }
+
     func testBackupRoundTripAndCorruption() throws {
         let record = PlaceRecord(name: "Café ☕", notes: "Entrada lateral", latitude: 40.7, longitude: -73.9)
         let decoded = try PlaceBackup.decode(PlaceBackup(places: [record]).encoded())

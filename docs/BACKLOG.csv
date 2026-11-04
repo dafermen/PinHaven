@@ -7,9 +7,9 @@ F0-T05,F0,"Preparar README, guía y plantillas GitHub",Documentación entregada,
 F1-T01,F1,Persistencia local y errores de apertura,Implementado; validación iOS pendiente,F0-T04,Reabrir sin perder datos; sin CloudKit
 F1-T02,F1,"Formulario, edición y borrado",Implementado; validación iOS pendiente,F0-T04,Validaciones; cancelar no modifica; borrado confirmado
 F1-T03,F1,Captura GPS y permisos,Implementado; validación iOS pendiente,F0-T04,"Rechazo, timeout y precisión visibles"
-F1-T04,F1,Selección y búsqueda MapKit,Implementado; validación iOS pendiente,F0-T04,Revisar punto antes de guardar; error de red claro; sugerencias de dirección actualizan texto y punto; verificar ciudad/estado/ZIP disponible
+F1-T04,F1,Selección y búsqueda MapKit,Implementado; validación iOS pendiente,F0-T04,Revisar punto antes de guardar; error de red claro; sugerencias de dirección actualizan texto y punto; verificar ciudad/estado/ZIP disponible; GPS de referencia no mueve sitio; cambiar alcance renueva sugerencias
 F1-T05,F1,"Lista, mapa, búsqueda y filtros",Implementado; validación iOS pendiente,F0-T04,"Mismos resultados, tildes y favoritos"
-F1-T06,F1,"Enlaces, compartir e indicaciones",Implementado; validación iOS pendiente,F0-T04,"Abrir destino correcto; sin notas privadas por defecto; verificar URL compartido, apertura Google nativa y alternativa web"
+F1-T06,F1,"Enlaces, compartir e indicaciones",Implementado; validación iOS pendiente,F0-T04,"Abrir destino correcto; sin notas privadas por defecto; verificar URL compartido, apertura Google nativa y alternativa web; menú propio ofrece Google Maps sin depender de hoja iOS"
 F1-T07,F1,Respaldo JSON e importación,Implementado; validación iOS pendiente,F0-T04,"Restaurar, rechazar inválidos y omitir UUID existentes"
 F1-T08,F1,Compilar y ejecutar XCTest en Mac,Aprobado en simulador,F0-T04,Build y 7 XCTest aprobados 2026-11-03; Xcode 15.2; iPhone SE 3rd generation iOS 17.2; ver estado
 F1-T09,F1,Aceptación manual en iPhone,Pendiente,F0-T04,Matriz de pruebas; privacidad y GPS reales

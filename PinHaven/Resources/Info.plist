@@ -27,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>PinHaven usa tu ubicación solamente cuando eliges guardar el lugar donde estás.</string>
+	<string>PinHaven usa tu ubicación cuando eliges guardar dónde estás o buscar direcciones cerca de ti.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

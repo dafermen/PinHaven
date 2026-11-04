@@ -36,3 +36,9 @@ Sugerencias MapKit en el campo dirección; resolución explícita con cancelaci�
 Google Maps: coma codificada en URLs, apertura directa de la aplicación con fallback universal, acciones separadas para ver el punto y calcular ruta y alternativa web. Compartir sitio entrega un URL, evitando enviar texto completo a una aplicación de mapas como consulta. Copiar dirección y enlace conserva el formato de texto.
 
 Dos casos XCTest nuevos para enlaces/coordenadas y dirección postal. Comprobación estructural aprobada en Windows; compilación y nueve XCTest de esta revisión pendientes de Mac/CI. No se confirma una causa única del error mostrado en Google Maps.
+
+## Búsqueda cercana y compartir a Google Maps — 2026-11-04
+
+Botón Buscar direcciones cerca de mí: obtiene GPS puntual independiente del punto del sitio, actualiza las sugerencias sin volver a escribir y muestra la zona usada. Interruptor para buscar cerca o en otra ciudad. Región de 40 km de lado aplicada también a la resolución; iOS 18+ con SDK compatible exige la región, iOS 17 la usa como referencia. Sin referencia no se presupone una ubicación.
+
+Compartir sitio abre un menú propio con Google Maps, indicaciones, compartir con otras apps y copiar enlace. No depende de que Google Maps publique una extensión en la hoja de iOS. Prueba adicional de región, diez XCTest preparados. Compilación/pruebas de esta revisión pendientes de CI; la revisión anterior 3bf4119 aprobó GitHub Actions.

@@ -68,3 +68,12 @@ Build y siete pruebas verdes en Xcode; M01–M29 y M31 aceptados o excepciones j
 8. Ejecutar los nueve XCTest con `bash scripts/test_ios.sh`. Los dos nuevos verifican formato postal y construcción/decodificación de enlaces; no sustituyen las pruebas reales de MapKit ni Google Maps.
 
 Usar datos públicos de prueba; no adjuntar ubicaciones personales a logs ni casos de prueba.
+
+## Regresión: referencia GPS y menú de compartir
+
+- Crear un sitio sin coordenadas, escribir una dirección parcial y pulsar Buscar direcciones cerca de mí: aceptar permiso, verificar zona/precisión y renovación de sugerencias sin reescribir; el punto del sitio sigue vacío hasta seleccionar una sugerencia.
+- Editar un sitio en otra ciudad: pedir GPS cercano no debe mover el punto guardado ni cambiar su dirección. Cancelar conserva el registro.
+- Rechazar permiso o esperar timeout: mensaje recuperable y posibilidad de buscar con ciudad/ZIP o mapa. Sin coordenadas no se presume 0,0.
+- Desactivar Priorizar direcciones cercanas: buscar una dirección de otra ciudad; reactivar usa la referencia local. Probar iOS 17 (preferencia) y 18+ (región requerida).
+- Compartir sitio debe mostrar Google Maps siempre en el menú de PinHaven. Abrir ubicación y Cómo llegar usan el punto guardado; sin app instalada se usa enlace universal. Compartir con otras apps abre la hoja de iOS y no garantiza que Google Maps aparezca en ella.
+- Ejecutar los diez XCTest de esta revisión y comprobar sugerencias/GPS con datos públicos en dispositivo real.

@@ -12,6 +12,7 @@ final class AddressSearch: NSObject, ObservableObject, MKLocalSearchCompleterDel
     private var completer: MKLocalSearchCompleter?
     private var search: MKLocalSearch?
     private var generation = UUID()
+    private var searchRegion: MKCoordinateRegion?
 
     func update(_ text: String, near coordinate: CLLocationCoordinate2D?) {
         stop()
@@ -21,9 +22,13 @@ final class AddressSearch: NSObject, ObservableObject, MKLocalSearchCompleterDel
         let next = MKLocalSearchCompleter()
         next.delegate = self
         next.resultTypes = [.address, .pointOfInterest]
-        if let coordinate {
-            next.region = MKCoordinateRegion(center: coordinate,
-                span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2))
+        searchRegion = Self.region(near: coordinate)
+        if let searchRegion {
+            next.region = searchRegion
+            // Keep Xcode 15/iOS 17 builds supported; strict regional scope starts at iOS 18.
+            #if compiler(>=6.0)
+            if #available(iOS 18.0, *) { next.regionPriority = .required }
+            #endif
         }
         completer = next
         next.queryFragment = query
@@ -46,7 +51,14 @@ final class AddressSearch: NSObject, ObservableObject, MKLocalSearchCompleterDel
         let token = generation
         isResolving = true
         errorMessage = nil
-        let current = MKLocalSearch(request: MKLocalSearch.Request(completion: completion))
+        let request = MKLocalSearch.Request(completion: completion)
+        if let searchRegion {
+            request.region = searchRegion
+            #if compiler(>=6.0)
+            if #available(iOS 18.0, *) { request.regionPriority = .required }
+            #endif
+        }
+        let current = MKLocalSearch(request: request)
         search = current
         let timeout = Task { @MainActor in
             do { try await Task.sleep(nanoseconds: 15_000_000_000) }
@@ -84,6 +96,12 @@ final class AddressSearch: NSObject, ObservableObject, MKLocalSearchCompleterDel
         search = nil
         suggestions = []
         isResolving = false
+    }
+
+    /// A 40 km square around an explicit search reference, never an implicit 0,0.
+    static func region(near coordinate: CLLocationCoordinate2D?) -> MKCoordinateRegion? {
+        guard let coordinate, CLLocationCoordinate2DIsValid(coordinate) else { return nil }
+        return MKCoordinateRegion(center: coordinate, latitudinalMeters: 40_000, longitudinalMeters: 40_000)
     }
 
     static func fullAddress(_ placemark: MKPlacemark) -> String {
