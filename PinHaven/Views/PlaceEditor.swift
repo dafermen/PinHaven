@@ -34,12 +34,12 @@ struct PlaceEditor: View {
             Form {
                 Section("El lugar") {
                     TextField("Nombre para recordarlo", text: $draft.name)
+                    Toggle("Priorizar direcciones cercanas", isOn: $nearbySearch)
                     TextField("Dirección, ciudad o código postal", text: $draft.address, axis: .vertical)
                         .focused($addressFocused)
                         .onChange(of: draft.address) { _, value in
                             if addressFocused { gps.cancel(); addresses.update(value, near: addressSearchReference) }
                         }
-                    addressAreaControls
                     if addressFocused {
                         ForEach(Array(addresses.suggestions.enumerated()), id: \.offset) { _, suggestion in
                             Button {
@@ -64,8 +64,7 @@ struct PlaceEditor: View {
                     if let message = addresses.errorMessage {
                         Text(message).font(.caption).foregroundStyle(.secondary)
                     }
-                    Text("Elige una sugerencia para actualizar dirección y coordenadas juntas. Incluye ciudad o código postal para distinguir calles con el mismo nombre. Revisa el punto en el mapa antes de guardar.")
-                        .font(.caption).foregroundStyle(.secondary)
+                    addressAreaControls
                     Picker("Categoría", selection: $draft.category) {
                         ForEach(Array(Set(Self.categories + [draft.category])).sorted(), id: \.self) { Text($0) }
                     }
@@ -140,31 +139,29 @@ struct PlaceEditor: View {
     }
 
     private var addressAreaControls: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        Group {
             Button {
                 addressFocused = true
                 searchGPS.request()
             } label: {
-                Label(searchGPS.isLoading ? "Localizando zona de búsqueda…" : "Buscar direcciones cerca de mí",
+                Label(searchGPS.isLoading ? "Localizando zona…" : "Buscar cerca de mí",
                     systemImage: "location.magnifyingglass")
             }.disabled(searchGPS.isLoading || addresses.isResolving)
-            Toggle("Priorizar direcciones cercanas", isOn: $nearbySearch)
-            if nearbySearch, addressSearchReference != nil {
-                Text(searchReference == nil ? "Zona: alrededor del punto del sitio." : "Zona: alrededor de tu ubicación actual.")
-                    .font(.caption).foregroundStyle(.secondary)
-                if let searchAccuracy {
-                    Text("Precisión del GPS de referencia: ±\(Int(searchAccuracy)) m.")
-                        .font(.caption).foregroundStyle(.secondary)
+            DisclosureGroup("Zona de búsqueda y ayuda") {
+                if nearbySearch, addressSearchReference != nil {
+                    Text(searchReference == nil ? "Zona: alrededor del punto del sitio." : "Zona: alrededor de tu ubicación actual.")
+                    if let searchAccuracy {
+                        Text("Precisión del GPS de referencia: ±\(Int(searchAccuracy)) m.")
+                    }
+                } else if nearbySearch {
+                    Text("Sin ubicación de referencia. Pulsa Buscar cerca de mí o añade ciudad y ZIP.")
+                } else {
+                    Text("Búsqueda sin límite de zona: incluye ciudad, estado o ZIP.")
                 }
-            } else if nearbySearch {
-                Text("Todavía no hay una ubicación de referencia. Pulsa Buscar direcciones cerca de mí o añade ciudad y ZIP.")
-                    .font(.caption).foregroundStyle(.secondary)
-            } else {
-                Text("Búsqueda sin límite de zona: incluye ciudad, estado o ZIP.")
-                    .font(.caption).foregroundStyle(.secondary)
+                Text("El GPS solo orienta la búsqueda; no mueve el sitio. Desactiva Priorizar direcciones cercanas para buscar en otra ciudad.")
+                Text("Elige una sugerencia para actualizar dirección y coordenadas juntas. Revisa el punto en el mapa antes de guardar.")
             }
-            Text("Este GPS solo orienta la búsqueda; no mueve el punto del sitio. Desactiva la búsqueda cercana para buscar en otra ciudad.")
-                .font(.caption).foregroundStyle(.secondary)
+            .font(.caption).foregroundStyle(.secondary)
         }
     }
 

@@ -20,7 +20,7 @@ La localización de la interfaz todavía está pendiente en F1-T10; el código i
 - Nombre, dirección opcional, coordenadas, notas, categoría, etiquetas y favorito.
 - Búsqueda sin distinguir mayúsculas ni tildes; filtros combinables por categoría y favorito.
 - Orden por modificación reciente o por nombre.
-- Menú Compartir sitio con acceso explícito a Google Maps; Compartir con otras apps abre la hoja de iOS. Copiar conserva nombre, dirección y enlace.
+- Acciones directas para Google Maps y Compartir con otras apps, sin menú intermedio. Copiar conserva nombre, dirección y enlace y confirma «Enlace copiado».
 - Abrir indicaciones con Apple Maps o enlaces universales de Google Maps.
 - Pegar enlaces con coordenadas explícitas compatibles. Los enlaces cortos no se resuelven en esta versión.
 - Exportar todos los sitios a JSON e importar nuevos identificadores con confirmación.

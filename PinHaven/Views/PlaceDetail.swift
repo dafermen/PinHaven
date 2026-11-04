@@ -11,6 +11,8 @@ struct PlaceDetail: View {
     @State private var editing = false
     @State private var deleting = false
     @State private var showingGoogleWeb = false
+    @State private var showingCopyNotice = false
+    @State private var copyNoticeID = UUID()
     @State private var errorMessage: String?
 
     var body: some View {
@@ -31,18 +33,9 @@ struct PlaceDetail: View {
                 LabeledContent("Guardado", value: place.createdAt.formatted(date: .abbreviated, time: .omitted))
             }
             Section("Compartir y llegar") {
-                Menu {
-                    Button("Abrir ubicación en Google Maps") { openGoogle(directions: false) }
-                    Button("Cómo llegar con Google Maps") { openGoogle(directions: true) }
-                    ShareLink(item: MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: true)) {
-                        Label("Compartir con otras apps", systemImage: "square.and.arrow.up")
-                    }
-                    Button("Copiar dirección y enlace") { copyLocation() }
-                } label: {
-                    Label("Compartir sitio", systemImage: "square.and.arrow.up")
+                ShareLink(item: MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: true)) {
+                    Label("Compartir con otras apps", systemImage: "square.and.arrow.up")
                 }
-                Text("Para enviar el punto a Google Maps, elígelo en este menú. La lista de otras apps la gestiona iOS.")
-                    .font(.caption).foregroundStyle(.secondary)
                 Button("Cómo llegar con Apple Maps") { navigate(google: false) }
                 Button("Ver punto en Google Maps") { openGoogle(directions: false) }
                 Button("Cómo llegar con Google Maps") { openGoogle(directions: true) }
@@ -54,6 +47,25 @@ struct PlaceDetail: View {
                 }
             }
             Section { Button("Eliminar sitio", role: .destructive) { deleting = true } }
+        }
+        .overlay(alignment: .bottom) {
+            if showingCopyNotice {
+                Label("Enlace copiado", systemImage: "checkmark.circle.fill")
+                    .font(.callout.weight(.semibold))
+                    .padding(.horizontal, 20).padding(.vertical, 12)
+                    .background(.regularMaterial, in: Capsule())
+                    .shadow(radius: 4)
+                    .padding(.bottom, 20)
+                    .allowsHitTesting(false)
+                    .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut, value: showingCopyNotice)
+        .task(id: copyNoticeID) {
+            guard showingCopyNotice else { return }
+            do { try await Task.sleep(nanoseconds: 2_000_000_000) }
+            catch { return }
+            showingCopyNotice = false
         }
         .navigationTitle(place.name)
         .toolbar {
@@ -82,6 +94,9 @@ struct PlaceDetail: View {
     private func copyLocation() {
         UIPasteboard.general.string = MapLinks.shareText(name: place.name, address: place.address,
             latitude: place.latitude, longitude: place.longitude)
+        showingCopyNotice = true
+        copyNoticeID = UUID()
+        UIAccessibility.post(notification: .announcement, argument: "Enlace copiado")
     }
 
     private func navigate(google: Bool) {

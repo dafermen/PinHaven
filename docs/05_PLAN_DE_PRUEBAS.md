@@ -77,3 +77,12 @@ Usar datos públicos de prueba; no adjuntar ubicaciones personales a logs ni cas
 - Desactivar Priorizar direcciones cercanas: buscar una dirección de otra ciudad; reactivar usa la referencia local. Probar iOS 17 (preferencia) y 18+ (región requerida).
 - Compartir sitio debe mostrar Google Maps siempre en el menú de PinHaven. Abrir ubicación y Cómo llegar usan el punto guardado; sin app instalada se usa enlace universal. Compartir con otras apps abre la hoja de iOS y no garantiza que Google Maps aparezca en ella.
 - Ejecutar los diez XCTest de esta revisión y comprobar sugerencias/GPS con datos públicos en dispositivo real.
+
+## Revisión de interfaz más reciente: compartir directo y sugerencias visibles
+
+Estos criterios reemplazan el menú de compartir propuesto en las secciones anteriores:
+
+1. Tocar Compartir con otras apps en la ficha abre la hoja nativa de iOS directamente, sin menú de PinHaven intermedio. Google Maps y copiar aparecen una sola vez en la ficha.
+2. Copiar dirección y enlace: pegar y comprobar contenido; aparece Enlace copiado durante dos segundos. Repetir rápidamente debe mantener el aviso dos segundos desde la última pulsación. VoiceOver anuncia la confirmación. El aviso no bloquea otros botones.
+3. Con teclado abierto y una dirección parcial, las sugerencias van inmediatamente después del campo, sin textos largos entre ambos. Probar pantalla pequeña, texto grande y VoiceOver. Elegir una sigue actualizando dirección y punto.
+4. Priorizar direcciones cercanas permanece visible antes del campo. Buscar cerca de mí mantiene su función. Zona de búsqueda y ayuda empieza cerrada y al abrirla permite consultar referencia, precisión y explicaciones.

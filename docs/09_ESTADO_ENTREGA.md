@@ -104,3 +104,11 @@ La zona de 40 km de lado se aplica a MKLocalSearchCompleter y a la resolución. 
 Compartir sitio ahora muestra un menú propio con Abrir ubicación en Google Maps y Cómo llegar con Google Maps, además de Compartir con otras apps y copiar. No se promete insertar Google Maps en la hoja nativa de iOS ni guardar automáticamente el sitio en favoritos de Google.
 
 Se añade prueba de región con referencia ausente, inválida, válida y 0,0. Diez XCTest preparados; la revisión previa 3bf4119 está aprobada en GitHub Actions. Esta revisión requiere su propia compilación y prueba, y un nuevo build para iPhone/TestFlight.
+
+## Simplificación de compartir y visibilidad de sugerencias — 4 de noviembre de 2026
+
+A partir de las capturas del propietario se eliminó el menú Compartir sitio añadido en la revisión anterior. La ficha conserva una acción por operación: Compartir con otras apps (ShareLink directo), ver punto Google, indicaciones Google/Apple, web y copiar. Se elimina también el texto que explicaba el menú. Copiar muestra un aviso no bloqueante Enlace copiado por dos segundos y anuncio accesible; las pulsaciones repetidas renuevan su duración.
+
+En el editor, Priorizar direcciones cercanas permanece visible antes del campo dirección, y las sugerencias siguen inmediatamente al campo sin controles ni ayuda intercalados. Buscar cerca de mí y el desplegable Zona de búsqueda y ayuda aparecen después. Las explicaciones largas están ocultas inicialmente para dejar espacio con teclado abierto. Se conserva el comportamiento GPS y la referencia separada.
+
+Verificación local: 103 comprobaciones estructurales y diff sin errores de formato; sin compilación ni simulador disponibles en Windows. Estos cambios visuales necesitan revisión con teclado y VoiceOver en iPhone y un nuevo build. No se añadieron pruebas unitarias que repliquen la disposición de vistas.

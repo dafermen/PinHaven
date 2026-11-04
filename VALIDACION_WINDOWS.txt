@@ -1,6 +1,6 @@
 Fecha: 2026-11-04 America/New_York
 Entorno: Windows; Python 3.14.7; Git Bash
-Revision: referencia GPS para sugerencias y menu Google Maps
+Revision: compartir directo, confirmacion de copia y sugerencias visibles
 
 PASS: Python syntax: generate_project.py
 PASS: Python syntax: validate_repository.py

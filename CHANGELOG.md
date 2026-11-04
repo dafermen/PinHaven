@@ -42,3 +42,9 @@ Dos casos XCTest nuevos para enlaces/coordenadas y dirección postal. Comprobaci
 Botón Buscar direcciones cerca de mí: obtiene GPS puntual independiente del punto del sitio, actualiza las sugerencias sin volver a escribir y muestra la zona usada. Interruptor para buscar cerca o en otra ciudad. Región de 40 km de lado aplicada también a la resolución; iOS 18+ con SDK compatible exige la región, iOS 17 la usa como referencia. Sin referencia no se presupone una ubicación.
 
 Compartir sitio abre un menú propio con Google Maps, indicaciones, compartir con otras apps y copiar enlace. No depende de que Google Maps publique una extensión en la hoja de iOS. Prueba adicional de región, diez XCTest preparados. Compilación/pruebas de esta revisión pendientes de CI; la revisión anterior 3bf4119 aprobó GitHub Actions.
+
+## Ajustes de interfaz por revisión en iPhone — 2026-11-04
+
+Compartir con otras apps abre directamente la hoja de iOS; se elimina el menú intermedio y sus acciones duplicadas. Google Maps y copiar quedan una sola vez en la ficha. Copiar muestra Enlace copiado durante dos segundos y lo anuncia con VoiceOver; repetir reinicia el aviso.
+
+Las sugerencias aparecen justo bajo el campo dirección. Priorizar direcciones cercanas se conserva arriba del campo; el GPS y la ayuda quedan después de resultados, con explicaciones en un desplegable cerrado inicialmente. Sin cambios de almacenamiento ni geocodificación.
