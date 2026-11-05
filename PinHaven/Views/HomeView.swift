@@ -3,6 +3,9 @@ import SwiftData
 import MapKit
 
 struct HomeView: View {
+    @Environment(\.modelContext) private var context
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var inboxMessage: String?
     @Query(sort: \Place.updatedAt, order: .reverse) private var places: [Place]
     @State private var query = ""
     @State private var category = "Todas"
@@ -91,6 +94,22 @@ struct HomeView: View {
                 }
             }
             .sheet(isPresented: $adding) { PlaceEditor() }
+            .task { importSharedPlaces() }
+            .onChange(of: scenePhase) { _, phase in if phase == .active { importSharedPlaces() } }
+            .alert("Lugares compartidos", isPresented: Binding(get: { inboxMessage != nil }, set: { if !$0 { inboxMessage = nil } })) {
+                Button("Aceptar", role: .cancel) { inboxMessage = nil }
+            } message: { Text(inboxMessage ?? "") }
         }
+    }
+
+    private func importSharedPlaces() {
+        do {
+            let result = try SharedInboxImport.consume(SharedInbox.live(), into: context)
+            if result.failed > 0 {
+                inboxMessage = "Se incorporaron \(result.added) lugares. Hay \(result.failed) entradas pendientes que no se pudieron incorporar; se conservaron para revisión."
+            } else if result.added > 0 {
+                inboxMessage = "Se incorporaron \(result.added) lugares compartidos a tu agenda."
+            }
+        } catch { inboxMessage = error.localizedDescription }
     }
 }
