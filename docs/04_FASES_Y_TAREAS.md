@@ -52,14 +52,14 @@
 
 | ID | Tarea | Estado | Criterio |
 |---|---|---|---|
-| F3-T01 | Target Share Extension y App Groups | P | Firma correcta, contenedor compartido y pruebas |
-| F3-T02 | Bandeja local de entradas pendientes | P | Escritura atómica y consumo sin duplicados; migrar base existente |
-| F3-T03 | Leer URL/texto con NSItemProvider | P | Casos reales de Maps, Google Maps y Safari |
-| F3-T04 | Resolución segura de enlaces cortos | P | Allowlist, HTTPS, límite de redirecciones/tiempo/tamaño; confirmación si falta punto |
-| F3-T05 | Formulario breve de confirmación | P | Nombre, categoría, guardar o cancelar |
-| F3-T06 | Fixtures de enlaces y pruebas reales | P | Ningún viewport se presenta como destino exacto |
+| F3-T01 | Target Share Extension y App Groups | I | Firma correcta, contenedor compartido y pruebas |
+| F3-T02 | Bandeja local de entradas pendientes | I | Escritura atómica y consumo sin duplicados; conservar base existente en su contenedor |
+| F3-T03 | Leer URL/texto con NSItemProvider | I | Casos reales de Maps, Google Maps y Safari |
+| F3-T04 | Resolución segura de enlaces cortos | I | Allowlist, HTTPS, límite de redirecciones/tiempo/tamaño; confirmación si falta punto |
+| F3-T05 | Formulario breve de confirmación | I | Nombre, categoría, guardar o cancelar |
+| F3-T06 | Fixtures de enlaces y pruebas reales | I | Ningún viewport se presenta como destino exacto |
 
-Diseño preferido: extensión escribe una entrada en una bandeja de archivos local compartida; app principal valida e importa. Evitar escrituras concurrentes no coordinadas a la base. El uso de App Groups obliga a planificar migración del almacén existente, no a comenzar una agenda vacía.
+Diseño preferido: extensión escribe una entrada en una bandeja de archivos local compartida; app principal valida e importa. Evitar escrituras concurrentes no coordinadas a la base. En esta implementación solo la bandeja usa App Groups; la base existente permanece en su ubicación privada y no necesita migración. No comenzar una agenda vacía.
 
 ## F4 — Recuperación inteligente (0.4.0)
 
@@ -93,3 +93,5 @@ Código implementado, compilación correcta, aceptación del caso normal y de er
 5. Iniciar F2-T01 y F2-T02, manteniendo el resto fuera del sprint.
 
 No se fijan fechas hasta conocer disponibilidad del estudiante y acceso a un Mac. Para un principiante, reservar tiempo explícito para aprendizaje, depuración y validación, además de escribir código.
+
+F3 implementada el 5 de noviembre de 2026, con compilación/fixtures y aceptación de dispositivo registradas por separado en el estado. Registro de App Group/perfiles en Apple no se deduce del código.

@@ -18,6 +18,7 @@ final class ShareCaptureTests: XCTestCase {
     func testPlaceDataNeverUsesViewportOrAmbiguousCoordinates() throws {
         let prefix = "https://www.google.com/maps/place/Example/@10,20,14z/"
         XCTAssertNil(IncomingMapLink.point(in: try XCTUnwrap(URL(string: prefix))))
+        XCTAssertNil(IncomingMapLink.point(in: try XCTUnwrap(URL(string: prefix + "#data=!3d40!4d-73"))))
         XCTAssertEqual(IncomingMapLink.point(in: try XCTUnwrap(URL(string: prefix + "data=!3d40.5!4d-73.5"))),
                        MapPoint(latitude: 40.5, longitude: -73.5))
         XCTAssertNil(IncomingMapLink.point(in: try XCTUnwrap(URL(string: prefix + "data=!3d40!4d-73!3d41!4d-72"))))

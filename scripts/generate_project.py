@@ -102,7 +102,7 @@ test = add('test-target', 'PBXNativeTarget', buildConfigurationList=test_configs
     buildPhases=[test_src, test_fw], buildRules=[], dependencies=[dep], name='PinHavenTests',
     productName='PinHavenTests', productReference=test_product, productType='com.apple.product-type.bundle.unit-test')
 project = add('project', 'PBXProject', attributes={'BuildIndependentTargetsInParallel':'YES',
-    'LastUpgradeCheck':'1600', 'TargetAttributes':{share:{'CreatedOnToolsVersion':'16.0'}, app:{'CreatedOnToolsVersion':'16.0'},
+    'LastUpgradeCheck':'1600', 'TargetAttributes':{share:{'CreatedOnToolsVersion':'16.0','SystemCapabilities':{'com.apple.ApplicationGroups.iOS':{'enabled':1}}}, app:{'CreatedOnToolsVersion':'16.0','SystemCapabilities':{'com.apple.ApplicationGroups.iOS':{'enabled':1}}},
     test:{'CreatedOnToolsVersion':'16.0','TestTargetID':app}}}, buildConfigurationList=project_configs,
     compatibilityVersion='Xcode 14.0', developmentRegion='en', hasScannedForEncodings=0,
     knownRegions=['en','es','Base'], mainGroup=main, productRefGroup=products,

@@ -797,9 +797,19 @@
 				"TargetAttributes" = {
 					"21D05182542AE501D736062C" = {
 						"CreatedOnToolsVersion" = "16.0";
+						"SystemCapabilities" = {
+							"com.apple.ApplicationGroups.iOS" = {
+								"enabled" = 1;
+							};
+						};
 					};
 					"F75109BEB4DD8800DA6B45F8" = {
 						"CreatedOnToolsVersion" = "16.0";
+						"SystemCapabilities" = {
+							"com.apple.ApplicationGroups.iOS" = {
+								"enabled" = 1;
+							};
+						};
 					};
 					"C062A5A4A7F4F37DD90F54CB" = {
 						"CreatedOnToolsVersion" = "16.0";

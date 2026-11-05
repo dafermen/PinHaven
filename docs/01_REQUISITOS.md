@@ -16,7 +16,7 @@
 | HU08 | Compartir sitio | Acciones directas sin duplicados; compartir texto con nombre, dirección y URL universal mediante hoja iOS; copiar nombre/dirección/enlace con confirmación; no incluir notas privadas | Implementado, por validar |
 | HU09 | Iniciar indicaciones | Abrir destino en Apple Maps o Google Maps mediante URL; navegador como alternativa del enlace | Implementado, por validar |
 | HU10 | Respaldar y restaurar | Exportar todos; validar JSON y versión; confirmar importación; mismo UUID se omite | Implementado, por validar |
-| HU11 | Aprovechar enlace pegado | Extraer coordenadas explícitas de formatos admitidos; sin resolver enlaces cortos; revisar antes de guardar | Implementado, por validar |
+| HU11 | Aprovechar enlace pegado | Extraer coordenadas explícitas de formatos admitidos; enlaces pegados conservan la ruta manual; extensión recibe y expande enlaces limitados; revisar antes de guardar | Implementado, por validar |
 
 ## Idiomas
 
@@ -40,7 +40,7 @@ Nombre obligatorio hasta 200 caracteres; dirección hasta 2.000; notas hasta 20.
 
 ## Fuera del MVP
 
-Fotos, cámara, Share Extension, interpretar cualquier URL, resolución de enlaces cortos, scraping de Google, enriquecimiento de Google Places, historial automático, ubicación en tiempo real, mapas propios descargables, rutas internas, colecciones, proximidad y deduplicación por distancia. Exportación manual adelantada al MVP por la importancia de recuperar datos locales.
+Fotos, cámara, interpretar cualquier URL, scraping de Google, enriquecimiento de Google Places, historial automático, ubicación en tiempo real, mapas propios descargables, rutas internas, colecciones, proximidad y deduplicación por distancia. Exportación manual adelantada al MVP por la importancia de recuperar datos locales.
 
 ## Casos especiales
 
@@ -53,3 +53,7 @@ Fotos, cámara, Share Extension, interpretar cualquier URL, resolución de enlac
 - Mismo lugar con UUID diferente: se importan ambos en esta versión.
 - Importar el mismo archivo repetidamente: no duplica identificadores.
 - Eliminar la app: datos locales pueden perderse; recuperación mediante respaldo manual.
+
+## Alcance adicional autorizado: recibir desde Maps
+
+Extensión de compartir para un URL/texto de Google Maps o Apple Maps. Revisión de nombre, dirección opcional, categoría, notas, favorito y punto antes de confirmar. Si faltan coordenadas, selección manual/MapKit obligatoria. Confirmación escribe en bandeja local de App Group; al abrir PinHaven se importa sin duplicar UUID ni sobrescribir datos. Resolver enlaces cortos solo por redirecciones HTTPS acotadas, sin scraping. No forzar la apertura de la app ni migrar la base existente. Ver [guía de recepción](13_RECIBIR_DESDE_MAPS.md).

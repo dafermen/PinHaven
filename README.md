@@ -12,6 +12,7 @@ La localización de la interfaz todavía está pendiente en F1-T10; el código i
 
 ## Qué incluye esta entrega
 
+- Recibir un lugar desde Google Maps/Apple Maps → Compartir → PinHaven, confirmar el punto y abrir la app para incorporarlo. Requiere App Groups y un nuevo build firmado; ver [guía de recepción](docs/13_RECIBIR_DESDE_MAPS.md).
 - Lista de sitios y vista de mapa con acceso a sus fichas.
 - Crear, editar y eliminar sitios con confirmación; almacenamiento local SwiftData.
 - Captura puntual de GPS, selección tocando el mapa y búsqueda con MapKit.
@@ -28,7 +29,7 @@ La localización de la interfaz todavía está pendiente en F1-T10; el código i
 
 ## Qué sigue pendiente
 
-Fotos y cámara, extensión «Compartir → PinHaven», resolución de enlaces cortos, colecciones, cercanía y duplicados geográficos. Tampoco incluye seguimiento en tiempo real, servidor, usuarios, IA ni publicación en App Store. Las diferencias entre idea y alcance están en [requisitos](docs/01_REQUISITOS.md).
+Fotos y cámara, colecciones, cercanía y duplicados geográficos. La recepción por extensión y resolución limitada de enlaces cortos tienen código y pruebas preparadas; falta aceptación real desde Maps y configuración de App Groups en Apple. Tampoco incluye seguimiento en tiempo real, servidor, usuarios, IA ni publicación en App Store. Las diferencias entre idea y alcance están en [requisitos](docs/01_REQUISITOS.md).
 
 ## Ejecutar
 

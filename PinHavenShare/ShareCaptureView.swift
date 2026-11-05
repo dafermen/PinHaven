@@ -34,7 +34,7 @@ struct ShareCaptureView: View {
                         }
                         TextField("Notas (opcional)", text: $record.notes, axis: .vertical)
                         Toggle("Favorito", isOn: $record.isFavorite)
-                    }
+                    }.disabled(loading || saving)
                     Section("Punto que se guardará") {
                         if let coordinate {
                             Map(initialPosition: .region(MKCoordinateRegion(center: coordinate,
@@ -59,7 +59,7 @@ struct ShareCaptureView: View {
                     }
                 }
                 .sheet(isPresented: $choosingPoint) {
-                    MapPicker(initial: coordinate) { point, name, address in
+                    MapPicker(initial: coordinate, initialQuery: [record.name, record.address].filter { !$0.isEmpty }.joined(separator: ", ")) { point, name, address in
                         coordinate = point
                         if record.name.isEmpty, let name { record.name = name }
                         if let address { record.address = address }
@@ -86,6 +86,12 @@ struct ShareCaptureView: View {
             catch { message = "No se pudo resolver el enlace. Puedes elegir el punto en el mapa." }
             try Task.checkCancellation()
             record.name = IncomingMapLink.suggestedName(from: resolved)
+            if record.name.isEmpty {
+                let title = text.components(separatedBy: .newlines).first { !$0.trimmingCharacters(in: .whitespaces).isEmpty && !$0.contains("://") }
+                record.name = String((title ?? "").prefix(200))
+            }
+            let items = URLComponents(url: resolved, resolvingAgainstBaseURL: false)?.queryItems ?? []
+            record.address = String((items.first { $0.name == "address" }?.value ?? "").prefix(2000))
             if let point = IncomingMapLink.point(in: resolved) {
                 coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
             } else {

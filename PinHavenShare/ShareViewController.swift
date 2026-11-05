@@ -40,7 +40,12 @@ final class ShareViewController: UIViewController {
                             else { continuation.resume(returning: nil) }
                         }
                     }
-                    if let text, IncomingMapLink.extract(from: text) != nil { return text }
+                    if let text, IncomingMapLink.extract(from: text) != nil {
+                        if let title = item.attributedTitle?.string, !title.isEmpty, !title.contains("://") {
+                            return String(title.prefix(200)) + "\n" + text
+                        }
+                        return text
+                    }
                 }
             }
             if let text = item.attributedContentText?.string, IncomingMapLink.extract(from: text) != nil { return text }

@@ -30,7 +30,7 @@ enum IncomingMapLink {
               url.path.hasPrefix("/maps/place/"),
               let pattern = try? NSRegularExpression(pattern: "!3d(-?[0-9]+(?:\\.[0-9]+)?)!4d(-?[0-9]+(?:\\.[0-9]+)?)") else { return nil }
         // Google's explicit place data is distinct from the @lat,lon camera viewport.
-        let value = url.absoluteString.removingPercentEncoding ?? url.absoluteString
+        let value = url.path
         let matches = pattern.matches(in: value, range: NSRange(value.startIndex..., in: value))
         guard matches.count == 1, let match = matches.first,
               let latRange = Range(match.range(at: 1), in: value), let lonRange = Range(match.range(at: 2), in: value),
@@ -40,7 +40,15 @@ enum IncomingMapLink {
     }
 
     static func suggestedName(from url: URL) -> String {
-        guard isAllowed(url), url.path.hasPrefix("/maps/place/") else { return "" }
+        guard isAllowed(url) else { return "" }
+        if !url.path.hasPrefix("/maps/place/") {
+            let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+            for key in ["name", "query", "q"] {
+                if let value = items.first(where: { $0.name == key })?.value,
+                   MapLinks.point(from: value) == nil { return String(value.prefix(200)) }
+            }
+            return ""
+        }
         return String(url.path.dropFirst("/maps/place/".count).split(separator: "/").first ?? "")
             .replacingOccurrences(of: "+", with: " ").prefix(200).description
     }
