@@ -26,6 +26,20 @@ final class ShareCaptureTests: XCTestCase {
         XCTAssertEqual(IncomingMapLink.point(in: URL(string: "https://maps.apple.com/?ll=0,0")!), MapPoint(latitude: 0, longitude: 0))
     }
 
+    func testPublicGooglePlaceFixturesUsePinInsteadOfCamera() throws {
+        // Sanitized Location headers from public NPS park links, checked with HEAD on 2026-11-05.
+        let examples: [(String, MapPoint)] = [
+            ("https://www.google.com/maps/place/Stanton+Park/@38.893577,-76.9998562,106m/data=!3d38.8936247!4d-76.9998636",
+             MapPoint(latitude: 38.8936247, longitude: -76.9998636)),
+            ("https://www.google.com/maps/place/Fort+DuPont+Park+Activity+Center/@38.8729352,-76.9766791,3385m/data=!3d38.8808275!4d-76.9578451",
+             MapPoint(latitude: 38.8808275, longitude: -76.9578451))
+        ]
+        for (value, expected) in examples {
+            XCTAssertEqual(IncomingMapLink.point(in: try XCTUnwrap(URL(string: value))), expected)
+            XCTAssertFalse(IncomingMapLink.suggestedName(from: URL(string: value)!).isEmpty)
+        }
+    }
+
     func testInboxRejectsInvalidAndKeepsCorruptionForReview() throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: directory) }

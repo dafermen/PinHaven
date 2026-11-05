@@ -55,3 +55,5 @@ Referencias oficiales:
 - [App Groups](https://developer.apple.com/documentation/xcode/configuring-app-groups)
 - [Compartir datos entre app y extensión](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html)
 - [Share extensions](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/Share.html)
+
+Ejemplos públicos contrastados mediante HEAD el 5 de noviembre de 2026, sin usar ubicaciones personales: [Stanton Park](https://www.nps.gov/planyourvisit/event-details.htm?id=C194BFE6-FC34-56FA-55A4B81EB72EB695) y [Fort Dupont Park](https://www.nps.gov/planyourvisit/event-details.htm?id=405AB1FF-9742-D78D-FC560691741E57E6). Sus redirecciones incluyeron coordenadas de lugar diferentes a la cámara; los fixtures de prueba conservan solo la parte relevante del URL.
