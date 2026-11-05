@@ -11,6 +11,8 @@ struct PlaceDetail: View {
     @State private var editing = false
     @State private var deleting = false
     @State private var showingGoogleWeb = false
+    @State private var sharePayload: LocationSharePayload?
+    @State private var sharingFailed = false
     @State private var showingCopyNotice = false
     @State private var copyNoticeID = UUID()
     @State private var errorMessage: String?
@@ -33,7 +35,11 @@ struct PlaceDetail: View {
                 LabeledContent("Guardado", value: place.createdAt.formatted(date: .abbreviated, time: .omitted))
             }
             Section("Compartir y llegar") {
-                ShareLink(item: MapLinks.url(latitude: place.latitude, longitude: place.longitude, google: true)) {
+                Button {
+                    sharingFailed = false
+                    sharePayload = LocationSharePayload(text: MapLinks.shareText(name: place.name,
+                        address: place.address, latitude: place.latitude, longitude: place.longitude))
+                } label: {
                     Label("Compartir con otras apps", systemImage: "square.and.arrow.up")
                 }
                 Button("Cómo llegar con Apple Maps") { navigate(google: false) }
@@ -74,6 +80,17 @@ struct PlaceDetail: View {
                     Image(systemName: place.isFavorite ? "star.fill" : "star")
                 }.accessibilityLabel(place.isFavorite ? "Quitar de favoritos" : "Marcar favorito")
                 Button("Editar") { editing = true }
+            }
+        }
+        .sheet(item: $sharePayload, onDismiss: {
+            if sharingFailed {
+                errorMessage = "No se pudo completar la operación de compartir. Usa Copiar dirección y enlace y pégalo directamente en WhatsApp."
+                sharingFailed = false
+            }
+        }) { payload in
+            LocationShareSheet(text: payload.text) { failed in
+                sharingFailed = failed
+                sharePayload = nil
             }
         }
         .sheet(isPresented: $editing) { PlaceEditor(place: place) }

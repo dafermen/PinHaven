@@ -48,3 +48,7 @@ Compartir sitio abre un menú propio con Google Maps, indicaciones, compartir co
 Compartir con otras apps abre directamente la hoja de iOS; se elimina el menú intermedio y sus acciones duplicadas. Google Maps y copiar quedan una sola vez en la ficha. Copiar muestra Enlace copiado durante dos segundos y lo anuncia con VoiceOver; repetir reinicia el aviso.
 
 Las sugerencias aparecen justo bajo el campo dirección. Priorizar direcciones cercanas se conserva arriba del campo; el GPS y la ayuda quedan después de resultados, con explicaciones en un desplegable cerrado inicialmente. Sin cambios de almacenamiento ni geocodificación.
+
+## Compartir a mensajería — 2026-11-04
+
+Compartir con otras apps presenta UIActivityViewController directamente con un único String de nombre, dirección y enlace; reemplaza ShareLink con URL para reducir problemas de negociación de contenido con extensiones de mensajería. Si iOS reporta error, se muestra una alternativa de copiar/pegar. Cancelar no muestra éxito ni error. La finalización de la extensión no se interpreta como entrega del mensaje. Causa del fallo observado en WhatsApp no confirmada; requiere prueba en iPhone.

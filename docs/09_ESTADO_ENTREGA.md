@@ -112,3 +112,15 @@ A partir de las capturas del propietario se eliminó el menú Compartir sitio a�
 En el editor, Priorizar direcciones cercanas permanece visible antes del campo dirección, y las sugerencias siguen inmediatamente al campo sin controles ni ayuda intercalados. Buscar cerca de mí y el desplegable Zona de búsqueda y ayuda aparecen después. Las explicaciones largas están ocultas inicialmente para dejar espacio con teclado abierto. Se conserva el comportamiento GPS y la referencia separada.
 
 Verificación local: 103 comprobaciones estructurales y diff sin errores de formato; sin compilación ni simulador disponibles en Windows. Estos cambios visuales necesitan revisión con teclado y VoiceOver en iPhone y un nuevo build. No se añadieron pruebas unitarias que repliquen la disposición de vistas.
+
+## Revisión de compartir a WhatsApp — 4 de noviembre de 2026
+
+El propietario informa que al compartir a WhatsApp el mensaje parece no salir. La implementación anterior entregaba un URL mediante ShareLink; no hay evidencia suficiente para atribuir la causa a PinHaven, la extensión o la conexión de WhatsApp.
+
+Se reemplazó esa ruta por LocationShareSheet (UIActivityViewController) con un solo elemento String generado por MapLinks.shareText: nombre, dirección si existe y URL por coordenadas. Se captura el texto al pulsar Compartir, sin notas, GPS nuevo, destinatarios ni envío automático. Se conserva la apertura directa de la hoja iOS.
+
+completionWithItemsHandler permite detectar errores reportados por iOS. Se muestra un error recuperable después de cerrar la hoja con alternativa de copiar/pegar. No se afirma mensaje enviado o entregado cuando la extensión termina. Cancelar simplemente cierra. No se envían mensajes reales durante la validación Windows.
+
+Comprobar en iPhone con WhatsApp instalado y en un chat elegido por el propietario: la llegada del mensaje, la apertura del enlace y los estados de WhatsApp. Esta revisión no se considera validada en WhatsApp hasta esa comprobación.
+
+Validacion Windows de esta revision: 105 comprobaciones estructurales aprobadas y generador reproducible. Swift/XCTest y WhatsApp iOS no ejecutados en este entorno.

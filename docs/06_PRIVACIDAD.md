@@ -49,3 +49,7 @@ Compartir sitio entrega el enlace por coordenadas a la aplicación elegida. Copi
 ## Referencia cercana para direcciones
 
 Buscar direcciones cerca de mí solicita GPS una vez por acción del usuario. Se mantiene como referencia temporal del editor y se pasa como región a MapKit; no mueve ni guarda el sitio y no activa seguimiento. Se cancela al cerrar el editor. La descripción del permiso incluye este uso y se puede buscar sin permiso indicando ciudad/ZIP.
+
+## Contenido compartido con mensajería
+
+Compartir con otras apps envía nombre, dirección y enlace del punto, como texto, a la aplicación que el usuario elija. No incluye notas privadas ni envía automáticamente a un destinatario. PinHaven no recibe confirmación de entrega de WhatsApp.

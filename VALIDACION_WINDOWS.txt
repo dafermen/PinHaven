@@ -1,6 +1,6 @@
 Fecha: 2026-11-04 America/New_York
 Entorno: Windows; Python 3.14.7; Git Bash
-Revision: compartir directo, confirmacion de copia y sugerencias visibles
+Revision: compartir mensaje de texto con enlace y errores locales
 
 PASS: Python syntax: generate_project.py
 PASS: Python syntax: validate_repository.py
@@ -20,6 +20,7 @@ PASS: File reference exists: PinHaven/Services/MapLinks.swift
 PASS: File reference exists: PinHaven/Services/PlaceMapping.swift
 PASS: File reference exists: PinHaven/Views/BackupView.swift
 PASS: File reference exists: PinHaven/Views/HomeView.swift
+PASS: File reference exists: PinHaven/Views/LocationShareSheet.swift
 PASS: File reference exists: PinHaven/Views/MapPicker.swift
 PASS: File reference exists: PinHaven/Views/MapsWebView.swift
 PASS: File reference exists: PinHaven/Views/PlaceDetail.swift
@@ -40,6 +41,7 @@ PASS: Reference fileRef in 0967DF636E48B0FB83C7AC02 resolves
 PASS: Reference fileRef in 877E922C09CE6CCA27F1ED91 resolves
 PASS: Reference fileRef in 07BA6456F1DC403EBD5DED90 resolves
 PASS: Reference fileRef in 5804C6C19C7AAD452434EF32 resolves
+PASS: Reference fileRef in DA36994FF9FC2C68D7A540C8 resolves
 PASS: Reference fileRef in A95DBED6CB1945C654B5E5AF resolves
 PASS: Reference fileRef in F37A6AD40BF03DCFCBEA97C5 resolves
 PASS: Reference fileRef in C5DA25AE51DB1D73FE022972 resolves
@@ -107,4 +109,4 @@ PASS: iOS test shell script syntax
 SKIP: YAML parser unavailable; workflow requires GitHub validation
 PASS: Project generator reproducible
 
-103 structural checks passed. Swift compilation and XCTest NOT executed.
+105 structural checks passed. Swift compilation and XCTest NOT executed.

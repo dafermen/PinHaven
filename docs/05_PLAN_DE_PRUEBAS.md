@@ -86,3 +86,11 @@ Estos criterios reemplazan el menú de compartir propuesto en las secciones ante
 2. Copiar dirección y enlace: pegar y comprobar contenido; aparece Enlace copiado durante dos segundos. Repetir rápidamente debe mantener el aviso dos segundos desde la última pulsación. VoiceOver anuncia la confirmación. El aviso no bloquea otros botones.
 3. Con teclado abierto y una dirección parcial, las sugerencias van inmediatamente después del campo, sin textos largos entre ambos. Probar pantalla pequeña, texto grande y VoiceOver. Elegir una sigue actualizando dirección y punto.
 4. Priorizar direcciones cercanas permanece visible antes del campo. Buscar cerca de mí mantiene su función. Zona de búsqueda y ayuda empieza cerrada y al abrirla permite consultar referencia, precisión y explicaciones.
+
+## Compartir texto con WhatsApp: prueba de integración pendiente
+
+- Pulsar Compartir con otras apps: se abre directamente la hoja de iOS. Elegir WhatsApp, destinatario y Enviar. Comprobar dentro del chat que aparece nombre, dirección y enlace, y comprobar recepción con el destinatario.
+- Probar dirección vacía, nombre con tildes/emoji, dirección con varios renglones y coordenadas negativas. El enlace debe abrir el punto correcto y no deben incluirse notas privadas.
+- Cancelar desde la hoja y desde WhatsApp: no mostrar éxito ni error ficticio; la ficha y los datos permanecen intactos.
+- Si iOS reporta error, comprobar aviso después de cerrar la hoja y usar Copiar dirección y enlace. Si WhatsApp muestra reloj o pendiente, comprobar conexión/envío dentro de WhatsApp; el callback de la hoja no confirma entrega.
+- Probar también Mensajes u otra app receptora. La prueba efectiva de envío la realiza el propietario con un destinatario elegido; Windows no reproduce WhatsApp iOS.

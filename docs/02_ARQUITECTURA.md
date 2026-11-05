@@ -85,3 +85,7 @@ Compartir usa un URL universal por coordenadas. Google Maps instalado puede abri
 ## Referencia de búsqueda separada del sitio
 
 PlaceEditor mantiene una instancia LocationService independiente para searchReference, sin mezclar sus callbacks con el GPS que fija el punto del sitio. Cambiar referencia o alcance vuelve a consultar AddressSearch; se conserva la misma región para resolver la sugerencia. regionPriority.required se protege por versión de compilador y disponibilidad iOS 18 para conservar compatibilidad Xcode 15/iOS 17. El menú de compartir reutiliza la apertura de Google existente.
+
+## Compartir con extensiones de mensajería
+
+LocationShareSheet encapsula UIActivityViewController con un solo String (nombre, dirección y enlace) capturado en LocationSharePayload. Sustituye ShareLink de URL para el botón Compartir con otras apps. El callback solo informa error local a la vista, que lo muestra tras cerrar la hoja; no representa confirmación de envío ni entrega remota.
