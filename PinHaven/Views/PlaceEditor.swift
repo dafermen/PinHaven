@@ -66,7 +66,7 @@ struct PlaceEditor: View {
                         Text(message).font(.caption).foregroundStyle(.secondary)
                     }
                     PointAddressSuggestionView(address: $draft.address, point: point) {
-                        addressFocused = false; addresses.stop()
+                        addressFocused = false; addresses.stop(); gps.cancel()
                     }
                     addressAreaControls
                     Picker("Categoría", selection: $draft.category) {
