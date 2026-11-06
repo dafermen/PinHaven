@@ -61,3 +61,9 @@ Ejemplos públicos contrastados mediante HEAD el 5 de noviembre de 2026, sin usa
 ## Google envía nombre y dirección, sin coordenadas
 
 Algunos enlaces cortos redirigen a maps.google.com?q=nombre+dirección&ftid=... . La extensión convierte los + de formulario en espacios (sin cambiar %2B literal) y busca ese texto con MapKit. Muestra hasta cinco coincidencias: elige la correcta y comprueba dirección/pin para habilitar Guardar. No se guarda una coincidencia automáticamente. Si no hay coincidencias, usa Buscar o corregir punto en el mapa. Resolver un nombre con MapKit requiere red y puede devolver resultados diferentes de Google.
+
+## Si Google comparte una ruta
+
+Google puede enviar daddr (destino) y saddr (origen) en lugar de una ficha de negocio. La extensión muestra el punto de destino y un aviso; no convierte el origen ni el recorrido en el lugar guardado. Escribe un nombre descriptivo si lo deseas y confirma el pin. El enlace original puede seguir mostrando la ruta completa al abrirlo, porque se conserva como referencia. Si el destino es textual se muestran candidatos para elegir; si falta o es contradictorio se requiere selección manual.
+
+Para compartir la ficha de un negocio, sal de Cómo llegar en Google Maps, abre la ficha del lugar y usa su botón Compartir.

@@ -109,3 +109,7 @@ Instrucciones paso a paso en [Recibir desde Maps](13_RECIBIR_DESDE_MAPS.md).
 ## Regresión q=nombre+dirección sin coordenadas
 
 Compartir desde Google un negocio que devuelva q textual y ftid: ver nombre legible sin +, candidatos con dirección, elegir uno, comprobar pin y guardar. Sin elegir ningún candidato Guardar sigue desactivado. Probar resultados vacíos, sin red, cancelar búsqueda y selección manual. Confirmar que C%2B%2B se mantiene C++ y un centro @lat,lon/ftid nunca se convierte en punto. Las pruebas automatizadas usan texto ficticio.
+
+## Regresión: compartir ruta
+
+Probar enlace de ruta daddr/saddr: pin en destino y aviso visible; nunca guardar origen como punto. Cambiar nombre y guardar; abrir la app y comprobar persistencia. Probar 0,0, destino textual con candidatos, destinos vacíos/inválidos y parámetros de destino contradictorios. En los casos ambiguos no debe aparecer un punto de origen como sustituto. El enlace original se conserva como referencia de ruta. Fixtures automatizados ficticios: tres casos nuevos, total preparado 22 XCTest.

@@ -25,6 +25,10 @@ enum IncomingMapLink {
 
     static func point(in url: URL) -> MapPoint? {
         guard isAllowed(url) else { return nil }
+        if isRoute(url) {
+            guard let destination = routeDestination(in: url), !destination.contains("://") else { return nil }
+            return MapLinks.point(from: destination)
+        }
         if let point = MapLinks.point(from: url.absoluteString) { return point }
         guard let host = url.host?.lowercased(), host.contains("google"),
               url.path.hasPrefix("/maps/place/"),
@@ -46,9 +50,29 @@ enum IncomingMapLink {
         return components.queryItems ?? []
     }
 
+    static func isRoute(_ url: URL) -> Bool {
+        guard isAllowed(url), let host = url.host?.lowercased(),
+              ["maps.google.com", "google.com", "www.google.com", "maps.apple.com"].contains(host) else { return false }
+        return queryItems(in: url).contains { ["daddr", "destination", "saddr", "origin"].contains($0.name) }
+    }
+
+    private static func routeDestination(in url: URL) -> String? {
+        let values = queryItems(in: url).filter { ["daddr", "destination"].contains($0.name) }
+            .map { ($0.value ?? "").trimmingCharacters(in: .whitespacesAndNewlines) }
+        guard Set(values).count == 1, let value = values.first, !value.isEmpty else { return nil }
+        return value
+    }
+
     static func searchQuery(from url: URL) -> String? {
         guard isAllowed(url), let host = url.host?.lowercased(),
               ["maps.google.com", "google.com", "www.google.com", "maps.apple.com"].contains(host) else { return nil }
+        if isRoute(url) {
+            guard let value = routeDestination(in: url), value.count <= 2000, !value.contains("://") else { return nil }
+            let parts = value.split(separator: ",", omittingEmptySubsequences: false)
+            // Invalid coordinate pairs must not turn into geocoding queries or fall back to the origin.
+            if parts.count == 2, parts.allSatisfy({ Double($0.trimmingCharacters(in: .whitespaces)) != nil }) { return nil }
+            return value
+        }
         let items = queryItems(in: url)
         for key in ["query", "q", "address"] {
             if let raw = items.first(where: { $0.name == key })?.value {
@@ -61,6 +85,7 @@ enum IncomingMapLink {
 
     static func suggestedName(from url: URL) -> String {
         guard isAllowed(url) else { return "" }
+        if isRoute(url) { return String((searchQuery(from: url) ?? "Destino compartido").prefix(200)) }
         if !url.path.hasPrefix("/maps/place/") {
             if let name = queryItems(in: url).first(where: { $0.name == "name" })?.value { return String(name.prefix(200)) }
             return String((searchQuery(from: url) ?? "").prefix(200))

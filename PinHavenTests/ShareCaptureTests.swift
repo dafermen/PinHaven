@@ -64,6 +64,42 @@ final class ShareCaptureTests: XCTestCase {
         XCTAssertEqual(MapRedirectFixture.requests().count, 1)
     }
 
+    func testRouteUsesDestinationAndNeverOriginOrQueryPin() throws {
+        let url = URL(string: "https://maps.google.com/?daddr=40,-73&saddr=12,-34&q=15,25&dirflg=d")!
+        XCTAssertTrue(IncomingMapLink.isRoute(url))
+        XCTAssertEqual(IncomingMapLink.point(in: url), MapPoint(latitude: 40, longitude: -73))
+        XCTAssertNil(IncomingMapLink.searchQuery(from: url))
+        XCTAssertEqual(IncomingMapLink.suggestedName(from: url), "Destino compartido")
+        XCTAssertNil(IncomingMapLink.point(in: URL(string: "https://maps.google.com/?saddr=12,-34")!))
+        let originOnly = URL(string: "https://maps.google.com/?saddr=12,-34&q=15,25")!
+        XCTAssertNil(IncomingMapLink.point(in: originOnly))
+        XCTAssertNil(IncomingMapLink.searchQuery(from: originOnly))
+        XCTAssertEqual(IncomingMapLink.point(in: URL(string: "https://maps.google.com/?daddr=0,0&saddr=12,-34")!), MapPoint(latitude: 0, longitude: 0))
+        for value in ["daddr=91,0", "daddr=", "daddr=40,-73&destination=41,-72", "daddr=40,-73&daddr=41,-72"] {
+            let invalid = URL(string: "https://maps.google.com/?" + value + "&saddr=12,-34&q=15,25")!
+            XCTAssertNil(IncomingMapLink.point(in: invalid))
+            XCTAssertNil(IncomingMapLink.searchQuery(from: invalid))
+        }
+    }
+
+    func testTextRouteSearchUsesDestinationOnly() {
+        let url = URL(string: "https://maps.google.com/?daddr=Example+Cafe,+NY&saddr=Origin+City&q=Other+Place")!
+        XCTAssertNil(IncomingMapLink.point(in: url))
+        XCTAssertEqual(IncomingMapLink.searchQuery(from: url), "Example Cafe, NY")
+        XCTAssertEqual(IncomingMapLink.suggestedName(from: url), "Example Cafe, NY")
+    }
+
+    func testShortRouteStopsAtDestinationWithoutFetchingPage() async throws {
+        let start = URL(string: "https://maps.app.goo.gl/Fixture")!
+        let target = "https://maps.google.com/?daddr=40,-73&saddr=12,-34&dirflg=d"
+        MapRedirectFixture.reset([start.absoluteString: (302, target)])
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [MapRedirectFixture.self]
+        let resolved = try await IncomingMapLink.expanded(start, configuration: config)
+        XCTAssertEqual(IncomingMapLink.point(in: resolved), MapPoint(latitude: 40, longitude: -73))
+        XCTAssertEqual(MapRedirectFixture.requests().count, 1)
+    }
+
     func testInboxRejectsInvalidAndKeepsCorruptionForReview() throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: directory) }

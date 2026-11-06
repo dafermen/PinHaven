@@ -12,6 +12,7 @@ struct ShareCaptureView: View {
     @State private var choosingPoint = false
     @State private var message: String?
     @State private var candidates: [MKMapItem] = []
+    @State private var receivedRoute = false
     @State private var candidateSearch: MKLocalSearch?
 
     var body: some View {
@@ -66,7 +67,9 @@ struct ShareCaptureView: View {
                         }
                         Button("Buscar o corregir punto en el mapa") { choosingPoint = true }
                             .disabled(loading || record.sourceURL.isEmpty)
-                        Text("Comprueba que el pin corresponde al lugar. El centro de un mapa no se interpreta como destino.")
+                        Text(receivedRoute
+                            ? "Recibiste una ruta. Se guardará el punto de destino, no el origen ni el recorrido. El enlace original seguirá como referencia. Revisa el pin y el nombre."
+                            : "Comprueba que el pin corresponde al lugar. El centro de un mapa no se interpreta como destino.")
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     Section("Enlace recibido") { Text(record.sourceURL).font(.caption).textSelection(.enabled) }
@@ -80,7 +83,7 @@ struct ShareCaptureView: View {
                     }
                 }
                 .sheet(isPresented: $choosingPoint) {
-                    MapPicker(initial: coordinate, initialQuery: [record.name, record.address].filter { !$0.isEmpty }.joined(separator: ", ")) { point, name, address in
+                    MapPicker(initial: coordinate, initialQuery: [record.name == "Destino compartido" && receivedRoute ? "" : record.name, record.address].filter { !$0.isEmpty }.joined(separator: ", ")) { point, name, address in
                         coordinate = point
                         if record.name.isEmpty, let name { record.name = name }
                         if let address { record.address = address }
@@ -107,6 +110,7 @@ struct ShareCaptureView: View {
             catch is CancellationError { return }
             catch { message = "No se pudo resolver el enlace. Puedes elegir el punto en el mapa." }
             try Task.checkCancellation()
+            receivedRoute = IncomingMapLink.isRoute(resolved)
             record.name = IncomingMapLink.suggestedName(from: resolved)
             if record.name.isEmpty {
                 let title = text.components(separatedBy: .newlines).first { !$0.trimmingCharacters(in: .whitespaces).isEmpty && !$0.contains("://") }
