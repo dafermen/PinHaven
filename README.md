@@ -2,7 +2,7 @@
 
 **Your places, always close.** Agenda personal de ubicaciones para iPhone, desarrollada en Swift y SwiftUI. Guarda un restaurante, una entrada o un punto sin dirección postal y recupéralo por su nombre, notas o etiquetas.
 
-**Estado: 0.1.0 — compilación y siete XCTest aprobados en simulador el 3 de noviembre de 2026.** Entorno validado: Xcode 15.2, iPhone SE (3rd generation), iOS 17.2. Siguen pendientes localización y aceptación manual en iPhone real. No es una versión publicada ni un instalador IPA.
+**Estado: 0.1.0 — compilación y 17 XCTest aprobados en CI macOS el 5 de noviembre de 2026.** Xcode 16.4, SDK de simulador iOS 18.5; incluye compilación y embedding de PinHavenShare. La recepción desde Maps requiere App Groups/perfiles de Apple y aceptación en iPhone real. Localización pendiente. Este repositorio contiene código, no un instalador IPA.
 
 ## Identidad e idiomas
 
@@ -12,6 +12,7 @@ La localización de la interfaz todavía está pendiente en F1-T10; el código i
 
 ## Qué incluye esta entrega
 
+- Recibir un lugar desde Google Maps/Apple Maps → Compartir → PinHaven, confirmar el punto y abrir la app para incorporarlo. Requiere App Groups y un nuevo build firmado; ver [guía de recepción](docs/13_RECIBIR_DESDE_MAPS.md).
 - Lista de sitios y vista de mapa con acceso a sus fichas.
 - Crear, editar y eliminar sitios con confirmación; almacenamiento local SwiftData.
 - Captura puntual de GPS, selección tocando el mapa y búsqueda con MapKit.
@@ -28,7 +29,7 @@ La localización de la interfaz todavía está pendiente en F1-T10; el código i
 
 ## Qué sigue pendiente
 
-Fotos y cámara, extensión «Compartir → PinHaven», resolución de enlaces cortos, colecciones, cercanía y duplicados geográficos. Tampoco incluye seguimiento en tiempo real, servidor, usuarios, IA ni publicación en App Store. Las diferencias entre idea y alcance están en [requisitos](docs/01_REQUISITOS.md).
+Fotos y cámara, colecciones, cercanía y duplicados geográficos. La recepción por extensión y resolución limitada de enlaces cortos tienen código y pruebas preparadas; falta aceptación real desde Maps y configuración de App Groups en Apple. Tampoco incluye seguimiento en tiempo real, servidor, usuarios, IA ni publicación en App Store. Las diferencias entre idea y alcance están en [requisitos](docs/01_REQUISITOS.md).
 
 ## Ejecutar
 

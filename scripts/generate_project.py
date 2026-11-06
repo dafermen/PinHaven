@@ -17,27 +17,40 @@ def add(label, isa, **fields):
     return key
 
 sources = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / 'PinHaven').rglob('*.swift'))
+shared = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / 'Shared').rglob('*.swift'))
+extension_sources = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / 'PinHavenShare').rglob('*.swift'))
 tests = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / 'PinHavenTests').rglob('*.swift'))
 refs = {}
-for path in sources + tests + ['PinHaven/Resources/Info.plist', 'PinHaven/Resources/PrivacyInfo.xcprivacy', 'PinHaven/Resources/Assets.xcassets']:
+for path in sources + shared + extension_sources + tests + ['PinHaven/Resources/PinHaven.entitlements', 'PinHavenShare/PinHavenShare.entitlements', 'PinHavenShare/Info.plist', 'PinHaven/Resources/Info.plist', 'PinHaven/Resources/PrivacyInfo.xcprivacy', 'PinHaven/Resources/Assets.xcassets']:
     kind = 'folder.assetcatalog' if path.endswith('.xcassets') else ('sourcecode.swift' if path.endswith('.swift') else 'text.plist.xml')
     refs[path] = add(path, 'PBXFileReference', lastKnownFileType=kind, path=path, sourceTree='<group>')
 app_product = add('app-product', 'PBXFileReference', explicitFileType='wrapper.application',
                   includeInIndex=0, path='PinHaven.app', sourceTree='BUILT_PRODUCTS_DIR')
 test_product = add('test-product', 'PBXFileReference', explicitFileType='wrapper.cfbundle',
                    includeInIndex=0, path='PinHavenTests.xctest', sourceTree='BUILT_PRODUCTS_DIR')
-products = add('products', 'PBXGroup', children=[app_product, test_product], name='Products', sourceTree='<group>')
+share_product = add('share-product', 'PBXFileReference', explicitFileType='wrapper.app-extension',
+    includeInIndex=0, path='PinHavenShare.appex', sourceTree='BUILT_PRODUCTS_DIR')
+products = add('products', 'PBXGroup', children=[app_product, test_product, share_product], name='Products', sourceTree='<group>')
 main = add('main-group', 'PBXGroup', children=list(refs.values())+[products], sourceTree='<group>')
 
 def phase(label, paths, isa):
     builds = [add(label+path, 'PBXBuildFile', fileRef=refs[path]) for path in paths]
     return add(label, isa, buildActionMask=2147483647, files=builds, runOnlyForDeploymentPostprocessing=0)
 
-app_src = phase('app-sources', sources, 'PBXSourcesBuildPhase')
+app_src = phase('app-sources', sources + shared, 'PBXSourcesBuildPhase')
 test_src = phase('test-sources', tests, 'PBXSourcesBuildPhase')
 app_res = phase('app-resources', ['PinHaven/Resources/PrivacyInfo.xcprivacy', 'PinHaven/Resources/Assets.xcassets'], 'PBXResourcesBuildPhase')
 app_fw = phase('app-frameworks', [], 'PBXFrameworksBuildPhase')
 test_fw = phase('test-frameworks', [], 'PBXFrameworksBuildPhase')
+share_members = extension_sources + shared + ['PinHaven/Models/PlaceRecord.swift',
+    'PinHaven/Services/MapLinks.swift', 'PinHaven/Services/AddressSearch.swift', 'PinHaven/Views/MapPicker.swift']
+share_src = phase('share-sources', share_members, 'PBXSourcesBuildPhase')
+share_fw = phase('share-frameworks', [], 'PBXFrameworksBuildPhase')
+share_res = phase('share-resources', ['PinHaven/Resources/PrivacyInfo.xcprivacy'], 'PBXResourcesBuildPhase')
+embed_file = add('embed-share-file', 'PBXBuildFile', fileRef=share_product,
+    settings={'ATTRIBUTES': ['RemoveHeadersOnCopy']})
+embed_share = add('embed-share', 'PBXCopyFilesBuildPhase', buildActionMask=2147483647,
+    dstPath='', dstSubfolderSpec=13, files=[embed_file], name='Embed App Extensions', runOnlyForDeploymentPostprocessing=0)
 
 common = dict(SWIFT_VERSION='5.0', IPHONEOS_DEPLOYMENT_TARGET='17.0', SDKROOT='iphoneos',
               CLANG_ENABLE_MODULES='YES', CLANG_ENABLE_OBJC_ARC='YES',
@@ -61,15 +74,26 @@ def configs(label, extra):
 project_configs = configs('project', {})
 app_configs = configs('app', dict(PRODUCT_BUNDLE_IDENTIFIER='com.innovalogic.pinhaven', PRODUCT_NAME='$(TARGET_NAME)',
     INFOPLIST_FILE='PinHaven/Resources/Info.plist', GENERATE_INFOPLIST_FILE='NO',
-    ASSETCATALOG_COMPILER_APPICON_NAME='AppIcon',
+    ASSETCATALOG_COMPILER_APPICON_NAME='AppIcon', CODE_SIGN_ENTITLEMENTS='PinHaven/Resources/PinHaven.entitlements',
     CURRENT_PROJECT_VERSION='1', MARKETING_VERSION='0.1.0',
     LD_RUNPATH_SEARCH_PATHS='$(inherited) @executable_path/Frameworks'))
 test_configs = configs('tests', dict(PRODUCT_BUNDLE_IDENTIFIER='com.innovalogic.pinhaven.tests',
     PRODUCT_NAME='$(TARGET_NAME)', GENERATE_INFOPLIST_FILE='YES',
     TEST_HOST='$(BUILT_PRODUCTS_DIR)/PinHaven.app/PinHaven',
     BUNDLE_LOADER='$(TEST_HOST)', LD_RUNPATH_SEARCH_PATHS='$(inherited) @executable_path/Frameworks @loader_path/Frameworks'))
+share_configs = configs('share', dict(PRODUCT_BUNDLE_IDENTIFIER='com.innovalogic.pinhaven.share',
+    PRODUCT_NAME='$(TARGET_NAME)', INFOPLIST_FILE='PinHavenShare/Info.plist', GENERATE_INFOPLIST_FILE='NO',
+    CODE_SIGN_ENTITLEMENTS='PinHavenShare/PinHavenShare.entitlements', APPLICATION_EXTENSION_API_ONLY='YES',
+    SKIP_INSTALL='YES', CURRENT_PROJECT_VERSION='1', MARKETING_VERSION='0.1.0',
+    LD_RUNPATH_SEARCH_PATHS='$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks'))
+share = add('share-target', 'PBXNativeTarget', buildConfigurationList=share_configs,
+    buildPhases=[share_src, share_fw, share_res], buildRules=[], dependencies=[], name='PinHavenShare',
+    productName='PinHavenShare', productReference=share_product, productType='com.apple.product-type.app-extension')
+share_proxy = add('share-proxy', 'PBXContainerItemProxy', containerPortal=uid('project'), proxyType=1,
+    remoteGlobalIDString=share, remoteInfo='PinHavenShare')
+share_dep = add('share-dependency', 'PBXTargetDependency', target=share, targetProxy=share_proxy)
 app = add('app-target', 'PBXNativeTarget', buildConfigurationList=app_configs,
-    buildPhases=[app_src, app_fw, app_res], buildRules=[], dependencies=[], name='PinHaven',
+    buildPhases=[app_src, app_fw, app_res, embed_share], buildRules=[], dependencies=[share_dep], name='PinHaven',
     productName='PinHaven', productReference=app_product, productType='com.apple.product-type.application')
 proxy = add('proxy', 'PBXContainerItemProxy', containerPortal=uid('project'), proxyType=1,
             remoteGlobalIDString=app, remoteInfo='PinHaven')
@@ -78,11 +102,11 @@ test = add('test-target', 'PBXNativeTarget', buildConfigurationList=test_configs
     buildPhases=[test_src, test_fw], buildRules=[], dependencies=[dep], name='PinHavenTests',
     productName='PinHavenTests', productReference=test_product, productType='com.apple.product-type.bundle.unit-test')
 project = add('project', 'PBXProject', attributes={'BuildIndependentTargetsInParallel':'YES',
-    'LastUpgradeCheck':'1600', 'TargetAttributes':{app:{'CreatedOnToolsVersion':'16.0'},
+    'LastUpgradeCheck':'1600', 'TargetAttributes':{share:{'CreatedOnToolsVersion':'16.0','SystemCapabilities':{'com.apple.ApplicationGroups.iOS':{'enabled':1}}}, app:{'CreatedOnToolsVersion':'16.0','SystemCapabilities':{'com.apple.ApplicationGroups.iOS':{'enabled':1}}},
     test:{'CreatedOnToolsVersion':'16.0','TestTargetID':app}}}, buildConfigurationList=project_configs,
     compatibilityVersion='Xcode 14.0', developmentRegion='en', hasScannedForEncodings=0,
     knownRegions=['en','es','Base'], mainGroup=main, productRefGroup=products,
-    projectDirPath='', projectRoot='', targets=[app,test])
+    projectDirPath='', projectRoot='', targets=[app,test,share])
 
 def serialize(value, indent=0):
     pad='\t'*indent

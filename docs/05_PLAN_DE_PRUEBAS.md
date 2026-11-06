@@ -94,3 +94,14 @@ Estos criterios reemplazan el menú de compartir propuesto en las secciones ante
 - Cancelar desde la hoja y desde WhatsApp: no mostrar éxito ni error ficticio; la ficha y los datos permanecen intactos.
 - Si iOS reporta error, comprobar aviso después de cerrar la hoja y usar Copiar dirección y enlace. Si WhatsApp muestra reloj o pendiente, comprobar conexión/envío dentro de WhatsApp; el callback de la hoja no confirma entrega.
 - Probar también Mensajes u otra app receptora. La prueba efectiva de envío la realiza el propietario con un destinatario elegido; Windows no reproduce WhatsApp iOS.
+
+## Recepción Google Maps → PinHaven (F3)
+
+- Instalar sobre la versión anterior y comprobar sitios existentes antes y después. No borrar app/base.
+- Verificar PinHaven en Compartir de Google Maps, Apple Maps y Safari con URL y con texto. Si no aparece, revisar Más, activation rule y embedding.
+- Revisar nombre/categoría/notas y pin, guardar, volver a Google Maps y abrir PinHaven: importar una vez. Abrir de nuevo: sin duplicados. Cancelar: sin entrada nueva.
+- Probar enlace explícito, !3d/!4d, solo viewport, enlaces cortos, IDs sin coordenadas, sin internet, hosts no permitidos y contenido ambiguo. Pedir punto manual sin inferir negocio desde viewport. Una búsqueda prellenada no se selecciona automáticamente.
+- Simular cierre entre guardado y retirada de entrada, entrada corrupta y perfil sin grupo: preservar datos y dar error recuperable. Los XCTest incluyen fixtures de parser/redirecciones y persistencia de bandeja.
+- Revisar Test/Archive en Cloud, grupo habilitado en ambos perfiles, extensión incluida y versiones de bundles coherentes. La prueba de simulador sin firma no confirma aprovisionamiento ni aparición en Google Maps real.
+
+Instrucciones paso a paso en [Recibir desde Maps](13_RECIBIR_DESDE_MAPS.md).

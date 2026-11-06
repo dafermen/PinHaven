@@ -124,3 +124,35 @@ completionWithItemsHandler permite detectar errores reportados por iOS. Se muest
 Comprobar en iPhone con WhatsApp instalado y en un chat elegido por el propietario: la llegada del mensaje, la apertura del enlace y los estados de WhatsApp. Esta revisión no se considera validada en WhatsApp hasta esa comprobación.
 
 Validacion Windows de esta revision: 105 comprobaciones estructurales aprobadas y generador reproducible. Swift/XCTest y WhatsApp iOS no ejecutados en este entorno.
+
+
+## Observación pendiente: contactos frecuentes de WhatsApp — 4 de noviembre de 2026
+
+Prueba reportada por el propietario:
+
+- Compartir con otras apps → elegir WhatsApp → elegir contacto → Enviar: el mensaje sale inmediatamente.
+- Compartir con otras apps → elegir directamente un contacto frecuente/sugerido de la hoja de iOS → Enviar: no parece salir en ese momento; al abrir WhatsApp después, el mensaje se envía.
+
+La causa no está confirmada. El comportamiento apunta a la integración entre sugerencias de iOS y WhatsApp; no atribuirlo como defecto confirmado de PinHaven ni interpretar el cierre de la extensión como entrega.
+
+Decisión explícita del propietario: no modificar el código por esta observación; conservarla para más adelante. Alternativa actual: elegir primero WhatsApp y luego el contacto, evitando los contactos sugeridos de la primera fila. Si se retoma, registrar versiones de iOS/WhatsApp y comparar ambas rutas antes de proponer cambios.
+
+## Recepción desde Google Maps/Apple Maps — 5 de noviembre de 2026
+
+Autorización del propietario: implementar Compartir → PinHaven. Se añadió un target Share Extension, recepción de URL/texto, revisión de punto/nombre/categoría/notas/favorito, resolución limitada de enlaces cortos y bandeja local de App Group. La extensión confirma la entrada; la app la importa al abrir/volver activa. No se fuerza el lanzamiento de la app desde la extensión. Los detalles de operación y configuración están en [guía de recepción](13_RECIBIR_DESDE_MAPS.md).
+
+Se conservan el almacén privado SwiftData, esquema y registros anteriores. App Groups solo comparte JSON pendientes. La app valida y guarda antes de retirarlos; reintentos con el mismo UUID no sobrescriben ni duplican. No se modificó la ruta de compartir hacia WhatsApp: la observación de contactos frecuentes sigue registrada sin cambio de código por ese motivo.
+
+Firma declarada: Team 7799N4RYUG; app com.innovalogic.pinhaven; extensión com.innovalogic.pinhaven.share; grupo group.com.innovalogic.pinhaven. Ambos targets deben estar asociados al grupo en Apple Developer y tener perfiles compatibles. El código no acredita registro ni emisión de esos perfiles. No se debe eliminar la app para resolver firma.
+
+Pruebas nuevas: parser de origen/texto, coordenadas exactas vs viewport, validación/corrupción de bandeja, reintento tras guardado y fixtures de redirecciones sin red real. La validación estructural aprobó 157 comprobaciones en Windows. Compilación/XCTest en CI se registran al terminar; uso real en Maps y firma/TestFlight quedan separados.
+
+Comprobación adicional de red (HEAD, sin seguir redirecciones ni descargar páginas): dos enlaces públicos de parques de NPS devolvieron 302 hacia /maps/place con un único par !3d/!4d distinto del viewport @lat,lon. Se añadieron fixtures saneados, sin parámetros de seguimiento. Esto verifica esos formatos públicos, no toda URL ni la extensión en un iPhone. Total preparado: 17 casos XCTest. La estructura actual pasa 161 comprobaciones tras añadir enlaces de documentación.
+
+### Evidencia de compilación y pruebas de F3
+
+Revisión de código validada: 8b728f812cbc62602b5eb0e71b24499a840b8f99. [GitHub Actions aprobado](https://github.com/dafermen/PinHaven/actions/runs/42046751625), job 127311667649, 5 de noviembre de 2026. Xcode 16.4 y SDK iPhoneSimulator 18.5. xcodebuild test con CODE_SIGNING_ALLOWED=NO: app y extensión compilan, se valida PinHavenShare.appex embebida y pasan 17 XCTest (10 previos + 7 de ShareCaptureTests), cero fallos, TEST SUCCEEDED.
+
+Se mantienen advertencias previas de aislamiento del delegate de AddressSearch frente a Swift 6 y mensajes de herramientas de Apple; el proyecto usa Swift 5. No se declara compilación sin advertencias ni compatibilidad de lenguaje Swift 6. Estas pruebas sin firma no prueban perfiles de distribución, App Group registrado ni recepción real en Google Maps/iPhone.
+
+La inspección del navegador de Windows para revisar Apple Developer se detuvo porque la herramienta no pudo verificar con suficiente certeza la URL de Chrome. No se modificó nada en Apple Developer ni App Store Connect. Configuración pendiente en el Mac/portal: grupo group.com.innovalogic.pinhaven asociado a app y extensión, perfiles compatibles y nuevo Archive/instalación. La guía 13 explica esos pasos.

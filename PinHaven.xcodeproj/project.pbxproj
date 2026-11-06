@@ -53,6 +53,12 @@
 			"path" = "PinHaven/Services/PlaceMapping.swift";
 			"sourceTree" = "<group>";
 		};
+		"BD7EFDE41A02C06E01CD3DB4" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "PinHaven/Services/SharedInboxImport.swift";
+			"sourceTree" = "<group>";
+		};
 		"E6B3368A35AA0DAF75C2AB70" = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -95,10 +101,58 @@
 			"path" = "PinHaven/Views/PlaceEditor.swift";
 			"sourceTree" = "<group>";
 		};
+		"A855F3FDEFB0A356F9F0B3BF" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Shared/IncomingMapLink.swift";
+			"sourceTree" = "<group>";
+		};
+		"8548E89AA0B87A83D4FA93A0" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Shared/SharedInbox.swift";
+			"sourceTree" = "<group>";
+		};
+		"34EE7E4D3B43A2060B8956A7" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "PinHavenShare/ShareCaptureView.swift";
+			"sourceTree" = "<group>";
+		};
+		"E4F487A04BEEB69B5B51AAF3" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "PinHavenShare/ShareViewController.swift";
+			"sourceTree" = "<group>";
+		};
 		"CC11C0C34A18207485E4A135" = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "PinHavenTests/PinHavenTests.swift";
+			"sourceTree" = "<group>";
+		};
+		"F57C7708D35349517EB340E3" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "PinHavenTests/ShareCaptureTests.swift";
+			"sourceTree" = "<group>";
+		};
+		"140DA42B112500FBAF196826" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "PinHaven/Resources/PinHaven.entitlements";
+			"sourceTree" = "<group>";
+		};
+		"577D5994CF87E2799C0E945E" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "PinHavenShare/PinHavenShare.entitlements";
+			"sourceTree" = "<group>";
+		};
+		"6B22E38DD2E03DDA379F8511" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "PinHavenShare/Info.plist";
 			"sourceTree" = "<group>";
 		};
 		"E96480163DCA40C7BFB20238" = {
@@ -133,11 +187,19 @@
 			"path" = "PinHavenTests.xctest";
 			"sourceTree" = "BUILT_PRODUCTS_DIR";
 		};
+		"69AC8403E38E6A43010E8F91" = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.app-extension";
+			"includeInIndex" = 0;
+			"path" = "PinHavenShare.appex";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
 		"FBDC4F23F93125BBEEAE800C" = {
 			"isa" = "PBXGroup";
 			"children" = (
 				"4E783A9E10D2A8ABA38CD11C",
 				"6C7CCDEB3609F1FAA874E941",
+				"69AC8403E38E6A43010E8F91",
 			);
 			"name" = "Products";
 			"sourceTree" = "<group>";
@@ -153,6 +215,7 @@
 				"96570E35C15DD662B8892B3F",
 				"15D64E99A4DA7A991BA4407F",
 				"6762A311B5F2FFA5D71F8C49",
+				"BD7EFDE41A02C06E01CD3DB4",
 				"E6B3368A35AA0DAF75C2AB70",
 				"8410B4273BB8337540C8F910",
 				"BA2DF56F102F1A53D0922956",
@@ -160,7 +223,15 @@
 				"A7F48BA74C40FECDDDCBE80F",
 				"8701E5188CF5CF72A2EE69CC",
 				"6DC5566A5A217342C795BBE8",
+				"A855F3FDEFB0A356F9F0B3BF",
+				"8548E89AA0B87A83D4FA93A0",
+				"34EE7E4D3B43A2060B8956A7",
+				"E4F487A04BEEB69B5B51AAF3",
 				"CC11C0C34A18207485E4A135",
+				"F57C7708D35349517EB340E3",
+				"140DA42B112500FBAF196826",
+				"577D5994CF87E2799C0E945E",
+				"6B22E38DD2E03DDA379F8511",
 				"E96480163DCA40C7BFB20238",
 				"5A8F10FED88B53786992BA43",
 				"87171774A817400F179BD2AE",
@@ -200,6 +271,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "6762A311B5F2FFA5D71F8C49";
 		};
+		"A909AE55F98EE2186535C450" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "BD7EFDE41A02C06E01CD3DB4";
+		};
 		"07BA6456F1DC403EBD5DED90" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "E6B3368A35AA0DAF75C2AB70";
@@ -228,6 +303,14 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "6DC5566A5A217342C795BBE8";
 		};
+		"A41AF0E95CC052479F8FB5FA" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "A855F3FDEFB0A356F9F0B3BF";
+		};
+		"9EC976A5B319995E4408D582" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "8548E89AA0B87A83D4FA93A0";
+		};
 		"949D493B91791558E87BC5D7" = {
 			"isa" = "PBXSourcesBuildPhase";
 			"buildActionMask" = 2147483647;
@@ -240,6 +323,7 @@
 				"78FAA5C6625B78C747D54675",
 				"0967DF636E48B0FB83C7AC02",
 				"877E922C09CE6CCA27F1ED91",
+				"A909AE55F98EE2186535C450",
 				"07BA6456F1DC403EBD5DED90",
 				"5804C6C19C7AAD452434EF32",
 				"DA36994FF9FC2C68D7A540C8",
@@ -247,6 +331,8 @@
 				"F37A6AD40BF03DCFCBEA97C5",
 				"C5DA25AE51DB1D73FE022972",
 				"63D66B716DE8E9FFB0E35709",
+				"A41AF0E95CC052479F8FB5FA",
+				"9EC976A5B319995E4408D582",
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
@@ -254,11 +340,16 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "CC11C0C34A18207485E4A135";
 		};
+		"B84D413F50C0E8C3D1824470" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "F57C7708D35349517EB340E3";
+		};
 		"77A03FEE20FE96AD9384861E" = {
 			"isa" = "PBXSourcesBuildPhase";
 			"buildActionMask" = 2147483647;
 			"files" = (
 				"144C475A0FD374A4B85178FE",
+				"B84D413F50C0E8C3D1824470",
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
@@ -291,6 +382,92 @@
 			"buildActionMask" = 2147483647;
 			"files" = (
 			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"F522C4C6C2B511982BF8FE94" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "34EE7E4D3B43A2060B8956A7";
+		};
+		"56E5EC90026926D5C7DD24CB" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "E4F487A04BEEB69B5B51AAF3";
+		};
+		"AAAEFFBAFDD59B85D992A52C" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "A855F3FDEFB0A356F9F0B3BF";
+		};
+		"5486A7A2E0CCBFCA40E2A324" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "8548E89AA0B87A83D4FA93A0";
+		};
+		"B442AE1049B8C5B1A259F054" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "359A71400221CBD595048A47";
+		};
+		"7B37EF2214E07E61FE86C9CE" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "15D64E99A4DA7A991BA4407F";
+		};
+		"DDBCD7797E9D9E7F2FD1576C" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "7D7E47D174691DF4B716F160";
+		};
+		"FAE296CF7E974E1EE5361BBE" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "8E59D6E6F6BCE2A41FDD3E06";
+		};
+		"E6E919EC4BB99E5DDFF7892C" = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				"F522C4C6C2B511982BF8FE94",
+				"56E5EC90026926D5C7DD24CB",
+				"AAAEFFBAFDD59B85D992A52C",
+				"5486A7A2E0CCBFCA40E2A324",
+				"B442AE1049B8C5B1A259F054",
+				"7B37EF2214E07E61FE86C9CE",
+				"DDBCD7797E9D9E7F2FD1576C",
+				"FAE296CF7E974E1EE5361BBE",
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"3C982B01884B80A03489D212" = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"0E5D7525415BC1D092D43DF4" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "5A8F10FED88B53786992BA43";
+		};
+		"C6D1DB24FEF5A86EBDB66EAB" = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				"0E5D7525415BC1D092D43DF4",
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"A422EF6FF8F3D5024C9D9E9D" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "69AC8403E38E6A43010E8F91";
+			"settings" = {
+				"ATTRIBUTES" = (
+					"RemoveHeadersOnCopy",
+				);
+			};
+		};
+		"9B15DF151ED00BB1A1E118AD" = {
+			"isa" = "PBXCopyFilesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"dstPath" = "";
+			"dstSubfolderSpec" = 13;
+			"files" = (
+				"A422EF6FF8F3D5024C9D9E9D",
+			);
+			"name" = "Embed App Extensions";
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
 		"89E1FD6268CC0F221A2BE178" = {
@@ -359,6 +536,7 @@
 				"INFOPLIST_FILE" = "PinHaven/Resources/Info.plist";
 				"GENERATE_INFOPLIST_FILE" = "NO";
 				"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
+				"CODE_SIGN_ENTITLEMENTS" = "PinHaven/Resources/PinHaven.entitlements";
 				"CURRENT_PROJECT_VERSION" = "1";
 				"MARKETING_VERSION" = "0.1.0";
 				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks";
@@ -387,6 +565,7 @@
 				"INFOPLIST_FILE" = "PinHaven/Resources/Info.plist";
 				"GENERATE_INFOPLIST_FILE" = "NO";
 				"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
+				"CODE_SIGN_ENTITLEMENTS" = "PinHaven/Resources/PinHaven.entitlements";
 				"CURRENT_PROJECT_VERSION" = "1";
 				"MARKETING_VERSION" = "0.1.0";
 				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks";
@@ -465,6 +644,103 @@
 			"defaultConfigurationIsVisible" = 0;
 			"defaultConfigurationName" = "Release";
 		};
+		"786CFAEB3CB570C35644C8C6" = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"SWIFT_VERSION" = "5.0";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
+				"SDKROOT" = "iphoneos";
+				"CLANG_ENABLE_MODULES" = "YES";
+				"CLANG_ENABLE_OBJC_ARC" = "YES";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"DEVELOPMENT_TEAM" = "7799N4RYUG";
+				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.innovalogic.pinhaven.share";
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"INFOPLIST_FILE" = "PinHavenShare/Info.plist";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"CODE_SIGN_ENTITLEMENTS" = "PinHavenShare/PinHavenShare.entitlements";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"MARKETING_VERSION" = "0.1.0";
+				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+				"ENABLE_TESTABILITY" = "YES";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG $(inherited)";
+			};
+			"name" = "Debug";
+		};
+		"07F40AAD161B1D59E1448C9A" = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"SWIFT_VERSION" = "5.0";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
+				"SDKROOT" = "iphoneos";
+				"CLANG_ENABLE_MODULES" = "YES";
+				"CLANG_ENABLE_OBJC_ARC" = "YES";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"DEVELOPMENT_TEAM" = "7799N4RYUG";
+				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.innovalogic.pinhaven.share";
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"INFOPLIST_FILE" = "PinHavenShare/Info.plist";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"CODE_SIGN_ENTITLEMENTS" = "PinHavenShare/PinHavenShare.entitlements";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"MARKETING_VERSION" = "0.1.0";
+				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+				"ENABLE_TESTABILITY" = "NO";
+			};
+			"name" = "Release";
+		};
+		"B2E92BCA345EB8EDE513F243" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				"786CFAEB3CB570C35644C8C6",
+				"07F40AAD161B1D59E1448C9A",
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
+		"21D05182542AE501D736062C" = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = "B2E92BCA345EB8EDE513F243";
+			"buildPhases" = (
+				"E6E919EC4BB99E5DDFF7892C",
+				"3C982B01884B80A03489D212",
+				"C6D1DB24FEF5A86EBDB66EAB",
+			);
+			"buildRules" = (
+			);
+			"dependencies" = (
+			);
+			"name" = "PinHavenShare";
+			"productName" = "PinHavenShare";
+			"productReference" = "69AC8403E38E6A43010E8F91";
+			"productType" = "com.apple.product-type.app-extension";
+		};
+		"21A142AFC885FA9F74239221" = {
+			"isa" = "PBXContainerItemProxy";
+			"containerPortal" = "98F54143AB4E86B28C3AFEE0";
+			"proxyType" = 1;
+			"remoteGlobalIDString" = "21D05182542AE501D736062C";
+			"remoteInfo" = "PinHavenShare";
+		};
+		"6E216A8892C8919C80266DBE" = {
+			"isa" = "PBXTargetDependency";
+			"target" = "21D05182542AE501D736062C";
+			"targetProxy" = "21A142AFC885FA9F74239221";
+		};
 		"F75109BEB4DD8800DA6B45F8" = {
 			"isa" = "PBXNativeTarget";
 			"buildConfigurationList" = "388C1FCB1C8BF19EBF062851";
@@ -472,10 +748,12 @@
 				"949D493B91791558E87BC5D7",
 				"BD92572B49AC16A86614498D",
 				"8ECC8B5D05B79F879ACDF1A2",
+				"9B15DF151ED00BB1A1E118AD",
 			);
 			"buildRules" = (
 			);
 			"dependencies" = (
+				"6E216A8892C8919C80266DBE",
 			);
 			"name" = "PinHaven";
 			"productName" = "PinHaven";
@@ -517,8 +795,21 @@
 				"BuildIndependentTargetsInParallel" = "YES";
 				"LastUpgradeCheck" = "1600";
 				"TargetAttributes" = {
+					"21D05182542AE501D736062C" = {
+						"CreatedOnToolsVersion" = "16.0";
+						"SystemCapabilities" = {
+							"com.apple.ApplicationGroups.iOS" = {
+								"enabled" = 1;
+							};
+						};
+					};
 					"F75109BEB4DD8800DA6B45F8" = {
 						"CreatedOnToolsVersion" = "16.0";
+						"SystemCapabilities" = {
+							"com.apple.ApplicationGroups.iOS" = {
+								"enabled" = 1;
+							};
+						};
 					};
 					"C062A5A4A7F4F37DD90F54CB" = {
 						"CreatedOnToolsVersion" = "16.0";
@@ -542,6 +833,7 @@
 			"targets" = (
 				"F75109BEB4DD8800DA6B45F8",
 				"C062A5A4A7F4F37DD90F54CB",
+				"21D05182542AE501D736062C",
 			);
 		};
 	};

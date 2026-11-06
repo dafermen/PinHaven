@@ -52,3 +52,9 @@ Las sugerencias aparecen justo bajo el campo dirección. Priorizar direcciones c
 ## Compartir a mensajería — 2026-11-04
 
 Compartir con otras apps presenta UIActivityViewController directamente con un único String de nombre, dirección y enlace; reemplaza ShareLink con URL para reducir problemas de negociación de contenido con extensiones de mensajería. Si iOS reporta error, se muestra una alternativa de copiar/pegar. Cancelar no muestra éxito ni error. La finalización de la extensión no se interpreta como entrega del mensaje. Causa del fallo observado en WhatsApp no confirmada; requiere prueba en iPhone.
+
+## Recibir desde Maps — 2026-11-05
+
+Share Extension PinHavenShare con revisión y corrección de punto, formulario breve y bandeja App Group. Parser de URL/texto y redirecciones HEAD HTTPS acotadas; coordenadas explícitas de lugar sin convertir viewport en destino. La app importa pendientes al activarse sin duplicar UUID ni migrar SwiftData. Configuración de firma/grupo, embedding, versiones comunes, pruebas y guía para Mac/Cloud. Requiere App Group registrado en Apple y aceptación en iPhone. La ruta saliente a WhatsApp se mantiene.
+
+Validación F3: código 8b728f8 compilado en Xcode 16.4 (simulador) y 17 XCTest aprobados. App Groups/perfiles e integración en iPhone pendientes de verificar.

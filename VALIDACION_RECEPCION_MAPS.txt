@@ -1,0 +1,12 @@
+Fecha: 2026-11-05 America/New_York
+Codigo: 8b728f812cbc62602b5eb0e71b24499a840b8f99
+CI: https://github.com/dafermen/PinHaven/actions/runs/42046751625
+Job: 127311667649
+Xcode: 16.4
+SDK: iPhoneSimulator18.5
+Firma: CODE_SIGNING_ALLOWED=NO (no valida provisioning)
+Resultado: TEST SUCCEEDED; 17 tests, 0 failures.
+Compilacion: PinHaven, PinHavenShare y PinHavenTests; ValidateEmbeddedBinary para PinHavenShare.appex aprobado.
+Advertencias existentes: aislamiento delegate AddressSearch/Swift 6 y herramientas de Apple. Lenguaje actual Swift 5.
+HEAD a dos enlaces publicos NPS de Google: 302 con destino /maps/place y coordenadas !3d/!4d distintas al viewport; sin descargar paginas.
+Pendiente: App Group registrado y autorizado en ambos perfiles, Archive firmado y prueba Google Maps/Apple Maps/Safari en iPhone.

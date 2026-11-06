@@ -65,7 +65,7 @@ project_path=ROOT/'PinHaven.xcodeproj/project.pbxproj'
 parser=OpenStep(project_path.read_text(encoding='utf-8')); project=parser.parse()
 check(parser.index==len(parser.tokens), 'Xcode project OpenStep syntax consumed completely')
 objects=project['objects']; root=objects[project['rootObject']]
-check(root['isa']=='PBXProject' and len(root['targets'])==2, 'App and test targets present')
+check(root['isa']=='PBXProject' and len(root['targets'])==3, 'App, tests and share extension targets present')
 reference_keys={'fileRef','buildConfigurationList','mainGroup','productRefGroup','productReference',
                 'containerPortal','remoteGlobalIDString','target','targetProxy'}
 list_keys={'children','files','buildConfigurations','buildPhases','dependencies','targets'}
@@ -94,15 +94,43 @@ resource_paths={objects[objects[f]['fileRef']]['path']
     for f in objects[phase_id]['files']}
 check('PinHaven/Resources/Assets.xcassets' in resource_paths, 'App asset catalog included in resources')
 
-expected={p.relative_to(ROOT).as_posix() for p in (ROOT/'PinHaven').rglob('*.swift')}
+shared={p.relative_to(ROOT).as_posix() for p in (ROOT/'Shared').rglob('*.swift')}
+extension_sources={p.relative_to(ROOT).as_posix() for p in (ROOT/'PinHavenShare').rglob('*.swift')}
+expected={p.relative_to(ROOT).as_posix() for p in (ROOT/'PinHaven').rglob('*.swift')} | shared
 actual={obj['path'] for obj in objects.values() if obj['isa']=='PBXFileReference' and obj.get('path') in expected}
 check(actual==expected, 'Every Swift app file included in project')
 for target in root['targets']:
     obj=objects[target]
     phases=[objects[p] for p in obj['buildPhases'] if objects[p]['isa']=='PBXSourcesBuildPhase']
     built={objects[objects[f]['fileRef']]['path'] for phase in phases for f in phase['files']}
-    expected_target=expected if obj['name']=='PinHaven' else {p.relative_to(ROOT).as_posix() for p in (ROOT/'PinHavenTests').rglob('*.swift')}
+    members = {
+        'PinHaven': expected,
+        'PinHavenTests': {p.relative_to(ROOT).as_posix() for p in (ROOT/'PinHavenTests').rglob('*.swift')},
+        'PinHavenShare': extension_sources | shared | {'PinHaven/Models/PlaceRecord.swift', 'PinHaven/Services/MapLinks.swift', 'PinHaven/Services/AddressSearch.swift', 'PinHaven/Views/MapPicker.swift'}
+    }
+    expected_target=members[obj['name']]
     check(built==expected_target, f'Exact source build membership: {obj["name"]}')
+
+# The extension is embedded and both processes use only the same inbox App Group.
+share_target=next(objects[t] for t in root['targets'] if objects[t]['name']=='PinHavenShare')
+embed=[objects[p] for p in app_target['buildPhases'] if objects[p]['isa']=='PBXCopyFilesBuildPhase']
+check(len(embed)==1 and embed[0]['dstSubfolderSpec']==13, 'Share extension embedded in PlugIns')
+check(any(objects[objects[f]['fileRef']]['path']=='PinHavenShare.appex' for f in embed[0]['files']), 'Correct appex embedded')
+check(any(objects[objects[d]['target']]['name']=='PinHavenShare' for d in app_target['dependencies']), 'App depends on extension')
+for target,path in [(app_target,'PinHaven/Resources/PinHaven.entitlements'), (share_target,'PinHavenShare/PinHavenShare.entitlements')]:
+    entitlements=plistlib.loads((ROOT/path).read_bytes())
+    check(entitlements.get('com.apple.security.application-groups')==['group.com.innovalogic.pinhaven'], 'App Group entitlement: '+target['name'])
+    for config in objects[target['buildConfigurationList']]['buildConfigurations']:
+        settings=objects[config]['buildSettings']
+        check(settings.get('CODE_SIGN_ENTITLEMENTS')==path, 'Entitlements selected: '+target['name']+' '+objects[config]['name'])
+        if target['name']=='PinHavenShare':
+            check(settings.get('APPLICATION_EXTENSION_API_ONLY')=='YES' and settings.get('SKIP_INSTALL')=='YES', 'Extension-safe build configuration')
+ext_info=plistlib.loads((ROOT/'PinHavenShare/Info.plist').read_bytes())
+ext=ext_info['NSExtension']
+check(ext['NSExtensionPointIdentifier']=='com.apple.share-services', 'Share extension point registered')
+check(ext.get('NSExtensionPrincipalClass')=='$(PRODUCT_MODULE_NAME).ShareViewController', 'Extension entry point registered')
+check(ext['NSExtensionAttributes']['NSExtensionActivationRule']=={'NSExtensionActivationSupportsText':True,'NSExtensionActivationSupportsWebURLWithMaxCount':1}, 'Specific URL/text activation rule, no TRUEPREDICATE')
+check(info['CFBundleVersion']==ext_info['CFBundleVersion']=='$(CURRENT_PROJECT_VERSION)' and info['CFBundleShortVersionString']==ext_info['CFBundleShortVersionString']=='$(MARKETING_VERSION)', 'Host and extension versions share build settings')
 
 scheme=ET.parse(ROOT/'PinHaven.xcodeproj/xcshareddata/xcschemes/PinHaven.xcscheme')
 for element in scheme.findall('.//BuildableReference'):

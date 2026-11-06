@@ -89,3 +89,11 @@ PlaceEditor mantiene una instancia LocationService independiente para searchRefe
 ## Compartir con extensiones de mensajería
 
 LocationShareSheet encapsula UIActivityViewController con un solo String (nombre, dirección y enlace) capturado en LocationSharePayload. Sustituye ShareLink de URL para el botón Compartir con otras apps. El callback solo informa error local a la vista, que lo muestra tras cerrar la hoja; no representa confirmación de envío ni entrega remota.
+
+## Recepción por Share Extension — 2026-11-05
+
+PinHavenShare ejecuta ShareViewController y aloja ShareCaptureView en SwiftUI. NSItemProvider lee URL/texto; IncomingMapLink valida el origen, interpreta únicamente coordenadas explícitas y expande enlaces mediante HEAD acotado. MapPicker se comparte entre targets para corregir/buscar el punto cuando sea necesario.
+
+Shared contiene el parser/resolver y SharedInbox, compilados en ambos procesos. SharedCapture versiona un PlaceRecord confirmado. La extensión escribe un JSON por UUID en PendingPlaces del App Group; no abre SwiftData. HomeView consume al entrar/activar app: validar, guardar por LocalStore.importBackup y después retirar el JSON. La base actual y el esquema se conservan; no se necesita migrarla porque no se mueve al grupo.
+
+El target extensión se embebe en PlugIns y es dependencia de la app; usa únicamente APIs compatibles con extensiones. Ambos targets declaran group.com.innovalogic.pinhaven y comparten variables de versión. Los perfiles/grupo se deben registrar en Apple, además de configurar Git.

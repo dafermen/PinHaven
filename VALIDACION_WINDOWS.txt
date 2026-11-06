@@ -1,6 +1,6 @@
-Fecha: 2026-11-04 America/New_York
+Fecha: 2026-11-05 America/New_York
 Entorno: Windows; Python 3.14.7; Git Bash
-Revision: compartir mensaje de texto con enlace y errores locales
+Revision: recepcion desde Maps por Share Extension y bandeja App Group
 
 PASS: Python syntax: generate_project.py
 PASS: Python syntax: validate_repository.py
@@ -9,7 +9,7 @@ PASS: Valid plist: PrivacyInfo.xcprivacy
 PASS: Foreground location permission description present
 PASS: No background-location permission in Info.plist
 PASS: Xcode project OpenStep syntax consumed completely
-PASS: App and test targets present
+PASS: App, tests and share extension targets present
 PASS: File reference exists: PinHaven/Models/Place.swift
 PASS: File reference exists: PinHaven/Models/PlaceRecord.swift
 PASS: File reference exists: PinHaven/PinHavenApp.swift
@@ -18,6 +18,7 @@ PASS: File reference exists: PinHaven/Services/LocalStore.swift
 PASS: File reference exists: PinHaven/Services/LocationService.swift
 PASS: File reference exists: PinHaven/Services/MapLinks.swift
 PASS: File reference exists: PinHaven/Services/PlaceMapping.swift
+PASS: File reference exists: PinHaven/Services/SharedInboxImport.swift
 PASS: File reference exists: PinHaven/Views/BackupView.swift
 PASS: File reference exists: PinHaven/Views/HomeView.swift
 PASS: File reference exists: PinHaven/Views/LocationShareSheet.swift
@@ -25,7 +26,15 @@ PASS: File reference exists: PinHaven/Views/MapPicker.swift
 PASS: File reference exists: PinHaven/Views/MapsWebView.swift
 PASS: File reference exists: PinHaven/Views/PlaceDetail.swift
 PASS: File reference exists: PinHaven/Views/PlaceEditor.swift
+PASS: File reference exists: Shared/IncomingMapLink.swift
+PASS: File reference exists: Shared/SharedInbox.swift
+PASS: File reference exists: PinHavenShare/ShareCaptureView.swift
+PASS: File reference exists: PinHavenShare/ShareViewController.swift
 PASS: File reference exists: PinHavenTests/PinHavenTests.swift
+PASS: File reference exists: PinHavenTests/ShareCaptureTests.swift
+PASS: File reference exists: PinHaven/Resources/PinHaven.entitlements
+PASS: File reference exists: PinHavenShare/PinHavenShare.entitlements
+PASS: File reference exists: PinHavenShare/Info.plist
 PASS: File reference exists: PinHaven/Resources/Info.plist
 PASS: File reference exists: PinHaven/Resources/PrivacyInfo.xcprivacy
 PASS: File reference exists: PinHaven/Resources/Assets.xcassets
@@ -39,6 +48,7 @@ PASS: Reference fileRef in AC502EC73AA5B52EE3C871D2 resolves
 PASS: Reference fileRef in 78FAA5C6625B78C747D54675 resolves
 PASS: Reference fileRef in 0967DF636E48B0FB83C7AC02 resolves
 PASS: Reference fileRef in 877E922C09CE6CCA27F1ED91 resolves
+PASS: Reference fileRef in A909AE55F98EE2186535C450 resolves
 PASS: Reference fileRef in 07BA6456F1DC403EBD5DED90 resolves
 PASS: Reference fileRef in 5804C6C19C7AAD452434EF32 resolves
 PASS: Reference fileRef in DA36994FF9FC2C68D7A540C8 resolves
@@ -46,17 +56,43 @@ PASS: Reference fileRef in A95DBED6CB1945C654B5E5AF resolves
 PASS: Reference fileRef in F37A6AD40BF03DCFCBEA97C5 resolves
 PASS: Reference fileRef in C5DA25AE51DB1D73FE022972 resolves
 PASS: Reference fileRef in 63D66B716DE8E9FFB0E35709 resolves
+PASS: Reference fileRef in A41AF0E95CC052479F8FB5FA resolves
+PASS: Reference fileRef in 9EC976A5B319995E4408D582 resolves
 PASS: References files in 949D493B91791558E87BC5D7 resolve
 PASS: Reference fileRef in 144C475A0FD374A4B85178FE resolves
+PASS: Reference fileRef in B84D413F50C0E8C3D1824470 resolves
 PASS: References files in 77A03FEE20FE96AD9384861E resolve
 PASS: Reference fileRef in 3543CCD6ECE27E13DAC88C5D resolves
 PASS: Reference fileRef in 49A3C9FDFFA726BC9F93A1FD resolves
 PASS: References files in 8ECC8B5D05B79F879ACDF1A2 resolve
 PASS: References files in BD92572B49AC16A86614498D resolve
 PASS: References files in E05DB79C430AA1B0BA487AFC resolve
+PASS: Reference fileRef in F522C4C6C2B511982BF8FE94 resolves
+PASS: Reference fileRef in 56E5EC90026926D5C7DD24CB resolves
+PASS: Reference fileRef in AAAEFFBAFDD59B85D992A52C resolves
+PASS: Reference fileRef in 5486A7A2E0CCBFCA40E2A324 resolves
+PASS: Reference fileRef in B442AE1049B8C5B1A259F054 resolves
+PASS: Reference fileRef in 7B37EF2214E07E61FE86C9CE resolves
+PASS: Reference fileRef in DDBCD7797E9D9E7F2FD1576C resolves
+PASS: Reference fileRef in FAE296CF7E974E1EE5361BBE resolves
+PASS: References files in E6E919EC4BB99E5DDFF7892C resolve
+PASS: References files in 3C982B01884B80A03489D212 resolve
+PASS: Reference fileRef in 0E5D7525415BC1D092D43DF4 resolves
+PASS: References files in C6D1DB24FEF5A86EBDB66EAB resolve
+PASS: Reference fileRef in A422EF6FF8F3D5024C9D9E9D resolves
+PASS: References files in 9B15DF151ED00BB1A1E118AD resolve
 PASS: References buildConfigurations in 5810B6B376A3FEBC7E94DC88 resolve
 PASS: References buildConfigurations in 388C1FCB1C8BF19EBF062851 resolve
 PASS: References buildConfigurations in FE6C5493F35638D6443F069D resolve
+PASS: References buildConfigurations in B2E92BCA345EB8EDE513F243 resolve
+PASS: Reference buildConfigurationList in 21D05182542AE501D736062C resolves
+PASS: References buildPhases in 21D05182542AE501D736062C resolve
+PASS: References dependencies in 21D05182542AE501D736062C resolve
+PASS: Reference productReference in 21D05182542AE501D736062C resolves
+PASS: Reference containerPortal in 21A142AFC885FA9F74239221 resolves
+PASS: Reference remoteGlobalIDString in 21A142AFC885FA9F74239221 resolves
+PASS: Reference target in 6E216A8892C8919C80266DBE resolves
+PASS: Reference targetProxy in 6E216A8892C8919C80266DBE resolves
 PASS: Reference buildConfigurationList in F75109BEB4DD8800DA6B45F8 resolves
 PASS: References buildPhases in F75109BEB4DD8800DA6B45F8 resolve
 PASS: References dependencies in F75109BEB4DD8800DA6B45F8 resolve
@@ -80,12 +116,32 @@ PASS: App asset catalog included in resources
 PASS: Every Swift app file included in project
 PASS: Exact source build membership: PinHaven
 PASS: Exact source build membership: PinHavenTests
+PASS: Exact source build membership: PinHavenShare
+PASS: Share extension embedded in PlugIns
+PASS: Correct appex embedded
+PASS: App depends on extension
+PASS: App Group entitlement: PinHaven
+PASS: Entitlements selected: PinHaven Debug
+PASS: Entitlements selected: PinHaven Release
+PASS: App Group entitlement: PinHavenShare
+PASS: Entitlements selected: PinHavenShare Debug
+PASS: Extension-safe build configuration
+PASS: Entitlements selected: PinHavenShare Release
+PASS: Extension-safe build configuration
+PASS: Share extension point registered
+PASS: Extension entry point registered
+PASS: Specific URL/text activation rule, no TRUEPREDICATE
+PASS: Host and extension versions share build settings
 PASS: Scheme target resolves
 PASS: Scheme target resolves
 PASS: Scheme target resolves
 PASS: Scheme target resolves
 PASS: Shared scheme contains test target
 PASS: Document link: 01_REQUISITOS.md -> 11_IDIOMAS.md
+PASS: Document link: 01_REQUISITOS.md -> 13_RECIBIR_DESDE_MAPS.md
+PASS: Document link: 05_PLAN_DE_PRUEBAS.md -> 13_RECIBIR_DESDE_MAPS.md
+PASS: Document link: 09_ESTADO_ENTREGA.md -> 13_RECIBIR_DESDE_MAPS.md
+PASS: Document link: README.md -> docs/13_RECIBIR_DESDE_MAPS.md
 PASS: Document link: README.md -> docs/01_REQUISITOS.md
 PASS: Document link: README.md -> docs/03_GUIA_PRINCIPIANTE.md
 PASS: Document link: README.md -> docs/12_WINDOWS_MAC_Y_CLOUD.md
@@ -109,4 +165,4 @@ PASS: iOS test shell script syntax
 SKIP: YAML parser unavailable; workflow requires GitHub validation
 PASS: Project generator reproducible
 
-105 structural checks passed. Swift compilation and XCTest NOT executed.
+161 structural checks passed. Swift compilation and XCTest NOT executed.

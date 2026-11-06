@@ -16,8 +16,9 @@ struct MapPicker: View {
     @State private var search: MKLocalSearch?
     @State private var visibleRegion: MKCoordinateRegion?
 
-    init(initial: CLLocationCoordinate2D?, onSelect: @escaping (CLLocationCoordinate2D, String?, String?) -> Void) {
+    init(initial: CLLocationCoordinate2D?, initialQuery: String = "", onSelect: @escaping (CLLocationCoordinate2D, String?, String?) -> Void) {
         self.initial = initial; self.onSelect = onSelect
+        _query = State(initialValue: initialQuery)
         _selected = State(initialValue: initial)
         _camera = State(initialValue: initial.map {
             .region(MKCoordinateRegion(center: $0, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
@@ -76,6 +77,7 @@ struct MapPicker: View {
                     }.disabled(selected == nil)
                 }
             }
+            .task { if !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { runSearch() } }
             .onDisappear { search?.cancel() }
         }
     }
