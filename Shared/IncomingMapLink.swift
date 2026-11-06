@@ -39,15 +39,31 @@ enum IncomingMapLink {
         return point.isValid ? point : nil
     }
 
+    // Decode HTML-form spaces before percent decoding, preserving a literal %2B (e.g. C++).
+    static func queryItems(in url: URL) -> [URLQueryItem] {
+        guard isAllowed(url), var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return [] }
+        components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%20")
+        return components.queryItems ?? []
+    }
+
+    static func searchQuery(from url: URL) -> String? {
+        guard isAllowed(url), let host = url.host?.lowercased(),
+              ["maps.google.com", "google.com", "www.google.com", "maps.apple.com"].contains(host) else { return nil }
+        let items = queryItems(in: url)
+        for key in ["query", "q", "address"] {
+            if let raw = items.first(where: { $0.name == key })?.value {
+                let value = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !value.isEmpty, value.count <= 2000, MapLinks.point(from: value) == nil { return value }
+            }
+        }
+        return nil
+    }
+
     static func suggestedName(from url: URL) -> String {
         guard isAllowed(url) else { return "" }
         if !url.path.hasPrefix("/maps/place/") {
-            let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
-            for key in ["name", "query", "q"] {
-                if let value = items.first(where: { $0.name == key })?.value,
-                   MapLinks.point(from: value) == nil { return String(value.prefix(200)) }
-            }
-            return ""
+            if let name = queryItems(in: url).first(where: { $0.name == "name" })?.value { return String(name.prefix(200)) }
+            return String((searchQuery(from: url) ?? "").prefix(200))
         }
         return String(url.path.dropFirst("/maps/place/".count).split(separator: "/").first ?? "")
             .replacingOccurrences(of: "+", with: " ").prefix(200).description
@@ -56,7 +72,7 @@ enum IncomingMapLink {
     /// Resolve redirects only: never download or scrape the Google Maps page.
     static func expanded(_ original: URL, configuration: URLSessionConfiguration = .ephemeral) async throws -> URL {
         guard isAllowed(original) else { throw IncomingLinkError.unsupported }
-        if point(in: original) != nil { return original }
+        if point(in: original) != nil || searchQuery(from: original) != nil { return original }
         let config = configuration
         config.httpCookieStorage = nil
         config.urlCredentialStorage = nil
@@ -70,7 +86,7 @@ enum IncomingMapLink {
         for _ in 0..<6 {
             try Task.checkCancellation()
             guard isAllowed(current), visited.insert(current).inserted else { throw IncomingLinkError.unsupported }
-            if point(in: current) != nil { return current }
+            if point(in: current) != nil || searchQuery(from: current) != nil { return current }
             let remaining = deadline.timeIntervalSinceNow
             guard remaining > 0 else { throw URLError(.timedOut) }
             var request = URLRequest(url: current, timeoutInterval: remaining)

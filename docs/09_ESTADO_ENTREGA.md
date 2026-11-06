@@ -156,3 +156,11 @@ Revisión de código validada: 8b728f812cbc62602b5eb0e71b24499a840b8f99. [GitHub
 Se mantienen advertencias previas de aislamiento del delegate de AddressSearch frente a Swift 6 y mensajes de herramientas de Apple; el proyecto usa Swift 5. No se declara compilación sin advertencias ni compatibilidad de lenguaje Swift 6. Estas pruebas sin firma no prueban perfiles de distribución, App Group registrado ni recepción real en Google Maps/iPhone.
 
 La inspección del navegador de Windows para revisar Apple Developer se detuvo porque la herramienta no pudo verificar con suficiente certeza la URL de Chrome. No se modificó nada en Apple Developer ni App Store Connect. Configuración pendiente en el Mac/portal: grupo group.com.innovalogic.pinhaven asociado a app y extensión, perfiles compatibles y nuevo Archive/instalación. La guía 13 explica esos pasos.
+
+## Recepción Google Maps con dirección pero sin coordenadas — 2026-11-05
+
+La prueba del propietario mostró Guardar desactivado y nombre con signos +. La consulta HEAD autorizada al enlace de la captura devolvió una redirección a maps.google.com con q=nombre+dirección y ftid; no contenía coordenadas explícitas. Es un formato distinto de /maps/place con !3d/!4d. No se deducen coordenadas de ftid ni del viewport.
+
+Se corrige la decodificación de query como formulario (signos + a espacios, manteniendo %2B literal). Al llegar a una consulta textual de mapas, el expansor deja de hacer peticiones: pasa el texto a MKLocalSearch. La extensión muestra hasta cinco candidatos con nombre/dirección, sin seleccionar ninguno automáticamente. Elegir uno fija el punto y completa la dirección postal; después se revisa el pin y se guarda. Si no hay resultados/conexión, permanece la selección manual de mapa.
+
+La búsqueda de candidatos tiene límite de 12 segundos y se cancela al salir. Se añaden dos casos de prueba con datos genéricos para el formato textual, los + literales y las redirecciones sin descargar HTML. No se incorporan URLs personales a fixtures. La aceptación de este caso en iPhone sigue pendiente del nuevo build.

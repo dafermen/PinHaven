@@ -59,3 +59,7 @@ Compartir con otras apps envía nombre, dirección y enlace del punto, como text
 Compartir hacia PinHaven es una acción explícita. La extensión recibe el URL/texto elegido, puede consultar redirecciones HEAD en los hosts de mapas permitidos y puede usar MapKit si eliges buscar/corregir el punto. No descarga ni analiza HTML, no envía a un servidor propio y no usa cookies ni credenciales en la sesión de resolución. No acepta enlaces de seguimiento de ubicación en tiempo real como un punto exacto.
 
 La bandeja local de App Group puede contener nombre, dirección, notas y coordenadas confirmadas; se protege y excluye de backups automáticos. La app principal y su extensión son los únicos targets de este proyecto autorizados a ese grupo. Abrir la app importa los pendientes a SwiftData; exportar JSON solo incluye los registros importados. El cierre de la extensión no significa que la app ya haya importado la entrada. Sin iCloud ni seguimiento continuo.
+
+## Consulta textual recibida de Google Maps
+
+Si el enlace compartido identifica el lugar mediante nombre y dirección sin coordenadas, la extensión consulta automáticamente ese texto con MapKit para mostrar candidatos que el usuario debe confirmar. No se consulta Google Places ni se analiza HTML. El enlace no se guarda como lugar hasta confirmar un punto.

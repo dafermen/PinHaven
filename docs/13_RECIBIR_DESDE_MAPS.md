@@ -57,3 +57,7 @@ Referencias oficiales:
 - [Share extensions](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/Share.html)
 
 Ejemplos públicos contrastados mediante HEAD el 5 de noviembre de 2026, sin usar ubicaciones personales: [Stanton Park](https://www.nps.gov/planyourvisit/event-details.htm?id=C194BFE6-FC34-56FA-55A4B81EB72EB695) y [Fort Dupont Park](https://www.nps.gov/planyourvisit/event-details.htm?id=405AB1FF-9742-D78D-FC560691741E57E6). Sus redirecciones incluyeron coordenadas de lugar diferentes a la cámara; los fixtures de prueba conservan solo la parte relevante del URL.
+
+## Google envía nombre y dirección, sin coordenadas
+
+Algunos enlaces cortos redirigen a maps.google.com?q=nombre+dirección&ftid=... . La extensión convierte los + de formulario en espacios (sin cambiar %2B literal) y busca ese texto con MapKit. Muestra hasta cinco coincidencias: elige la correcta y comprueba dirección/pin para habilitar Guardar. No se guarda una coincidencia automáticamente. Si no hay coincidencias, usa Buscar o corregir punto en el mapa. Resolver un nombre con MapKit requiere red y puede devolver resultados diferentes de Google.

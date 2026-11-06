@@ -11,6 +11,8 @@ struct ShareCaptureView: View {
     @State private var saved = false
     @State private var choosingPoint = false
     @State private var message: String?
+    @State private var candidates: [MKMapItem] = []
+    @State private var candidateSearch: MKLocalSearch?
 
     var body: some View {
         NavigationStack {
@@ -35,6 +37,25 @@ struct ShareCaptureView: View {
                         TextField("Notas (opcional)", text: $record.notes, axis: .vertical)
                         Toggle("Favorito", isOn: $record.isFavorite)
                     }.disabled(loading || saving)
+                    if !candidates.isEmpty, coordinate == nil {
+                        Section("Elige el resultado correcto") {
+                            ForEach(Array(candidates.enumerated()), id: \.offset) { _, item in
+                                Button {
+                                    coordinate = item.placemark.coordinate
+                                    if let name = item.name, !name.isEmpty { record.name = name }
+                                    record.address = AddressSearch.fullAddress(item.placemark)
+                                    candidates = []
+                                    message = "Revisa el pin del lugar elegido y pulsa Guardar."
+                                } label: {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(item.name ?? "Lugar")
+                                        Text(AddressSearch.fullAddress(item.placemark))
+                                            .font(.caption).foregroundStyle(.secondary)
+                                    }
+                                }
+                            }
+                        }
+                    }
                     Section("Punto que se guardará") {
                         if let coordinate {
                             Map(initialPosition: .region(MKCoordinateRegion(center: coordinate,
@@ -66,6 +87,7 @@ struct ShareCaptureView: View {
                     }
                 }
                 .task { await readIncoming() }
+                .onDisappear { candidateSearch?.cancel() }
             }
         }.tint(.teal)
     }
@@ -90,15 +112,43 @@ struct ShareCaptureView: View {
                 let title = text.components(separatedBy: .newlines).first { !$0.trimmingCharacters(in: .whitespaces).isEmpty && !$0.contains("://") }
                 record.name = String((title ?? "").prefix(200))
             }
-            let items = URLComponents(url: resolved, resolvingAgainstBaseURL: false)?.queryItems ?? []
+            let items = IncomingMapLink.queryItems(in: resolved)
             record.address = String((items.first { $0.name == "address" }?.value ?? "").prefix(2000))
             if let point = IncomingMapLink.point(in: resolved) {
                 coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+            } else if let query = IncomingMapLink.searchQuery(from: resolved) {
+                message = "Google Maps envió nombre y dirección. Buscando coincidencias para que confirmes el lugar…"
+                await findCandidates(query)
             } else {
                 message = "El enlace no contiene un punto verificable. Búscalo o márcalo en el mapa antes de guardar."
             }
         } catch is CancellationError { return }
         catch { message = error.localizedDescription }
+    }
+
+    @MainActor private func findCandidates(_ query: String) async {
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = query
+        request.resultTypes = [.address, .pointOfInterest]
+        let search = MKLocalSearch(request: request)
+        candidateSearch = search
+        let timeout = Task { @MainActor in
+            do { try await Task.sleep(nanoseconds: 12_000_000_000) }
+            catch { return }
+            search.cancel()
+        }
+        defer { timeout.cancel(); candidateSearch = nil }
+        do {
+            let response = try await search.start()
+            try Task.checkCancellation()
+            candidates = Array(response.mapItems.filter { CLLocationCoordinate2DIsValid($0.placemark.coordinate) }.prefix(5))
+            message = candidates.isEmpty
+                ? "No encontramos coincidencias. Busca o marca el punto en el mapa antes de guardar."
+                : "Elige una coincidencia y comprueba su dirección y pin antes de guardar."
+        } catch is CancellationError { return }
+        catch {
+            message = "No se pudo buscar la dirección. Revisa la conexión o elige el punto en el mapa."
+        }
     }
 
     private func save() {

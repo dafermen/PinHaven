@@ -40,6 +40,30 @@ final class ShareCaptureTests: XCTestCase {
         }
     }
 
+    func testTextOnlyGoogleLinkBecomesSearchHintNotCoordinates() throws {
+        let url = try XCTUnwrap(URL(string: "https://maps.google.com?q=Example+Cafe,+123+Example+St,+Example+City,+NY+10001&ftid=0x123:0x456"))
+        XCTAssertNil(IncomingMapLink.point(in: url))
+        XCTAssertEqual(IncomingMapLink.searchQuery(from: url), "Example Cafe, 123 Example St, Example City, NY 10001")
+        XCTAssertEqual(IncomingMapLink.suggestedName(from: url), "Example Cafe, 123 Example St, Example City, NY 10001")
+        let literalPlus = URL(string: "https://maps.google.com?q=C%2B%2B+Cafe")!
+        XCTAssertEqual(IncomingMapLink.searchQuery(from: literalPlus), "C++ Cafe")
+        XCTAssertNil(IncomingMapLink.searchQuery(from: URL(string: "https://maps.google.com?q=40,-73")!))
+        XCTAssertNil(IncomingMapLink.searchQuery(from: URL(string: "https://evil.example/?q=Example+Cafe")!))
+    }
+
+    func testRedirectStopsAtTextQueryForMapKitWithoutScraping() async throws {
+        let start = URL(string: "https://maps.app.goo.gl/Fixture")!
+        let target = "https://maps.google.com?q=Example+Cafe,+123+Example+St&ftid=0x123:0x456"
+        MapRedirectFixture.reset([start.absoluteString: (302, target)])
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [MapRedirectFixture.self]
+        let resolved = try await IncomingMapLink.expanded(start, configuration: config)
+        XCTAssertEqual(resolved.absoluteString, target)
+        XCTAssertNil(IncomingMapLink.point(in: resolved))
+        XCTAssertEqual(IncomingMapLink.searchQuery(from: resolved), "Example Cafe, 123 Example St")
+        XCTAssertEqual(MapRedirectFixture.requests().count, 1)
+    }
+
     func testInboxRejectsInvalidAndKeepsCorruptionForReview() throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: directory) }
