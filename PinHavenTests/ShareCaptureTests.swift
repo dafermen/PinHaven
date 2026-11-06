@@ -71,6 +71,9 @@ final class ShareCaptureTests: XCTestCase {
         XCTAssertNil(IncomingMapLink.searchQuery(from: url))
         XCTAssertEqual(IncomingMapLink.suggestedName(from: url), "Destino compartido")
         XCTAssertNil(IncomingMapLink.point(in: URL(string: "https://maps.google.com/?saddr=12,-34")!))
+        let originOnly = URL(string: "https://maps.google.com/?saddr=12,-34&q=15,25")!
+        XCTAssertNil(IncomingMapLink.point(in: originOnly))
+        XCTAssertNil(IncomingMapLink.searchQuery(from: originOnly))
         XCTAssertEqual(IncomingMapLink.point(in: URL(string: "https://maps.google.com/?daddr=0,0&saddr=12,-34")!), MapPoint(latitude: 0, longitude: 0))
         for value in ["daddr=91,0", "daddr=", "daddr=40,-73&destination=41,-72", "daddr=40,-73&daddr=41,-72"] {
             let invalid = URL(string: "https://maps.google.com/?" + value + "&saddr=12,-34&q=15,25")!

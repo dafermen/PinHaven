@@ -53,7 +53,7 @@ enum IncomingMapLink {
     static func isRoute(_ url: URL) -> Bool {
         guard isAllowed(url), let host = url.host?.lowercased(),
               ["maps.google.com", "google.com", "www.google.com", "maps.apple.com"].contains(host) else { return false }
-        return queryItems(in: url).contains { ["daddr", "destination"].contains($0.name) }
+        return queryItems(in: url).contains { ["daddr", "destination", "saddr", "origin"].contains($0.name) }
     }
 
     private static func routeDestination(in url: URL) -> String? {

@@ -83,7 +83,7 @@ struct ShareCaptureView: View {
                     }
                 }
                 .sheet(isPresented: $choosingPoint) {
-                    MapPicker(initial: coordinate, initialQuery: [record.name, record.address].filter { !$0.isEmpty }.joined(separator: ", ")) { point, name, address in
+                    MapPicker(initial: coordinate, initialQuery: [record.name == "Destino compartido" && receivedRoute ? "" : record.name, record.address].filter { !$0.isEmpty }.joined(separator: ", ")) { point, name, address in
                         coordinate = point
                         if record.name.isEmpty, let name { record.name = name }
                         if let address { record.address = address }
