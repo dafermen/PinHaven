@@ -166,3 +166,11 @@ Se corrige la decodificación de query como formulario (signos + a espacios, man
 La búsqueda de candidatos tiene límite de 12 segundos y se cancela al salir. Se añaden dos casos de prueba con datos genéricos para el formato textual, los + literales y las redirecciones sin descargar HTML. No se incorporan URLs personales a fixtures. La aceptación de este caso en iPhone sigue pendiente del nuevo build.
 
 Validación de la corrección: código ee90ed1c3a53c53e4456f9af8a3e08f40cf4ef2d compilado con 19 XCTest aprobados, cero fallos, TEST SUCCEEDED en https://github.com/dafermen/PinHaven/actions/runs/42161658093 . La variante compartida hacia WhatsApp también se comprobó mediante HEAD y devolvió el mismo formato textual. No se modificó el envío saliente a WhatsApp. PR #2 pendiente de integrar y de probar en iPhone; la documentación posterior no cambia el código validado.
+
+## Google comparte una ruta con daddr/saddr — 2026-11-06
+
+La nueva captura corresponde a un enlace corto que redirige por HEAD a una ruta de Google Maps con coordenadas de destino en daddr y origen en saddr. No es el caso q textual del PR #2. Se verificó además que el commit de integración del PR #2, 63e5c68, aprobó Test y Archive de Xcode Cloud; esa evidencia no identifica el build instalado en el iPhone.
+
+Se añade reconocimiento de daddr/destination en enlaces de rutas admitidos. Solo se obtiene el destino; nunca se usa saddr ni un q alternativo si el destino es inválido o contradictorio. Para destinos textuales se busca solo ese texto con MapKit y se pide elegir candidato. El formulario indica que se recibió una ruta y propone Destino compartido cuando no hay nombre: se revisa el pin y se puede renombrar. El enlace original, que puede representar toda la ruta, se conserva como referencia.
+
+Tres pruebas nuevas con datos ficticios cubren destino vs origen/query, origen sin destino, 0,0, destino inválido, duplicados contradictorios, destino textual y redirección sin descargar página. No se almacenan las coordenadas personales de la captura en fixtures. Sin cambios de App Groups, SwiftData ni envío a WhatsApp.

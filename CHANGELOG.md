@@ -62,3 +62,7 @@ Validación F3: código 8b728f8 compilado en Xcode 16.4 (simulador) y 17 XCTest 
 ## Enlaces Google con nombre y dirección — 2026-11-05
 
 Recepción de maps.google.com?q=nombre+dirección sin coordenadas: decodificar espacios correctamente, buscar candidatos MapKit y pedir selección explícita antes de guardar. ftid no se trata como coordenadas. Sin scraping ni API Google Places. Pruebas de consulta textual y redirección; fallback manual conservado.
+
+## Destino de rutas compartidas por Google — 2026-11-06
+
+Soporte para daddr/destination, priorizando el destino frente al origen saddr o consultas auxiliares. Rechazo de destinos contradictorios/invalidos sin fallback al origen. Destinos textuales se confirman con MapKit; los explícitos muestran pin y nombre inicial Destino compartido. Aviso visible de que se guarda el destino y el enlace de ruta sigue como referencia. Tres pruebas nuevas.
