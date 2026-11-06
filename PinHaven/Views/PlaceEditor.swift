@@ -126,6 +126,10 @@ struct PlaceEditor: View {
             }
             .onReceive(searchGPS.$errorMessage.compactMap { $0 }) { errorMessage = $0 }
             .onChange(of: nearbySearch) { _, _ in refreshAddressSuggestions() }
+            .onChange(of: point.map { MapPoint(latitude: $0.latitude, longitude: $0.longitude) }) { _, _ in
+                addresses.stop()
+                if addressFocused { refreshAddressSuggestions() }
+            }
             .onChange(of: addressFocused) { _, focused in
                 if focused { refreshAddressSuggestions() }
             }
