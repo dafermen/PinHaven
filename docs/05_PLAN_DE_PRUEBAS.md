@@ -105,3 +105,7 @@ Estos criterios reemplazan el menú de compartir propuesto en las secciones ante
 - Revisar Test/Archive en Cloud, grupo habilitado en ambos perfiles, extensión incluida y versiones de bundles coherentes. La prueba de simulador sin firma no confirma aprovisionamiento ni aparición en Google Maps real.
 
 Instrucciones paso a paso en [Recibir desde Maps](13_RECIBIR_DESDE_MAPS.md).
+
+## Regresión q=nombre+dirección sin coordenadas
+
+Compartir desde Google un negocio que devuelva q textual y ftid: ver nombre legible sin +, candidatos con dirección, elegir uno, comprobar pin y guardar. Sin elegir ningún candidato Guardar sigue desactivado. Probar resultados vacíos, sin red, cancelar búsqueda y selección manual. Confirmar que C%2B%2B se mantiene C++ y un centro @lat,lon/ftid nunca se convierte en punto. Las pruebas automatizadas usan texto ficticio.
