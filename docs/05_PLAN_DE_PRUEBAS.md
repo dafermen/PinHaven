@@ -113,3 +113,12 @@ Compartir desde Google un negocio que devuelva q textual y ftid: ver nombre legi
 ## Regresión: compartir ruta
 
 Probar enlace de ruta daddr/saddr: pin en destino y aviso visible; nunca guardar origen como punto. Cambiar nombre y guardar; abrir la app y comprobar persistencia. Probar 0,0, destino textual con candidatos, destinos vacíos/inválidos y parámetros de destino contradictorios. En los casos ambiguos no debe aparecer un punto de origen como sustituto. El enlace original se conserva como referencia de ruta. Fixtures automatizados ficticios: tres casos nuevos, total preparado 22 XCTest.
+
+## Sugerencias de dirección del pin
+
+- Recibir un sitio de Google Maps con coordenadas: Sugerir dirección de este punto debe ofrecer texto postal. Elegirlo no cambia el pin; escribir/corregir número y Guardar aplica lo confirmado.
+- Editar un sitio lejos de la posición actual: las sugerencias al escribir usan el punto del sitio. Buscar cerca de mí cambia solo la referencia; Buscar alrededor del punto del sitio la restaura.
+- En ambos formularios, recomendaciones inmediatamente debajo del campo. Elegir autocompletado mueve dirección y punto juntos y permite revisar el mapa antes de guardar.
+- Cambiar pin/salir mientras se consulta: una respuesta antigua no debe rellenar ni mostrar la dirección anterior. Cancelar edición conserva el sitio original.
+- Sin internet, sin dirección postal o geocodificación fallida: mensaje recuperable, entrada manual y coordenadas existentes conservadas. No exigir dirección postal para guardar.
+- Probar iOS 17 y actual, voz/texto grande y teclado. La dirección inversa es aproximada: comprobar calle, número, ciudad y ZIP en un sitio público, sin suponer cobertura universal.

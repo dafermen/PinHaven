@@ -33,3 +33,8 @@ Referencias para la revisión de mensajería (2026-11-04):
 
 - https://developer.apple.com/documentation/uikit/uiactivityviewcontroller
 - https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/completionwithitemshandler-swift.property
+
+Referencias para direcciones de un punto (2026-11-06):
+
+- https://developer.apple.com/documentation/corelocation/clgeocoder
+- https://developer.apple.com/documentation/mapkit/mklocalsearchcompleter/region

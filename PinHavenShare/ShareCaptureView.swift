@@ -4,6 +4,8 @@ import MapKit
 struct ShareCaptureView: View {
     let load: () async throws -> String
     let close: () -> Void
+    @StateObject private var addresses = AddressSearch()
+    @FocusState private var addressFocused: Bool
     @State private var record = PlaceRecord(name: "", latitude: 0, longitude: 0)
     @State private var coordinate: CLLocationCoordinate2D?
     @State private var loading = true
@@ -32,6 +34,34 @@ struct ShareCaptureView: View {
                     Section("Revisa el lugar") {
                         TextField("Nombre", text: $record.name)
                         TextField("Dirección (opcional)", text: $record.address, axis: .vertical)
+                            .focused($addressFocused)
+                            .onChange(of: record.address) { _, value in
+                                if addressFocused { addresses.update(value, near: coordinate, meters: 4_000) }
+                            }
+                        if addressFocused {
+                            ForEach(Array(addresses.suggestions.enumerated()), id: \.offset) { _, suggestion in
+                                Button {
+                                    Task { @MainActor in
+                                        guard let item = await addresses.resolve(suggestion) else { return }
+                                        addressFocused = false
+                                        coordinate = item.placemark.coordinate
+                                        record.address = AddressSearch.fullAddress(item.placemark)
+                                        if record.name.isEmpty { record.name = item.name ?? suggestion.title }
+                                        candidates = []
+                                    }
+                                } label: {
+                                    VStack(alignment: .leading) {
+                                        Text(suggestion.title)
+                                        Text(suggestion.subtitle).font(.caption).foregroundStyle(.secondary)
+                                    }
+                                }.disabled(addresses.isResolving)
+                            }
+                        }
+                        if addresses.isResolving { ProgressView("Completando dirección…") }
+                        if let text = addresses.errorMessage { Text(text).font(.caption).foregroundStyle(.secondary) }
+                        PointAddressSuggestionView(address: $record.address, point: coordinate) {
+                            addressFocused = false; addresses.stop()
+                        }
                         Picker("Categoría", selection: $record.category) {
                             ForEach(["Restaurantes", "Familia", "Trabajo", "Compras", "Viajes", "Otros"], id: \.self) { Text($0) }
                         }
@@ -65,7 +95,7 @@ struct ShareCaptureView: View {
                             }.frame(height: 170).id("\(coordinate.latitude),\(coordinate.longitude)")
                             Text("\(coordinate.latitude), \(coordinate.longitude)").font(.caption)
                         }
-                        Button("Buscar o corregir punto en el mapa") { choosingPoint = true }
+                        Button("Buscar o corregir punto en el mapa") { addressFocused = false; addresses.stop(); choosingPoint = true }
                             .disabled(loading || record.sourceURL.isEmpty)
                         Text(receivedRoute
                             ? "Recibiste una ruta. Se guardará el punto de destino, no el origen ni el recorrido. El enlace original seguirá como referencia. Revisa el pin y el nombre."
@@ -79,7 +109,7 @@ struct ShareCaptureView: View {
                     ToolbarItem(placement: .cancellationAction) { Button("Cancelar", action: close) }
                     ToolbarItem(placement: .confirmationAction) {
                         Button(saving ? "Guardando…" : "Guardar") { save() }
-                            .disabled(loading || saving || coordinate == nil || record.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                            .disabled(loading || saving || addresses.isResolving || coordinate == nil || record.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     }
                 }
                 .sheet(isPresented: $choosingPoint) {
@@ -90,7 +120,14 @@ struct ShareCaptureView: View {
                     }
                 }
                 .task { await readIncoming() }
-                .onDisappear { candidateSearch?.cancel() }
+                .onDisappear { candidateSearch?.cancel(); addresses.stop() }
+                .onChange(of: addressFocused) { _, focused in
+                    if focused { addresses.update(record.address, near: coordinate, meters: 4_000) }
+                }
+                .onChange(of: coordinate.map { MapPoint(latitude: $0.latitude, longitude: $0.longitude) }) { _, _ in
+                    addresses.stop()
+                    if addressFocused { addresses.update(record.address, near: coordinate, meters: 4_000) }
+                }
             }
         }.tint(.teal)
     }

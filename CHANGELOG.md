@@ -66,3 +66,7 @@ Recepción de maps.google.com?q=nombre+dirección sin coordenadas: decodificar e
 ## Destino de rutas compartidas por Google — 2026-11-06
 
 Soporte para daddr/destination, priorizando el destino frente al origen saddr o consultas auxiliares. Rechazo de destinos contradictorios/invalidos sin fallback al origen. Destinos textuales se confirman con MapKit; los explícitos muestran pin y nombre inicial Destino compartido. Aviso visible de que se guarda el destino y el enlace de ruta sigue como referencia. Tres pruebas nuevas.
+
+## Direcciones del pin y sugerencias cercanas — 2026-11-06
+
+Botón Sugerir dirección de este punto para elegir texto postal sin mover coordenadas. Autocompletado en la extensión y zona alrededor del punto del sitio por defecto en edición, con radio regional más cercano (4 km de lado). GPS de referencia se mantiene opcional e independiente. Cancelación de geocodificación y protección ante respuestas antiguas; cuatro pruebas nuevas con proveedor simulado.

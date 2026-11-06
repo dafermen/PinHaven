@@ -63,3 +63,7 @@ La bandeja local de App Group puede contener nombre, dirección, notas y coorden
 ## Consulta textual recibida de Google Maps
 
 Si el enlace compartido identifica el lugar mediante nombre y dirección sin coordenadas, la extensión consulta automáticamente ese texto con MapKit para mostrar candidatos que el usuario debe confirmar. No se consulta Google Places ni se analiza HTML. El enlace no se guarda como lugar hasta confirmar un punto.
+
+## Dirección aproximada del pin
+
+Sugerir dirección de este punto envía las coordenadas del pin a la geocodificación de Apple por acción explícita. No obtiene GPS nuevo ni requiere acceso a contactos; el formateador Contacts no lee la agenda. No se añade backend, Google Places ni seguimiento. Las sugerencias al escribir consultan MapKit con texto y región del sitio; solo se guardan tras la confirmación del usuario.

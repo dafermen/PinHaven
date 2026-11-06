@@ -67,3 +67,7 @@ Algunos enlaces cortos redirigen a maps.google.com?q=nombre+dirección&ftid=... 
 Google puede enviar daddr (destino) y saddr (origen) en lugar de una ficha de negocio. La extensión muestra el punto de destino y un aviso; no convierte el origen ni el recorrido en el lugar guardado. Escribe un nombre descriptivo si lo deseas y confirma el pin. El enlace original puede seguir mostrando la ruta completa al abrirlo, porque se conserva como referencia. Si el destino es textual se muestran candidatos para elegir; si falta o es contradictorio se requiere selección manual.
 
 Para compartir la ficha de un negocio, sal de Cómo llegar en Google Maps, abre la ficha del lugar y usa su botón Compartir.
+
+## Asignar o corregir dirección
+
+Con un punto elegido, pulsa Sugerir dirección de este punto y elige la propuesta si corresponde. Completa/corrige el número cuando sea necesario: esta opción cambia solo el texto y conserva el pin. También puedes escribir en Dirección y elegir una sugerencia cercana; esa selección actualiza dirección y coordenadas juntas. Revisa el mapa antes de Guardar. La edición de sitios usa las mismas opciones. La consulta inversa depende de Apple y puede no encontrar dirección o devolver una aproximación.

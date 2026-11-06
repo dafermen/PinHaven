@@ -14,7 +14,7 @@ final class AddressSearch: NSObject, ObservableObject, MKLocalSearchCompleterDel
     private var generation = UUID()
     private var searchRegion: MKCoordinateRegion?
 
-    func update(_ text: String, near coordinate: CLLocationCoordinate2D?) {
+    func update(_ text: String, near coordinate: CLLocationCoordinate2D?, meters: Double = 40_000) {
         stop()
         errorMessage = nil
         let query = text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -22,7 +22,7 @@ final class AddressSearch: NSObject, ObservableObject, MKLocalSearchCompleterDel
         let next = MKLocalSearchCompleter()
         next.delegate = self
         next.resultTypes = [.address, .pointOfInterest]
-        searchRegion = Self.region(near: coordinate)
+        searchRegion = Self.region(near: coordinate, meters: meters)
         if let searchRegion {
             next.region = searchRegion
             // Keep Xcode 15/iOS 17 builds supported; strict regional scope starts at iOS 18.
@@ -99,9 +99,9 @@ final class AddressSearch: NSObject, ObservableObject, MKLocalSearchCompleterDel
     }
 
     /// A 40 km square around an explicit search reference, never an implicit 0,0.
-    static func region(near coordinate: CLLocationCoordinate2D?) -> MKCoordinateRegion? {
-        guard let coordinate, CLLocationCoordinate2DIsValid(coordinate) else { return nil }
-        return MKCoordinateRegion(center: coordinate, latitudinalMeters: 40_000, longitudinalMeters: 40_000)
+    static func region(near coordinate: CLLocationCoordinate2D?, meters: Double = 40_000) -> MKCoordinateRegion? {
+        guard let coordinate, CLLocationCoordinate2DIsValid(coordinate), meters.isFinite, meters > 0 else { return nil }
+        return MKCoordinateRegion(center: coordinate, latitudinalMeters: meters, longitudinalMeters: meters)
     }
 
     static func fullAddress(_ placemark: MKPlacemark) -> String {
