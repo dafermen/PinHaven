@@ -1,6 +1,6 @@
 Fecha: 2026-11-06 America/New_York
 Entorno: Windows; Python 3.14.7; Git Bash
-Revision: destino de rutas de Google Maps
+Revision: direcciones del pin y autocompletado cercano
 
 PASS: Python syntax: generate_project.py
 PASS: Python syntax: validate_repository.py
@@ -27,10 +27,13 @@ PASS: File reference exists: PinHaven/Views/MapsWebView.swift
 PASS: File reference exists: PinHaven/Views/PlaceDetail.swift
 PASS: File reference exists: PinHaven/Views/PlaceEditor.swift
 PASS: File reference exists: Shared/IncomingMapLink.swift
+PASS: File reference exists: Shared/PointAddressLookup.swift
+PASS: File reference exists: Shared/PointAddressSuggestionView.swift
 PASS: File reference exists: Shared/SharedInbox.swift
 PASS: File reference exists: PinHavenShare/ShareCaptureView.swift
 PASS: File reference exists: PinHavenShare/ShareViewController.swift
 PASS: File reference exists: PinHavenTests/PinHavenTests.swift
+PASS: File reference exists: PinHavenTests/PointAddressLookupTests.swift
 PASS: File reference exists: PinHavenTests/ShareCaptureTests.swift
 PASS: File reference exists: PinHaven/Resources/PinHaven.entitlements
 PASS: File reference exists: PinHavenShare/PinHavenShare.entitlements
@@ -57,9 +60,12 @@ PASS: Reference fileRef in F37A6AD40BF03DCFCBEA97C5 resolves
 PASS: Reference fileRef in C5DA25AE51DB1D73FE022972 resolves
 PASS: Reference fileRef in 63D66B716DE8E9FFB0E35709 resolves
 PASS: Reference fileRef in A41AF0E95CC052479F8FB5FA resolves
+PASS: Reference fileRef in B236A9FD0E253443AB93F75B resolves
+PASS: Reference fileRef in 326A6E784EAB97A28B26E7A8 resolves
 PASS: Reference fileRef in 9EC976A5B319995E4408D582 resolves
 PASS: References files in 949D493B91791558E87BC5D7 resolve
 PASS: Reference fileRef in 144C475A0FD374A4B85178FE resolves
+PASS: Reference fileRef in 652B046F1F126A0036300538 resolves
 PASS: Reference fileRef in B84D413F50C0E8C3D1824470 resolves
 PASS: References files in 77A03FEE20FE96AD9384861E resolve
 PASS: Reference fileRef in 3543CCD6ECE27E13DAC88C5D resolves
@@ -70,6 +76,8 @@ PASS: References files in E05DB79C430AA1B0BA487AFC resolve
 PASS: Reference fileRef in F522C4C6C2B511982BF8FE94 resolves
 PASS: Reference fileRef in 56E5EC90026926D5C7DD24CB resolves
 PASS: Reference fileRef in AAAEFFBAFDD59B85D992A52C resolves
+PASS: Reference fileRef in 8B5BB87CC621F6905F94885E resolves
+PASS: Reference fileRef in 792B4D1A7C7D0BB2E72A7222 resolves
 PASS: Reference fileRef in 5486A7A2E0CCBFCA40E2A324 resolves
 PASS: Reference fileRef in B442AE1049B8C5B1A259F054 resolves
 PASS: Reference fileRef in 7B37EF2214E07E61FE86C9CE resolves
@@ -165,4 +173,4 @@ PASS: iOS test shell script syntax
 SKIP: YAML parser unavailable; workflow requires GitHub validation
 PASS: Project generator reproducible
 
-161 structural checks passed. Swift compilation and XCTest NOT executed.
+169 structural checks passed. Swift compilation and XCTest NOT executed.

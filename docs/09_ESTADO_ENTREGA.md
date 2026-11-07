@@ -176,3 +176,13 @@ Se añade reconocimiento de daddr/destination en enlaces de rutas admitidos. Sol
 Tres pruebas nuevas con datos ficticios cubren destino vs origen/query, origen sin destino, 0,0, destino inválido, duplicados contradictorios, destino textual y redirección sin descargar página. No se almacenan las coordenadas personales de la captura en fixtures. Sin cambios de App Groups, SwiftData ni envío a WhatsApp.
 
 Validación PR #3: código d697f5f82384e4835d98c9be08201b17e2d24ce1 compilado y 22 XCTest aprobados, cero fallos, TEST SUCCEEDED en https://github.com/dafermen/PinHaven/actions/runs/42220107709 . Los destinos inválidos o ausentes no recurren al origen ni al q auxiliar. Queda pendiente integrar y comprobar en un nuevo build iPhone. La documentación posterior no cambia el código validado.
+
+## Direcciones alrededor del pin — 2026-11-06
+
+El propietario confirmó ambas opciones: consultar la dirección del pin y sugerencias cercanas mientras escribe, tanto al recibir desde Google Maps como al editar. Se añadió PointAddressLookup con CLGeocoder y un componente compartido que muestra direcciones para aplicar explícitamente sin cambiar coordenadas. La dirección puede ser aproximada o faltar; se mantiene editable y opcional. El número postal no se garantiza.
+
+La extensión añade autocompletado AddressSearch referenciado al pin; el editor conserva su autocompletado y da prioridad inicial al punto del sitio. Zona de 4 km de lado para el pin; buscar cerca de mí sigue siendo una acción separada, con retorno explícito a la zona del sitio. Elegir autocompletado actualiza dirección y coordenadas juntas; elegir una dirección obtenida desde el pin solo cambia el texto del borrador. Ningún cambio se persiste sin Guardar.
+
+Las consultas inversas son puntuales por botón, con cancelación, límite de 12 segundos e invalidación al cambiar el punto/salir. Cuatro pruebas nuevas cubren punto 0,0, limpieza de respuestas, radio, cancelación/respuesta tardía, cambio de punto y error/entrada inválida usando un proveedor simulado sin red ni ubicaciones personales. Validación Windows: 169 comprobaciones estructurales. Compilación y total de 26 XCTest pendientes de CI al preparar esta revisión. Sin cambios de firma, App Groups ni esquema de datos.
+
+Validación PR #4: código 709fa3076968d135d2bf0caa653760042f35b6e7 compilado y 26 XCTest aprobados, cero fallos, TEST SUCCEEDED en https://github.com/dafermen/PinHaven/actions/runs/42248884632 (job 127998306153). Se comprobaron ambos targets app/extensión. Posteriores cambios de documentación no alteran el código validado. Pendientes: integrar y verificar geocodificación real, teclado y selección en iPhone.

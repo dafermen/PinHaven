@@ -97,3 +97,7 @@ PinHavenShare ejecuta ShareViewController y aloja ShareCaptureView en SwiftUI. N
 Shared contiene el parser/resolver y SharedInbox, compilados en ambos procesos. SharedCapture versiona un PlaceRecord confirmado. La extensión escribe un JSON por UUID en PendingPlaces del App Group; no abre SwiftData. HomeView consume al entrar/activar app: validar, guardar por LocalStore.importBackup y después retirar el JSON. La base actual y el esquema se conservan; no se necesita migrarla porque no se mueve al grupo.
 
 El target extensión se embebe en PlugIns y es dependencia de la app; usa únicamente APIs compatibles con extensiones. Ambos targets declaran group.com.innovalogic.pinhaven y comparten variables de versión. Los perfiles/grupo se deben registrar en Apple, además de configurar Git.
+
+## Dirección de un punto
+
+Shared/PointAddressLookup usa ReverseAddressProvider (CLGeocoder en producción) y publica candidatos de texto, nunca modifica registros ni coordenadas. PointAddressSuggestionView aplica solo una dirección elegida al borrador y cancela resultados al cambiar el pin o salir. AddressSearch admite tamaño regional configurable: 4 km de lado para el punto del sitio; conserva 40 km por defecto para el GPS opcional. Autocompletado sigue resolviendo y aplicando dirección/punto juntos.

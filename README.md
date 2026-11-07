@@ -2,7 +2,7 @@
 
 **Your places, always close.** Agenda personal de ubicaciones para iPhone, desarrollada en Swift y SwiftUI. Guarda un restaurante, una entrada o un punto sin dirección postal y recupéralo por su nombre, notas o etiquetas.
 
-**Estado: 0.1.0 — compilación y 17 XCTest aprobados en CI macOS el 5 de noviembre de 2026.** Xcode 16.4, SDK de simulador iOS 18.5; incluye compilación y embedding de PinHavenShare. La recepción desde Maps requiere App Groups/perfiles de Apple y aceptación en iPhone real. Localización pendiente. Este repositorio contiene código, no un instalador IPA.
+**Estado: 0.1.0 — compilación y 26 XCTest aprobados en CI macOS el 6 de noviembre de 2026.** Incluye app y extensión. Las consultas de dirección del pin y autocompletado necesitan aceptación real en iPhone. Localización pendiente. Este repositorio contiene código, no un instalador IPA.
 
 ## Identidad e idiomas
 
@@ -18,6 +18,7 @@ La localización de la interfaz todavía está pendiente en F1-T10; el código i
 - Captura puntual de GPS, selección tocando el mapa y búsqueda con MapKit.
 - Buscar direcciones cerca de mí usa GPS solo como referencia, con opción de buscar en otra ciudad.
 - Sugerencias al escribir la dirección: elegir una actualiza dirección postal y coordenadas juntas (por validar en iPhone).
+- Consultar la dirección aproximada del pin sin moverlo y elegir sugerencias cercanas al escribir, tanto al recibir desde Maps como al editar.
 - Nombre, dirección opcional, coordenadas, notas, categoría, etiquetas y favorito.
 - Búsqueda sin distinguir mayúsculas ni tildes; filtros combinables por categoría y favorito.
 - Orden por modificación reciente o por nombre.

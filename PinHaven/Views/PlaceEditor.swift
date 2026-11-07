@@ -12,6 +12,7 @@ struct PlaceEditor: View {
     @State private var searchReference: CLLocationCoordinate2D?
     @State private var searchAccuracy: Double?
     @State private var nearbySearch = true
+    @State private var preferSitePoint = true
     let place: Place?
     @State private var draft: PlaceRecord
     @State private var latitudeText: String
@@ -38,7 +39,7 @@ struct PlaceEditor: View {
                     TextField("Dirección, ciudad o código postal", text: $draft.address, axis: .vertical)
                         .focused($addressFocused)
                         .onChange(of: draft.address) { _, value in
-                            if addressFocused { gps.cancel(); addresses.update(value, near: addressSearchReference) }
+                            if addressFocused { gps.cancel(); addresses.update(value, near: addressSearchReference, meters: preferSitePoint && point != nil ? 4_000 : 40_000) }
                         }
                     if addressFocused {
                         ForEach(Array(addresses.suggestions.enumerated()), id: \.offset) { _, suggestion in
@@ -63,6 +64,9 @@ struct PlaceEditor: View {
                     if addresses.isResolving { ProgressView("Completando dirección…") }
                     if let message = addresses.errorMessage {
                         Text(message).font(.caption).foregroundStyle(.secondary)
+                    }
+                    PointAddressSuggestionView(address: $draft.address, point: point) {
+                        addressFocused = false; addresses.stop(); gps.cancel()
                     }
                     addressAreaControls
                     Picker("Categoría", selection: $draft.category) {
@@ -114,6 +118,7 @@ struct PlaceEditor: View {
             }
             .onDisappear { addresses.stop(); gps.cancel(); searchGPS.cancel() }
             .onReceive(searchGPS.$location.compactMap { $0 }) { fix in
+                preferSitePoint = false
                 searchReference = fix.coordinate
                 searchAccuracy = fix.horizontalAccuracy
                 nearbySearch = true
@@ -121,6 +126,10 @@ struct PlaceEditor: View {
             }
             .onReceive(searchGPS.$errorMessage.compactMap { $0 }) { errorMessage = $0 }
             .onChange(of: nearbySearch) { _, _ in refreshAddressSuggestions() }
+            .onChange(of: point.map { MapPoint(latitude: $0.latitude, longitude: $0.longitude) }) { _, _ in
+                addresses.stop()
+                if addressFocused { refreshAddressSuggestions() }
+            }
             .onChange(of: addressFocused) { _, focused in
                 if focused { refreshAddressSuggestions() }
             }
@@ -135,11 +144,14 @@ struct PlaceEditor: View {
     }
 
     private var addressSearchReference: CLLocationCoordinate2D? {
-        nearbySearch ? (searchReference ?? point) : nil
+        nearbySearch ? (preferSitePoint ? (point ?? searchReference) : (searchReference ?? point)) : nil
     }
 
     private var addressAreaControls: some View {
         Group {
+            if point != nil, !preferSitePoint {
+                Button("Buscar alrededor del punto del sitio") { preferSitePoint = true; refreshAddressSuggestions() }
+            }
             Button {
                 addressFocused = true
                 searchGPS.request()
@@ -149,8 +161,8 @@ struct PlaceEditor: View {
             }.disabled(searchGPS.isLoading || addresses.isResolving)
             DisclosureGroup("Zona de búsqueda y ayuda") {
                 if nearbySearch, addressSearchReference != nil {
-                    Text(searchReference == nil ? "Zona: alrededor del punto del sitio." : "Zona: alrededor de tu ubicación actual.")
-                    if let searchAccuracy {
+                    Text(preferSitePoint && point != nil ? "Zona: alrededor del punto del sitio." : "Zona: alrededor de tu ubicación actual.")
+                    if let searchAccuracy, !preferSitePoint {
                         Text("Precisión del GPS de referencia: ±\(Int(searchAccuracy)) m.")
                     }
                 } else if nearbySearch {
@@ -166,7 +178,7 @@ struct PlaceEditor: View {
     }
 
     private func refreshAddressSuggestions() {
-        addresses.update(draft.address, near: addressSearchReference)
+        addresses.update(draft.address, near: addressSearchReference, meters: preferSitePoint && point != nil ? 4_000 : 40_000)
     }
 
     private var point: CLLocationCoordinate2D? {
@@ -177,6 +189,7 @@ struct PlaceEditor: View {
 
     private func setPoint(_ coordinate: CLLocationCoordinate2D) {
         gps.cancel()
+        preferSitePoint = true
         latitudeText = String(coordinate.latitude); longitudeText = String(coordinate.longitude)
         accuracy = nil
     }
