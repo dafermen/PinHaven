@@ -3,6 +3,7 @@ import UIKit
 import SwiftData
 import MapKit
 
+@MainActor
 struct PlaceDetail: View {
     @Environment(\.modelContext) private var context
     @Environment(\.openURL) private var openURL
@@ -12,6 +13,11 @@ struct PlaceDetail: View {
     @State private var deleting = false
     @State private var showingGoogleWeb = false
     @State private var sharePayload: LocationSharePayload?
+    @State private var cardContent: LocationShareContent?
+    @State private var showingCard = false
+    @State private var preparingLink = false
+    @State private var linkTask: Task<Void, Never>?
+    @State private var linkGeneration = UUID()
     @State private var sharingFailed = false
     @State private var showingCopyNotice = false
     @State private var copyNoticeID = UUID()
@@ -36,11 +42,21 @@ struct PlaceDetail: View {
             }
             Section("Compartir y llegar") {
                 Button {
-                    sharingFailed = false
-                    sharePayload = LocationSharePayload(text: MapLinks.shareText(name: place.name,
-                        address: place.address, latitude: place.latitude, longitude: place.longitude))
+                    shareLink()
                 } label: {
-                    Label("Compartir con otras apps", systemImage: "square.and.arrow.up")
+                    Label("Compartir enlace", systemImage: "link")
+                }.disabled(preparingLink)
+                Button {
+                    do { cardContent = try LocationShareContent(record: place.record); showingCard = true }
+                    catch { errorMessage = error.localizedDescription }
+                } label: { Label("Compartir tarjeta con mapa", systemImage: "photo.on.rectangle") }
+                    .disabled(preparingLink)
+                if preparingLink {
+                    HStack {
+                        ProgressView("Preparando enlace…")
+                        Spacer()
+                        Button("Cancelar") { cancelLink() }
+                    }
                 }
                 Button("Cómo llegar con Apple Maps") { navigate(google: false) }
                 Button("Ver punto en Google Maps") { openGoogle(directions: false) }
@@ -88,10 +104,13 @@ struct PlaceDetail: View {
                 sharingFailed = false
             }
         }) { payload in
-            LocationShareSheet(text: payload.text) { failed in
+            LocationShareSheet(payload: payload) { failed in
                 sharingFailed = failed
                 sharePayload = nil
             }
+        }
+        .sheet(isPresented: $showingCard) {
+            if let cardContent { MapShareCardView(content: cardContent) }
         }
         .sheet(isPresented: $editing) { PlaceEditor(place: place) }
         .sheet(isPresented: $showingGoogleWeb) {
@@ -106,6 +125,32 @@ struct PlaceDetail: View {
         .alert("No se completó la operación", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
             Button("Aceptar", role: .cancel) { errorMessage = nil }
         } message: { Text(errorMessage ?? "") }
+        .onDisappear { cancelLink() }
+        .onChange(of: place.updatedAt) { _, _ in cancelLink() }
+    }
+
+    private func shareLink() {
+        cancelLink()
+        sharingFailed = false
+        let record = place.record
+        let token = linkGeneration
+        preparingLink = true
+        linkTask = Task { @MainActor in
+            defer { if linkGeneration == token { preparingLink = false; linkTask = nil } }
+            do {
+                let content = try await LocationShareLink.prepare(record)
+                try Task.checkCancellation()
+                guard linkGeneration == token else { return }
+                sharePayload = LocationSharePayload(text: content.text)
+            } catch {
+                guard linkGeneration == token, !Task.isCancelled else { return }
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func cancelLink() {
+        linkGeneration = UUID(); linkTask?.cancel(); linkTask = nil; preparingLink = false
     }
 
     private func copyLocation() {

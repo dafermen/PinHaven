@@ -15,3 +15,23 @@ jobs:
         run: python3 scripts/validate_repository.py
       - name: Build and run iOS tests
         run: bash scripts/test_ios.sh
+      - name: Collect synthetic share-card previews
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          root = Path.home() / 'Library/Developer/CoreSimulator/Devices'
+          output = Path('share-card-preview')
+          output.mkdir(exist_ok=True)
+          for name in ('PinHavenCardPreview.png', 'PinHavenCardLongPreview.png'):
+              candidates = list(root.rglob(name))
+              if not candidates:
+                  raise SystemExit(f'Missing synthetic preview: {name}')
+              shutil.copyfile(max(candidates, key=lambda p: p.stat().st_mtime), output / name)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: share-card-preview
+          path: share-card-preview/*.png
+          if-no-files-found: error
+          retention-days: 7

@@ -1,13 +1,13 @@
 import SwiftUI
 import UIKit
 
-/// Pass one plain-text item, including the link, to messaging extensions.
+/// Link mode remains a single text item. Card mode adds the prepared image.
 struct LocationShareSheet: UIViewControllerRepresentable {
-    let text: String
+    let payload: LocationSharePayload
     let onComplete: (Bool) -> Void
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        let controller = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+        let controller = UIActivityViewController(activityItems: payload.activityItems, applicationActivities: nil)
         controller.completionWithItemsHandler = { _, _, _, error in
             // Activity completion does not confirm transport or recipient delivery.
             let failed = error != nil
@@ -22,4 +22,10 @@ struct LocationShareSheet: UIViewControllerRepresentable {
 struct LocationSharePayload: Identifiable {
     let id = UUID()
     let text: String
+    var image: UIImage? = nil
+
+    var activityItems: [Any] {
+        if let image { return [image, text] }
+        return [text]
+    }
 }
