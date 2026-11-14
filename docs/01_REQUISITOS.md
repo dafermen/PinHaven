@@ -40,7 +40,7 @@ Nombre obligatorio hasta 200 caracteres; dirección hasta 2.000; notas hasta 20.
 
 ## Fuera del MVP
 
-Fotos, cámara, interpretar cualquier URL, scraping de Google, enriquecimiento de Google Places, historial automático, ubicación en tiempo real, mapas propios descargables, rutas internas, colecciones, proximidad y deduplicación por distancia. Exportación manual adelantada al MVP por la importancia de recuperar datos locales.
+Fotos, cámara, interpretar cualquier URL, scraping de Google, enriquecimiento de Google Places, historial automático, ubicación en tiempo real, mapas propios descargables, rutas internas, colecciones y orden por proximidad. Exportación manual adelantada al MVP por la importancia de recuperar datos locales. El aviso de posibles duplicados se incorpora como alcance adicional autorizado; no realiza fusiones automáticas.
 
 ## Casos especiales
 
@@ -50,10 +50,20 @@ Fotos, cámara, interpretar cualquier URL, scraping de Google, enriquecimiento d
 - Sin dirección postal: guardar coordenadas y nombre.
 - Link no admitido: conservar referencia, pedir selección manual; no adivinar ubicación.
 - UUID ya existente en importación: omitir incluso si el respaldo contiene una edición más reciente. Resolución de conflictos futura.
-- Mismo lugar con UUID diferente: se importan ambos en esta versión.
+- Mismo lugar con UUID diferente: al crear/editar o recibir desde Maps se avisa de posibles duplicados. La restauración de un respaldo JSON conserva su política por UUID, sin aviso geográfico.
 - Importar el mismo archivo repetidamente: no duplica identificadores.
 - Eliminar la app: datos locales pueden perderse; recuperación mediante respaldo manual.
 
 ## Alcance adicional autorizado: recibir desde Maps
 
 Extensión de compartir para un URL/texto de Google Maps o Apple Maps. Revisión de nombre, dirección opcional, categoría, notas, favorito y punto antes de confirmar. Si faltan coordenadas, selección manual/MapKit obligatoria. Confirmación escribe en bandeja local de App Group; al abrir PinHaven se importa sin duplicar UUID ni sobrescribir datos. Resolver enlaces cortos solo por redirecciones HTTPS acotadas, sin scraping. No forzar la apertura de la app ni migrar la base existente. Ver [guía de recepción](13_RECIBIR_DESDE_MAPS.md).
+
+## Bandeja visible y posibles duplicados — 13 de noviembre de 2026
+
+La bandeja debe estar accesible aunque esté vacía; mostrar cantidad pendiente y permitir revisar, corregir, reintentar o descartar con confirmación. Los archivos dañados se conservan hasta una acción explícita. Los sitios claramente nuevos siguen incorporándose al abrir la app; los posibles duplicados quedan pendientes.
+
+Se considera posible duplicado un punto a 50 m o menos, el mismo nombre normalizado a 200 m o menos, o el mismo enlace de mapa admitido ignorando parámetros de seguimiento conocidos. Los enlaces de rutas y páginas principales no se comparan como identidad. La distancia es en línea recta, sin solicitar GPS. Es una advertencia: locales distintos pueden compartir edificio.
+
+Crear/recibir permite abrir el existente, revisar y confirmar Actualizar ubicación o Guardar otro sitio. Actualizar conserva UUID, creación, nombre, notas, etiquetas, categoría y favorito; aplica coordenadas y dirección/enlace no vacíos. Editar un sitio excluye su UUID del aviso y permite guardar sus propios cambios sin fusionarlo con otro. Cancelar conserva agenda y pendiente.
+
+La intención de incorporación se registra antes de modificar la agenda y se marca completada antes de retirar el pendiente. Una intención incompleta exige revisión explícita; si el sitio vinculado existe, se abre su estado guardado. Repetir una entrada completada no sobrescribe ni resucita un sitio eliminado. No se cambia el esquema SwiftData. La copia de seguridad JSON no incluye pendientes ni confirmaciones internas.

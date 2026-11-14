@@ -3,18 +3,70 @@ import SwiftData
 
 @MainActor
 enum SharedInboxImport {
-    /// Save before acknowledging; a crash in between is retried without duplicate IDs.
-    static func consume(_ inbox: SharedInbox, into context: ModelContext) throws -> (added: Int, failed: Int) {
-        var added = 0
-        var failed = 0
+    /// New locations still arrive automatically; possible duplicates stay available for review.
+    static func consume(_ inbox: SharedInbox, into context: ModelContext) throws -> (added: Int, failed: Int, duplicates: Int) {
+        var added = 0, failed = 0, duplicates = 0
         for file in try inbox.files().prefix(200) {
             do {
+                let records = try context.fetch(FetchDescriptor<Place>()).map(\.record)
                 let capture = try inbox.read(file)
-                let count = try LocalStore.importBackup(PlaceBackup(places: [capture.record]), into: context)
-                added += count
-                try inbox.acknowledge(capture.id)
+                // A previous explicit correction may have moved far from the original capture.
+                // Never infer its outcome from distance; require review of an unfinished attempt.
+                if let receipt = try inbox.receipt(for: capture.id), !receipt.completed {
+                    failed += 1; continue
+                }
+                if try finishPrevious(capture.id, inbox: inbox, records: records) { continue }
+                if !PlaceDuplicates.matches(capture.record, among: records).isEmpty {
+                    duplicates += 1; continue
+                }
+                try persist(capture.record, captureID: capture.id, inbox: inbox, into: context)
+                added += 1
             } catch { failed += 1 }
         }
-        return (added, failed)
+        return (added, failed, duplicates)
+    }
+
+    /// Only called after an explicit review. The original capture ID is independent of the target place ID.
+    static func accept(_ record: PlaceRecord, captureID: UUID, inbox: SharedInbox, into context: ModelContext) throws {
+        let capture = try inbox.read(inbox.directory.appendingPathComponent(captureID.uuidString + ".json"))
+        let records = try context.fetch(FetchDescriptor<Place>()).map(\.record)
+        if try finishPrevious(capture.id, inbox: inbox, records: records) { return }
+        try persist(record, captureID: capture.id, inbox: inbox, into: context)
+    }
+
+    private static func finishPrevious(_ id: UUID, inbox: SharedInbox, records: [PlaceRecord]) throws -> Bool {
+        if let receipt = try inbox.receipt(for: id) {
+            guard receipt.completed else { return false }
+            // Even if the final place was later deleted, a retry must not resurrect it.
+            try inbox.acknowledge(id); return true
+        }
+        if let saved = records.first(where: { $0.id == id }) {
+            try inbox.recordReceipt(captureID: id, placeID: saved.id)
+            try inbox.acknowledge(id); return true
+        }
+        return false
+    }
+
+    private static func persist(_ record: PlaceRecord, captureID: UUID, inbox: SharedInbox, into context: ModelContext) throws {
+        guard record.isValid else { throw InboxError.invalid }
+        // Persist intent before touching SwiftData. An incomplete receipt always stays for review.
+        try inbox.recordReceipt(captureID: captureID, placeID: record.id, completed: false)
+        do {
+            if let existing = try context.fetch(FetchDescriptor<Place>()).first(where: { $0.id == record.id }) {
+                existing.apply(record)
+            } else { context.insert(Place.make(from: record)) }
+            try context.save()
+        } catch { context.rollback(); throw error }
+        // Never remove the pending capture until both the place and the receipt are durable.
+        do {
+            try inbox.recordReceipt(captureID: captureID, placeID: record.id)
+            try inbox.acknowledge(captureID)
+        } catch { throw InboxCompletionError() }
+    }
+}
+
+private struct InboxCompletionError: LocalizedError {
+    var errorDescription: String? {
+        "El sitio se guardó, pero no se pudo finalizar la incorporación. La entrada sigue en la bandeja; reintenta desde allí y revisa el sitio guardado antes de crear otro."
     }
 }

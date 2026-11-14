@@ -1,0 +1,23 @@
+PinHaven — Bandeja de Maps y posibles duplicados
+Fecha local: 2026-11-13, America/New_York
+
+Código validado: a511ccdf17fd7b3ea36fed6fcf3a26437031c9fb
+CI: https://github.com/dafermen/PinHaven/actions/runs/43553757525
+Job: 132321838331
+Xcode 16.4, SDK iPhoneSimulator 18.5, CODE_SIGNING_ALLOWED=NO
+Resultado: app/extensión compiladas; 39 XCTest; cero fallos; TEST SUCCEEDED.
+
+Windows: python scripts/validate_repository.py
+179 comprobaciones estructurales aprobadas; generador reproducible.
+git diff --check: sin errores.
+Sin Xcode/Swift local en Windows. La evidencia de compilación procede de CI macOS.
+
+13 pruebas nuevas: proximidad/nombre/enlace; exclusión del propio UUID; 0,0 e inválidos;
+conservación de datos personales; importación distante; coincidencias pendientes;
+conservar ambos/actualizar explícitamente; reintentos; no resucitar borrados;
+intención incompleta antes/después de guardar, incluso con punto corregido lejano;
+fallo de escritura; borrador inválido; corrupción y descarte sin seguir symlinks.
+
+Los commits posteriores al código validado solo registran documentación/evidencia.
+Pendiente integración PR #5, build firmado y aceptación manual en iPhone.
+No cambia Place/SwiftData, firma, identificadores, restauración JSON ni WhatsApp.

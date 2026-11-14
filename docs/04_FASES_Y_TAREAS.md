@@ -53,7 +53,7 @@
 | ID | Tarea | Estado | Criterio |
 |---|---|---|---|
 | F3-T01 | Target Share Extension y App Groups | I | Firma correcta, contenedor compartido y pruebas |
-| F3-T02 | Bandeja local de entradas pendientes | I | Escritura atómica y consumo sin duplicados; conservar base existente en su contenedor |
+| F3-T02 | Bandeja local de entradas pendientes | I | Escritura atómica; bandeja visible; revisar/corregir/reintentar; descarte confirmado; recibos sin duplicar ni sobrescribir; conservar base existente |
 | F3-T03 | Leer URL/texto con NSItemProvider | I | Casos reales de Maps, Google Maps y Safari |
 | F3-T04 | Resolución segura de enlaces cortos | I | Allowlist, HTTPS, límite de redirecciones/tiempo/tamaño; confirmación si falta punto |
 | F3-T05 | Formulario breve de confirmación | I | Nombre, categoría, guardar o cancelar |
@@ -66,7 +66,7 @@ Diseño preferido: extensión escribe una entrada en una bandeja de archivos loc
 | ID | Tarea | Estado | Criterio |
 |---|---|---|---|
 | F4-T01 | Orden por distancia con GPS puntual | P | Sin permiso funciona agenda; distancia en línea recta claramente identificada |
-| F4-T02 | Aviso por posible duplicado geográfico | P | Ofrecer conservar, editar o cancelar; nunca fusionar sin elección |
+| F4-T02 | Aviso por posible duplicado geográfico | I | Abrir existente; revisar actualización de ubicación preservando datos personales; guardar ambos o cancelar; validar en iPhone |
 | F4-T03 | Resolver conflictos al importar | P | Comparar versiones; elegir conservar/reemplazar/duplicar |
 | F4-T04 | Medir rendimiento y accesibilidad | P | Datos de prueba grandes, VoiceOver y tamaños de texto |
 
