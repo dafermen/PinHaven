@@ -62,13 +62,14 @@ struct PlaceDetail: View {
                 Button("Ver punto en Google Maps") { openGoogle(directions: false) }
                 Button("Cómo llegar con Google Maps") { openGoogle(directions: true) }
                 Button("Abrir Google Maps en la web") {
+                    cancelLink()
                     showingGoogleWeb = true
                 }
                 Button("Copiar dirección y enlace") {
                     copyLocation()
                 }
             }
-            Section { Button("Eliminar sitio", role: .destructive) { deleting = true } }
+            Section { Button("Eliminar sitio", role: .destructive) { cancelLink(); deleting = true } }
         }
         .overlay(alignment: .bottom) {
             if showingCopyNotice {
@@ -95,7 +96,7 @@ struct PlaceDetail: View {
                 Button { toggleFavorite() } label: {
                     Image(systemName: place.isFavorite ? "star.fill" : "star")
                 }.accessibilityLabel(place.isFavorite ? "Quitar de favoritos" : "Marcar favorito")
-                Button("Editar") { editing = true }
+                Button("Editar") { cancelLink(); editing = true }
             }
         }
         .sheet(item: $sharePayload, onDismiss: {

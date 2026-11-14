@@ -1,5 +1,9 @@
 # Cambios
 
+## Enlace y tarjeta con mapa — 2026-11-14
+
+Dos acciones directas en la ficha: Compartir enlace y Compartir tarjeta con mapa. Se puede reutilizar una ficha de Google si su punto explícito coincide con el guardado; se omiten seguimiento, rutas y enlaces no verificables. La tarjeta genera un mapa con pin, nombre, dirección y coordenadas; permite revisarlo y compartir imagen/texto o usar solo enlace si falla. Excluye notas, etiquetas y datos personales de categoría/favorito. Sin cambios de esquema, firma, servicios propios ni envío automático. Aceptación real en WhatsApp pendiente.
+
 ## Bandeja visible y posibles duplicados — 2026-11-13
 
 Acceso a pendientes de Maps con revisión/corrección, reintento y descarte confirmado. Las coincidencias aproximadas quedan pendientes hasta elegir abrir existente, actualizar su ubicación o guardar ambos. Crear/editar avisa también antes de guardar. Actualizar ubicación conserva datos personales; la restauración JSON mantiene su política por UUID. Recibos locales mínimos permiten terminar reintentos sin duplicar ni resucitar sitios eliminados. Sin cambio de esquema SwiftData, firma o identificadores. Aceptación en iPhone pendiente.

@@ -8,6 +8,10 @@ struct LocationShareSheet: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: payload.activityItems, applicationActivities: nil)
+        if payload.image != nil {
+            // Sharing does not add Photos/Contacts permissions or a local photo-saving feature.
+            controller.excludedActivityTypes = [.saveToCameraRoll, .assignToContact]
+        }
         controller.completionWithItemsHandler = { _, _, _, error in
             // Activity completion does not confirm transport or recipient delivery.
             let failed = error != nil

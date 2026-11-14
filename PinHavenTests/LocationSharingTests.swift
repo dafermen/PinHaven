@@ -67,12 +67,17 @@ final class LocationSharingTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testOfflineLinkFallsBackAndCancelledRequestDoesNotShare() async throws {
         let content = try await LocationShareLink.prepare(record()) { _ in throw URLError(.notConnectedToInternet) }
         XCTAssertEqual(content.url, MapLinks.url(latitude: 40, longitude: -73, google: true))
         let value = record()
-        let task = Task { try await LocationShareLink.prepare(value) }
+        let resolver = ShareLinkFixture()
+        let task = Task { @MainActor in try await LocationShareLink.prepare(value) { _ in try await resolver.resolve() } }
+        for _ in 0..<40 where resolver.pending == nil { await Task.yield() }
+        XCTAssertNotNil(resolver.pending)
         task.cancel()
+        resolver.finish()
         do { _ = try await task.value; XCTFail("Cancelled request must not produce a payload") }
         catch is CancellationError { }
         catch { XCTFail("Unexpected error: \(error)") }
@@ -196,12 +201,22 @@ final class LocationSharingTests: XCTestCase {
             UIColor(red: 0.71, green: 0.86, blue: 0.73, alpha: 1).setFill()
             renderer.fill(CGRect(x: 90, y: 140, width: 250, height: 210))
             UIColor.white.setFill()
-            for x in stride(from: 30, to: 1080, by: 140) { renderer.fill(CGRect(x: x, y: 0, width: 24, height: 640)) }
-            for y in stride(from: 70, to: 640, by: 130) { renderer.fill(CGRect(x: 0, y: y, width: 1080, height: 24)) }
+            for x in stride(from: 30, to: 1080, by: 140) { renderer.fill(CGRect(x: CGFloat(x), y: 0, width: 24, height: 640)) }
+            for y in stride(from: 70, to: 640, by: 130) { renderer.fill(CGRect(x: 0, y: CGFloat(y), width: 1080, height: 24)) }
             ("MAPA DE PRUEBA · Sin datos reales" as NSString).draw(at: CGPoint(x: 28, y: 596),
                 withAttributes: [.font: UIFont.systemFont(ofSize: 25), .foregroundColor: UIColor.darkGray])
         }
         return LocationMapSnapshot(image: image, pin: CGPoint(x: 540, y: 320))
+    }
+}
+
+@MainActor
+private final class ShareLinkFixture {
+    var pending: CheckedContinuation<URL, Error>?
+    func resolve() async throws -> URL { try await withCheckedThrowingContinuation { pending = $0 } }
+    func finish() {
+        let continuation = pending; pending = nil
+        continuation?.resume(returning: URL(string: "https://www.google.com/maps/place/Cafe/data=!3d40!4d-73")!)
     }
 }
 

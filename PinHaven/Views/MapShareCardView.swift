@@ -27,7 +27,7 @@ struct MapShareCardView: View {
                         Label(message, systemImage: "wifi.exclamationmark")
                         Button("Reintentar mapa") { attempt = UUID() }
                     }
-                    Text("La tarjeta se enviará como imagen, acompañada del enlace. Revisa el contenido antes de compartir.")
+                    Text("Se compartirán la imagen y el enlace. La app elegida decide cómo mostrarlos. Revisa el contenido antes de compartir.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     Text(content.text).font(.callout).textSelection(.enabled)
                     Button { share(image: card.image) } label: {

@@ -27,7 +27,7 @@
 | F1-T03 | Captura GPS y permisos | I | Rechazo, timeout y precisión visibles |
 | F1-T04 | Selección y búsqueda MapKit | I | Revisar punto antes de guardar; error de red claro |
 | F1-T05 | Lista, mapa, búsqueda y filtros | I | Mismos resultados, tildes y favoritos |
-| F1-T06 | Enlaces, compartir e indicaciones | I | Abrir destino correcto; sin notas privadas por defecto |
+| F1-T06 | Enlaces, compartir e indicaciones | I | Abrir destino correcto; compartir enlace y tarjeta con mapa; sin notas privadas; validar imagen/texto en WhatsApp |
 | F1-T07 | Respaldo JSON e importación | I | Restaurar, rechazar inválidos y omitir UUID existentes |
 | F1-T08 | Compilar y ejecutar XCTest en Mac | A | Build y 7 XCTest aprobados el 2026-11-03; Xcode 15.2, iPhone SE (3rd generation), iOS 17.2; ver estado |
 | F1-T09 | Aceptación manual en iPhone | P | Matriz de pruebas; privacidad y GPS reales |
