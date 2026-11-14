@@ -47,7 +47,9 @@ struct MapShareCardView: View {
             .navigationTitle("Tarjeta con mapa")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cerrar") { card.cancel(); dismiss() } } }
-            .task(id: attempt) { await card.prepare(content) }
+            .task(id: attempt) {
+                if card.image == nil { await card.prepare(content) }
+            }
             .onDisappear { card.cancel(keepingPreview: true) }
             .sheet(item: $payload, onDismiss: {
                 if sharingFailed {

@@ -1,6 +1,14 @@
 # Estado real de la entrega 0.1.0
 
-## Actualización actual — 13 de noviembre de 2026
+## Enlace y tarjeta con mapa — 14 de noviembre de 2026
+
+Preparadas las acciones Compartir enlace y Compartir tarjeta con mapa en la ficha. El enlace reutiliza una ficha Google solo cuando contiene un punto verificable coincidente; si no, usa coordenadas guardadas. Se limpian query/fragmento y no se comparten rutas con origen. La tarjeta presenta un mapa de Apple con pin, nombre, dirección disponible y coordenadas; permite revisión, reintento, imagen/texto o enlace solo y copia con confirmación. No lleva notas, etiquetas, categoría/favorito ni se guarda automáticamente en Fotos.
+
+La preparación se cancela al salir/editar y descarta resultados antiguos. El mapa tiene límite de 15 s, no solicita GPS y se conserva completo con sus atribuciones. Sin cambios de esquema, identificadores, firma ni backend. No se modifica el hallazgo de envío diferido mediante contactos frecuentes de WhatsApp.
+
+Compilación, pruebas y revisión visual de esta función se registran al final. La recepción real de imagen y enlace requiere prueba por el propietario en iPhone; una hoja de compartir completada no confirma entrega.
+
+## Bandeja y duplicados — 13 de noviembre de 2026
 
 Preparada una bandeja de Maps visible con contador, revisión/corrección, reintento y descarte confirmado. Las capturas claramente nuevas mantienen la incorporación automática; posibles duplicados quedan pendientes. Crear/editar avisa de sitios cercanos o con el mismo enlace; permite abrir el existente, confirmar una actualización de ubicación conservando los datos personales o guardar ambos. Editar excluye el propio UUID y conserva independientes los demás sitios.
 
