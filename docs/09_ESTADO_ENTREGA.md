@@ -1,5 +1,13 @@
 # Estado real de la entrega 0.1.0
 
+## Actualización actual — 13 de noviembre de 2026
+
+Preparada una bandeja de Maps visible con contador, revisión/corrección, reintento y descarte confirmado. Las capturas claramente nuevas mantienen la incorporación automática; posibles duplicados quedan pendientes. Crear/editar avisa de sitios cercanos o con el mismo enlace; permite abrir el existente, confirmar una actualización de ubicación conservando los datos personales o guardar ambos. Editar excluye el propio UUID y conserva independientes los demás sitios.
+
+La incorporación registra intención antes de modificar SwiftData, marca su finalización y solo después retira el pendiente. Una intención incompleta requiere revisión explícita y abre el sitio vinculado si existe, incluso si se corrigió a un pin lejano. Los recibos completados impiden reintentos y resurrección automática de borrados. No cambia el esquema de Place, la base privada, firma, identificadores ni el comportamiento de restaurar JSON por UUID.
+
+La validación de esta revisión se registra al final. Las secciones siguientes conservan la cronología y sus pendientes históricos; no describen todas el estado actual.
+
 Fecha de referencia del proyecto: **31 de octubre de 2026**, hora de Nueva York. Nombre elegido por el propietario: **PinHaven**. Nombre de proyecto y esquema Xcode: `PinHaven`.
 
 ## Entregado
@@ -186,3 +194,11 @@ La extensión añade autocompletado AddressSearch referenciado al pin; el editor
 Las consultas inversas son puntuales por botón, con cancelación, límite de 12 segundos e invalidación al cambiar el punto/salir. Cuatro pruebas nuevas cubren punto 0,0, limpieza de respuestas, radio, cancelación/respuesta tardía, cambio de punto y error/entrada inválida usando un proveedor simulado sin red ni ubicaciones personales. Validación Windows: 169 comprobaciones estructurales. Compilación y total de 26 XCTest pendientes de CI al preparar esta revisión. Sin cambios de firma, App Groups ni esquema de datos.
 
 Validación PR #4: código 709fa3076968d135d2bf0caa653760042f35b6e7 compilado y 26 XCTest aprobados, cero fallos, TEST SUCCEEDED en https://github.com/dafermen/PinHaven/actions/runs/42248884632 (job 127998306153). Se comprobaron ambos targets app/extensión. Posteriores cambios de documentación no alteran el código validado. Pendientes: integrar y verificar geocodificación real, teclado y selección en iPhone.
+
+## Validación de bandeja y duplicados — 2026-11-13
+
+Código validado: a511ccdf17fd7b3ea36fed6fcf3a26437031c9fb. [GitHub Actions aprobado](https://github.com/dafermen/PinHaven/actions/runs/43553757525), job 132321838331. Xcode 16.4, SDK iPhoneSimulator 18.5, CODE_SIGNING_ALLOWED=NO. Compilan app y extensión; 39 XCTest aprobados, cero fallos, TEST SUCCEEDED. Incluyen 13 casos de InboxReviewTests además de los 26 anteriores. Validación Windows: 179 comprobaciones estructurales, proyecto regenerado y reproducible; git diff --check sin errores. Los cambios posteriores a esa revisión se limitan a documentación y evidencia.
+
+Las pruebas verifican avisos aproximados, elección explícita, conservación de datos personales, retención de errores y reintentos con intención incompleta/completada, incluido un pin corregido lejano sin enlace coincidente. No usan la ubicación del propietario, destinatarios ni red real para comprobar duplicados. Persisten advertencias previas del delegado MainActor de AddressSearch para Swift 6 y mensajes de herramientas de XCTest/AppIntents; no se cambia el modo Swift 5 ni se presentan como errores nuevos de esta función.
+
+PR #5 preparado para revisión; integración a main y nuevo build firmado pendientes. La aceptación manual de bandeja, navegación por coincidencias, tamaños de texto, cierre/reapertura y recepción real desde Google Maps debe hacerse en iPhone con el nuevo build. No se afirma un número de build de TestFlight ni validación en dispositivo de esta revisión.
