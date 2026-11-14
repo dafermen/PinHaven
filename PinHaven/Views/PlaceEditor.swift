@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 import CoreLocation
 
+@MainActor
 struct PlaceEditor: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
@@ -14,6 +15,9 @@ struct PlaceEditor: View {
     @State private var nearbySearch = true
     @State private var preferSitePoint = true
     let place: Place?
+    private let onCommit: ((PlaceRecord) throws -> Void)?
+    @State private var duplicateMatches: [PlaceDuplicates.Match] = []
+    @State private var showDuplicates = false
     @State private var draft: PlaceRecord
     @State private var latitudeText: String
     @State private var longitudeText: String
@@ -22,12 +26,13 @@ struct PlaceEditor: View {
     @State private var accuracy: Double?
     static let categories = ["Restaurantes", "Familia", "Trabajo", "Compras", "Viajes", "Otros"]
 
-    init(place: Place? = nil) {
+    init(place: Place? = nil, incoming: PlaceRecord? = nil, onCommit: ((PlaceRecord) throws -> Void)? = nil) {
         self.place = place
-        let record = place?.record ?? PlaceRecord(name: "", latitude: 0, longitude: 0)
+        self.onCommit = onCommit
+        let record = incoming ?? place?.record ?? PlaceRecord(name: "", latitude: 0, longitude: 0)
         _draft = State(initialValue: record)
-        _latitudeText = State(initialValue: place == nil ? "" : String(record.latitude))
-        _longitudeText = State(initialValue: place == nil ? "" : String(record.longitude))
+        _latitudeText = State(initialValue: place == nil && incoming == nil ? "" : String(record.latitude))
+        _longitudeText = State(initialValue: place == nil && incoming == nil ? "" : String(record.longitude))
     }
 
     var body: some View {
@@ -114,6 +119,11 @@ struct PlaceEditor: View {
                     setPoint(coordinate)
                     if draft.name.isEmpty, let name { draft.name = name }
                     if let address { draft.address = address }
+                }
+            }
+            .sheet(isPresented: $showDuplicates) {
+                DuplicateReviewView(incoming: draft, matches: duplicateMatches, editing: place != nil) { record in
+                    try commit(record)
                 }
             }
             .onDisappear { addresses.stop(); gps.cancel(); searchGPS.cancel() }
@@ -209,10 +219,26 @@ struct PlaceEditor: View {
         draft.latitude = point.latitude; draft.longitude = point.longitude; draft.updatedAt = .now
         guard draft.isValid else { errorMessage = "Revisa la longitud del nombre, notas y demás campos."; return }
         do {
-            if let place { place.apply(draft) } else { context.insert(Place.make(from: draft)) }
-            try context.save(); dismiss()
+            let records = try context.fetch(FetchDescriptor<Place>()).map(\.record)
+            duplicateMatches = PlaceDuplicates.matches(draft, among: records, excluding: place?.id ?? draft.id)
+            if !duplicateMatches.isEmpty { showDuplicates = true; return }
+            try commit(draft)
         } catch {
-            context.rollback(); errorMessage = "No se pudo guardar. \(error.localizedDescription)"
+            errorMessage = "No se pudo guardar. \(error.localizedDescription)"
         }
+    }
+
+    private func commit(_ record: PlaceRecord) throws {
+        if let onCommit { try onCommit(record) }
+        else {
+            do {
+                if let existing = try context.fetch(FetchDescriptor<Place>()).first(where: { $0.id == record.id }) {
+                    existing.apply(record)
+                } else { context.insert(Place.make(from: record)) }
+                try context.save()
+            } catch { context.rollback(); throw error }
+        }
+        showDuplicates = false
+        dismiss()
     }
 }
