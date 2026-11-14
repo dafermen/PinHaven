@@ -164,6 +164,38 @@ final class InboxReviewTests: XCTestCase {
         XCTAssertTrue(try inbox.files().isEmpty)
     }
 
+    @MainActor func testInterruptedUpdateStaysForReviewWithoutCreatingAnotherSite() throws {
+        let inbox = inbox(); defer { try? FileManager.default.removeItem(at: inbox.directory) }
+        let container = try container(); let context = ModelContext(container); context.autosaveEnabled = false
+        let existing = record("Personal name")
+        let received = record("Provider", lat: 40.0001)
+        _ = try LocalStore.importBackup(PlaceBackup(places: [existing]), into: context)
+        try inbox.enqueue(SharedCapture(record: received))
+        let blocker = inbox.directory.appendingPathComponent("Processed")
+        try Data("not a directory".utf8).write(to: blocker)
+        XCTAssertThrowsError(try SharedInboxImport.accept(PlaceDuplicates.updatingLocation(existing, with: received),
+            captureID: received.id, inbox: inbox, into: context))
+        try FileManager.default.removeItem(at: blocker)
+        let retry = try SharedInboxImport.consume(inbox, into: context)
+        XCTAssertEqual(retry.added, 0); XCTAssertEqual(retry.duplicates, 1)
+        XCTAssertEqual(try inbox.files().count, 1)
+        let saved = try context.fetch(FetchDescriptor<Place>())
+        XCTAssertEqual(saved.count, 1); XCTAssertEqual(saved.first?.latitude, received.latitude)
+        XCTAssertEqual(saved.first?.name, existing.name)
+    }
+
+    @MainActor func testInvalidReviewDoesNotMutateStoreOrAcknowledge() throws {
+        let inbox = inbox(); defer { try? FileManager.default.removeItem(at: inbox.directory) }
+        let container = try container(); let context = ModelContext(container); context.autosaveEnabled = false
+        let received = record()
+        try inbox.enqueue(SharedCapture(record: received))
+        var invalid = received; invalid.name = "  "
+        XCTAssertThrowsError(try SharedInboxImport.accept(invalid, captureID: received.id, inbox: inbox, into: context))
+        XCTAssertTrue(try context.fetch(FetchDescriptor<Place>()).isEmpty)
+        XCTAssertEqual(try inbox.files().count, 1)
+        XCTAssertNil(try inbox.receipt(for: received.id))
+    }
+
     func testReceiptValidationAndDiscardDoNotFollowSymbolicLinks() throws {
         let inbox = inbox(); defer { try? FileManager.default.removeItem(at: inbox.directory) }
         let capture = SharedCapture(record: record())

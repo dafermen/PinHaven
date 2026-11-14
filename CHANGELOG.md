@@ -1,5 +1,9 @@
 # Cambios
 
+## Bandeja visible y posibles duplicados — 2026-11-13
+
+Acceso a pendientes de Maps con revisión/corrección, reintento y descarte confirmado. Las coincidencias aproximadas quedan pendientes hasta elegir abrir existente, actualizar su ubicación o guardar ambos. Crear/editar avisa también antes de guardar. Actualizar ubicación conserva datos personales; la restauración JSON mantiene su política por UUID. Recibos locales mínimos permiten terminar reintentos sin duplicar ni resucitar sitios eliminados. Sin cambio de esquema SwiftData, firma o identificadores. Aceptación en iPhone pendiente.
+
 ## Icono de aplicación para distribución — 2026-11-03
 
 Añadido AppIcon de 1024×1024 RGB opaco al catálogo de recursos y seleccionado en Debug/Release. Generador actualizado y validaciones de formato y pertenencia al target para evitar volver a exportar una app sin icono. Aceptación de App Store Connect pendiente de nuevo build.

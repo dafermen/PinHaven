@@ -50,7 +50,15 @@ enum SharedInboxImport {
             try context.save()
         } catch { context.rollback(); throw error }
         // Never remove the pending capture until both the place and the receipt are durable.
-        try inbox.recordReceipt(captureID: captureID, placeID: record.id)
-        try inbox.acknowledge(captureID)
+        do {
+            try inbox.recordReceipt(captureID: captureID, placeID: record.id)
+            try inbox.acknowledge(captureID)
+        } catch { throw InboxCompletionError() }
+    }
+}
+
+private struct InboxCompletionError: LocalizedError {
+    var errorDescription: String? {
+        "El sitio se guardó, pero no se pudo finalizar la incorporación. La entrada sigue en la bandeja; reintenta desde allí y revisa el sitio guardado antes de crear otro."
     }
 }

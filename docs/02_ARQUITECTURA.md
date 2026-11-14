@@ -101,3 +101,13 @@ El target extensión se embebe en PlugIns y es dependencia de la app; usa única
 ## Dirección de un punto
 
 Shared/PointAddressLookup usa ReverseAddressProvider (CLGeocoder en producción) y publica candidatos de texto, nunca modifica registros ni coordenadas. PointAddressSuggestionView aplica solo una dirección elegida al borrador y cancela resultados al cambiar el pin o salir. AddressSearch admite tamaño regional configurable: 4 km de lado para el punto del sitio; conserva 40 km por defecto para el GPS opcional. Autocompletado sigue resolviendo y aplicando dirección/punto juntos.
+
+## Revisión de bandeja y duplicados
+
+InboxView lee hasta 200 pendientes inicialmente y permite mostrar más; expone entradas válidas e ilegibles sin destruirlas. HomeView muestra acceso permanente a la bandeja y un aviso con cantidad pendiente. Al cerrar la bandeja se refresca el consumo; no se consume automáticamente mientras se revisa o se crea un sitio desde HomeView.
+
+PlaceDuplicates compara DTO válidos con CoreLocation.distance, sin usar ubicación del teléfono ni red. Excluye el propio UUID al editar. DuplicateReviewView muestra coincidencias aproximadas, permite abrir la ficha y presenta los campos de ubicación propuestos antes de confirmar una actualización. No se modifica Place hasta confirmar.
+
+SharedInboxImport incorpora automáticamente solo capturas nuevas sin coincidencias; los duplicados quedan en disco. La aceptación explícita usa el UUID de la captura original por separado del UUID del sitio actualizado. Secuencia: guardar SwiftData, escribir InboxReceipt atómico/protegido en PendingPlaces/Processed, retirar pendiente. El recibo guarda solo versión y dos UUID; impide repetir actualizaciones o resucitar borrados. No migra Place ni mueve la base.
+
+No hay una transacción única entre SwiftData y archivos. Si falla el recibo tras guardar un sitio nuevo, el próximo intento detecta el UUID y termina sin sobrescribir. Si falla tras actualizar otro UUID, la entrada permanece para revisión como posible duplicado; no se vuelve a insertar automáticamente. Un error al retirar conserva recibo y pendiente para terminar en el siguiente intento. La restauración JSON sigue omitiendo UUID presentes, sin deduplicación geográfica.

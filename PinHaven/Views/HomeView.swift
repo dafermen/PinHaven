@@ -104,7 +104,7 @@ struct HomeView: View {
                     Button { adding = true } label: { Image(systemName: "plus") }.accessibilityLabel("Guardar sitio")
                 }
             }
-            .sheet(isPresented: $adding) { PlaceEditor() }
+            .sheet(isPresented: $adding, onDismiss: { importSharedPlaces() }) { PlaceEditor() }
             .sheet(isPresented: $showingInbox, onDismiss: { importSharedPlaces() }) { InboxView() }
             .task { importSharedPlaces() }
             .onChange(of: scenePhase) { _, phase in if phase == .active { importSharedPlaces() } }

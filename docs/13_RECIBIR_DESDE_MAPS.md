@@ -40,7 +40,15 @@ La app y extensión usan MARKETING_VERSION y CURRENT_PROJECT_VERSION coherentes.
 
 La base SwiftData permanece en Application Support/PinHaven/places.store dentro de la app. No se migra ni se cambia su esquema. Solo la bandeja PendingPlaces se comparte por App Group; un JSON por UUID se escribe atómicamente y se excluye de respaldos automáticos, con protección completa de archivo.
 
-La app valida versión, tamaño (128 KiB), UUID/nombre de archivo, origen y campos antes de importar. Primero guarda en SwiftData, luego retira la entrada. Si se interrumpe entre ambos pasos, el siguiente intento omite el UUID ya guardado; no sobrescribe ni duplica ese registro. Los archivos inválidos o que no pueden importarse se conservan y se avisa. Se procesan hasta 200 entradas por activación para limitar trabajo de arranque.
+La app valida versión, tamaño (128 KiB), UUID/nombre de archivo, origen y campos antes de importar. Primero guarda en SwiftData, escribe una confirmación local con UUID de captura/sitio y luego retira la entrada. Reintentar una confirmación completada no sobrescribe, duplica ni resucita el sitio. Si falla escribir la confirmación tras actualizar un sitio, el pendiente requiere revisión. Se procesan hasta 200 entradas por activación para limitar trabajo de arranque.
+
+## Revisar pendientes y posibles duplicados
+
+En PinHaven, abre el icono de bandeja. Un aviso en la pantalla principal indica cuántos pendientes hay. Desde la bandeja puedes reintentar o revisar nombre, dirección y punto; los archivos ilegibles permanecen visibles y solo se descartan con confirmación. Mostrar más permite revisar entradas posteriores a las primeras 200.
+
+Los lugares claramente nuevos se incorporan automáticamente. Un sitio cercano o con el mismo enlace queda pendiente como posible duplicado: revisa el lugar, pulsa Guardar y abre una coincidencia para ver el existente o confirmar una actualización de ubicación. Esta actualización conserva los datos personales del sitio existente. Guardar otro sitio conserva ambos; Volver/Cancelar mantiene el pendiente sin cambios.
+
+Un aviso indica posibilidad, no identidad: dos locales del mismo edificio pueden compartir coordenadas. La comprobación es local y no usa el GPS. La restauración de un respaldo JSON conserva su comportamiento por UUID.
 
 La extensión no modifica tus sitios anteriores. Eliminar la app puede eliminar también los pendientes. Exportar desde la app respalda los sitios ya importados, no los pendientes.
 

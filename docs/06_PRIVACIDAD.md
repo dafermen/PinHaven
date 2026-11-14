@@ -67,3 +67,9 @@ Si el enlace compartido identifica el lugar mediante nombre y dirección sin coo
 ## Dirección aproximada del pin
 
 Sugerir dirección de este punto envía las coordenadas del pin a la geocodificación de Apple por acción explícita. No obtiene GPS nuevo ni requiere acceso a contactos; el formateador Contacts no lee la agenda. No se añade backend, Google Places ni seguimiento. Las sugerencias al escribir consultan MapKit con texto y región del sitio; solo se guardan tras la confirmación del usuario.
+
+## Bandeja y aviso de duplicados
+
+Comparar sitios usa exclusivamente coordenadas, nombres y enlaces ya disponibles localmente; no solicita GPS ni transmite la agenda. Los pendientes con error o posibles coincidencias siguen en el App Group hasta incorporarlos o descartarlos con confirmación. Exportar JSON no incluye esos pendientes.
+
+Las confirmaciones de incorporación en PendingPlaces/Processed guardan solo la versión y los UUID de captura y sitio final, con protección completa y exclusión de respaldo. Se mantienen para evitar que un reintento recree un sitio eliminado; no contienen nombres, notas, direcciones ni coordenadas y no se exportan. Descartar pendiente no borra el sitio guardado ni estos recibos. Protección y exclusión requieren comprobación en dispositivo.

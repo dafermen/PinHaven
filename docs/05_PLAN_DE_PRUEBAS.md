@@ -122,3 +122,17 @@ Probar enlace de ruta daddr/saddr: pin en destino y aviso visible; nunca guardar
 - Cambiar pin/salir mientras se consulta: una respuesta antigua no debe rellenar ni mostrar la dirección anterior. Cancelar edición conserva el sitio original.
 - Sin internet, sin dirección postal o geocodificación fallida: mensaje recuperable, entrada manual y coordenadas existentes conservadas. No exigir dirección postal para guardar.
 - Probar iOS 17 y actual, voz/texto grande y teclado. La dirección inversa es aproximada: comprobar calle, número, ciudad y ZIP en un sitio público, sin suponer cobertura universal.
+
+## Bandeja visible y revisión de duplicados
+
+- Actualizar sobre una instalación con sitios y pendientes. Abrir bandeja desde el icono de entrada; comprobar contador y aviso de pendientes, estado vacío y acceso después de vaciarla.
+- Compartir un sitio claramente distante: incorporación automática una sola vez. Compartir uno a menos de 50 m de otro: conservar pendiente y mostrar posible duplicado. Dos negocios distintos en el mismo edificio deben poder guardarse ambos.
+- Revisar el pendiente: cambiar nombre/dirección/pin y guardar. Volver/cancelar conserva la entrada y no cambia la agenda. Abrir existente permite comprobar su ficha.
+- Actualizar ubicación: revisar dirección y coordenadas propuestas; confirmar y verificar que nombre personal, notas, categoría, etiquetas, favorito y creación siguen intactos. La cantidad de sitios no aumenta y el pendiente desaparece.
+- Guardar otro sitio: ambos UUID y datos se conservan. Editar uno de ellos permite guardar sus propios cambios; no se actualiza un tercer sitio por accidente. Un sitio aislado no se avisa a sí mismo.
+- Sin conexión, revisar/reintentar sigue funcionando para capturas con punto confirmado; buscar direcciones puede fallar sin impedir edición manual.
+- Con una entrada dañada de prueba: permanece visible, Reintentar no la elimina, Descartar exige confirmación y no borra lugares de la agenda. Comprobar más de 200 pendientes con Mostrar más.
+- Cerrar/reabrir entre guardado, recibo y retirada: nunca crear automáticamente un segundo sitio ni sobrescribir datos personales. Si una actualización quedó sin recibo, debe seguir pendiente para revisión.
+- VoiceOver, tamaños de texto grandes y pantalla pequeña: navegar coincidencias, dirección/coordenadas propuestas, botones y errores. Validar en iOS 17 y versión actual.
+
+InboxReviewTests cubre umbrales, nombre normalizado, enlaces/rutas, exclusión del propio UUID, 0,0 y datos inválidos, conservación de campos personales, importación distante, retención de coincidencias, decisiones explícitas, reintentos/recibos, fallo de recibo, no resucitar borrados, corrupción y descarte sin seguir enlaces simbólicos. No sustituye la aceptación visual y funcional en iPhone.
