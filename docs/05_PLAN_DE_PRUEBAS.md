@@ -136,3 +136,16 @@ Probar enlace de ruta daddr/saddr: pin en destino y aviso visible; nunca guardar
 - VoiceOver, tamaños de texto grandes y pantalla pequeña: navegar coincidencias, dirección/coordenadas propuestas, botones y errores. Validar en iOS 17 y versión actual.
 
 InboxReviewTests cubre umbrales, nombre normalizado, enlaces/rutas, exclusión del propio UUID, 0,0 y datos inválidos, conservación de campos personales, importación distante, retención de coincidencias, decisiones explícitas, reintentos/recibos, fallo de recibo, no resucitar borrados, corrupción y descarte sin seguir enlaces simbólicos. No sustituye la aceptación visual y funcional en iPhone.
+
+## Compartir enlace y tarjeta con mapa
+
+- Ficha: dos botones directos, sin menú extra para enlace. Probar sitio manual, recibido de Google y Apple, sin dirección y 0,0.
+- Enlace de ficha Google explícito coincidente: compartir URL limpio. Mover pin más de 1 m, texto sin punto, viewport, ruta con origen, enlace no admitido o sin red: compartir coordenadas guardadas; no origen, seguimiento ni notas. Cancelar durante resolución o editar/salir: ninguna hoja tardía debe abrirse.
+- Tarjeta: revisar pin en el sitio real, mapa completo y atribuciones legibles. Probar nombre largo con emoji, dirección de varias líneas/vacía, texto grande y VoiceOver. El mensaje conserva texto completo cuando el diseño lo acota con elipsis.
+- Elegir WhatsApp desde la hoja, luego app y destinatario de prueba del propietario. Confirmar que llegan imagen y nombre/dirección/enlace y que el enlace abre el punto guardado. Probar también Mensajes y cancelación. Ningún test automatizado manda mensajes reales.
+- Verificar por separado contactos frecuentes de WhatsApp y entrada por el icono de la app; conservar el hallazgo previo de envío diferido sin prometer una corrección por esta función.
+- Volver de la hoja de compartir mantiene tarjeta visible; compartir otra vez funciona. Fallo local se muestra al cerrar la hoja, sin mensaje falso de entrega.
+- Sin red/fallo/tiempo agotado de snapshot: reintentar, compartir solo enlace y copiar siguen disponibles. Cerrar durante carga o responder tarde no debe mostrar mapa de otro intento ni abrir hojas al volver.
+- Verificar ausencia de notas, etiquetas, categoría/favorito y origen de rutas en imagen y texto. No aparecen archivos nuevos en Fotos ni tarjetas en los respaldos de la app.
+
+LocationSharingTests usa proveedores simulados y datos ficticios, sin Maps real ni WhatsApp. Cubre política de enlaces, privacidad del mensaje, composición con textos largos, payload imagen/texto, validación de pin, error, cancelación, respuesta antigua y timeout. CI exporta únicamente dos PNG sintéticos para inspección visual; no valida cobertura real de mapas ni recepción del mensaje.

@@ -2,7 +2,7 @@
 
 **Your places, always close.** Agenda personal de ubicaciones para iPhone, desarrollada en Swift y SwiftUI. Guarda un restaurante, una entrada o un punto sin dirección postal y recupéralo por su nombre, notas o etiquetas.
 
-**Estado: 0.1.0 — compilación y 39 XCTest aprobados en CI macOS el 13 de noviembre de 2026.** Incluye app y extensión. Bandeja, duplicados y consultas de dirección necesitan aceptación real en iPhone. Localización pendiente. Este repositorio contiene código, no un instalador IPA.
+**Estado: 0.1.0 — compilación y 51 XCTest aprobados en CI macOS el 14 de noviembre de 2026.** Incluye app y extensión. Compartir tarjeta/enlace, bandeja, duplicados y consultas de dirección necesitan aceptación real en iPhone. Localización pendiente. Este repositorio contiene código, no un instalador IPA.
 
 ## Identidad e idiomas
 
@@ -24,7 +24,7 @@ La localización de la interfaz todavía está pendiente en F1-T10; el código i
 - Nombre, dirección opcional, coordenadas, notas, categoría, etiquetas y favorito.
 - Búsqueda sin distinguir mayúsculas ni tildes; filtros combinables por categoría y favorito.
 - Orden por modificación reciente o por nombre.
-- Acciones directas para Google Maps y Compartir con otras apps, sin menú intermedio. Compartir envía un mensaje de texto con nombre, dirección y enlace. Copiar confirma «Enlace copiado».
+- Compartir enlace abre la hoja de iOS con nombre, dirección y enlace; Compartir tarjeta con mapa prepara una imagen con pin y vista previa, acompañada del texto/enlace. Copiar confirma «Enlace copiado».
 - Abrir indicaciones con Apple Maps o enlaces universales de Google Maps.
 - Pegar enlaces con coordenadas explícitas compatibles. Los enlaces cortos no se resuelven en esta versión.
 - Exportar todos los sitios a JSON e importar nuevos identificadores con confirmación.

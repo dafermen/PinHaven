@@ -73,3 +73,11 @@ Sugerir dirección de este punto envía las coordenadas del pin a la geocodifica
 Comparar sitios usa exclusivamente coordenadas, nombres y enlaces ya disponibles localmente; no solicita GPS ni transmite la agenda. Los pendientes con error o posibles coincidencias siguen en el App Group hasta incorporarlos o descartarlos con confirmación. Exportar JSON no incluye esos pendientes.
 
 Las confirmaciones de incorporación en PendingPlaces/Processed guardan solo la versión, los UUID de captura y sitio final y un estado de finalización, con protección completa y exclusión de respaldo. Se mantienen para evitar que un reintento recree un sitio eliminado; no contienen nombres, notas, direcciones ni coordenadas y no se exportan. Descartar pendiente no borra el sitio guardado ni estos recibos. Protección y exclusión requieren comprobación en dispositivo.
+
+## Compartir enlace y tarjeta visual
+
+Al pulsar Compartir enlace, un enlace corto de Google admitido puede consultarse por HEAD para comprobar si sigue apuntando al pin guardado. Se aplican límites/hosts del resolver de recepción, sin cookies ni credenciales. Solo se reutilizan fichas con punto explícito coincidente; rutas y consultas ambiguas se sustituyen por coordenadas. No se envían notas ni un origen de ruta y se retiran query/fragmento del enlace reutilizado. El texto contiene nombre, dirección y URL elegidos.
+
+Preparar tarjeta solicita a Apple un mapa alrededor del pin guardado por acción explícita, sin GPS. La app dibuja mapa, pin, nombre, dirección y coordenadas en una imagen temporal en memoria; no la guarda automáticamente en Fotos ni en el respaldo. Compartir entrega imagen y texto/enlace a la aplicación elegida, que controla su tratamiento y presentación. No se incluyen notas, etiquetas, categoría, favorito ni datos de rutas. No hay servidor propio, nuevo permiso de ubicación, acceso a contactos o cuenta Business/API de WhatsApp.
+
+Las tarjetas sintéticas publicadas como artefactos de CI duran siete días y usan solo datos de prueba del repositorio; no contienen información de la agenda del propietario.

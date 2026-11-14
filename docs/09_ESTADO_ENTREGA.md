@@ -1,6 +1,14 @@
 # Estado real de la entrega 0.1.0
 
-## Actualización actual — 13 de noviembre de 2026
+## Enlace y tarjeta con mapa — 14 de noviembre de 2026
+
+Preparadas las acciones Compartir enlace y Compartir tarjeta con mapa en la ficha. El enlace reutiliza una ficha Google solo cuando contiene un punto verificable coincidente; si no, usa coordenadas guardadas. Se limpian query/fragmento y no se comparten rutas con origen. La tarjeta presenta un mapa de Apple con pin, nombre, dirección disponible y coordenadas; permite revisión, reintento, imagen/texto o enlace solo y copia con confirmación. No lleva notas, etiquetas, categoría/favorito ni se guarda automáticamente en Fotos.
+
+La preparación se cancela al salir/editar y descarta resultados antiguos. El mapa tiene límite de 15 s, no solicita GPS y se conserva completo con sus atribuciones. Sin cambios de esquema, identificadores, firma ni backend. No se modifica el hallazgo de envío diferido mediante contactos frecuentes de WhatsApp.
+
+Compilación, pruebas y revisión visual de esta función se registran al final. La recepción real de imagen y enlace requiere prueba por el propietario en iPhone; una hoja de compartir completada no confirma entrega.
+
+## Bandeja y duplicados — 13 de noviembre de 2026
 
 Preparada una bandeja de Maps visible con contador, revisión/corrección, reintento y descarte confirmado. Las capturas claramente nuevas mantienen la incorporación automática; posibles duplicados quedan pendientes. Crear/editar avisa de sitios cercanos o con el mismo enlace; permite abrir el existente, confirmar una actualización de ubicación conservando los datos personales o guardar ambos. Editar excluye el propio UUID y conserva independientes los demás sitios.
 
@@ -202,3 +210,13 @@ Código validado: a511ccdf17fd7b3ea36fed6fcf3a26437031c9fb. [GitHub Actions apro
 Las pruebas verifican avisos aproximados, elección explícita, conservación de datos personales, retención de errores y reintentos con intención incompleta/completada, incluido un pin corregido lejano sin enlace coincidente. No usan la ubicación del propietario, destinatarios ni red real para comprobar duplicados. Persisten advertencias previas del delegado MainActor de AddressSearch para Swift 6 y mensajes de herramientas de XCTest/AppIntents; no se cambia el modo Swift 5 ni se presentan como errores nuevos de esta función.
 
 PR #5 preparado para revisión; integración a main y nuevo build firmado pendientes. La aceptación manual de bandeja, navegación por coincidencias, tamaños de texto, cierre/reapertura y recepción real desde Google Maps debe hacerse en iPhone con el nuevo build. No se afirma un número de build de TestFlight ni validación en dispositivo de esta revisión.
+
+## Validación de enlace y tarjeta — 2026-11-14
+
+Código validado: 47b96c6ebedd23e1ecf531aaac0c63bd45d5f564. [GitHub Actions aprobado](https://github.com/dafermen/PinHaven/actions/runs/43624490587), job 132537191418. Xcode 16.4, SDK iPhoneSimulator 18.5, CODE_SIGNING_ALLOWED=NO. Compilan app y extensión; 51 XCTest, cero fallos, TEST SUCCEEDED. Doce casos nuevos de LocationSharingTests más los 39 anteriores cubren privacidad, política de enlaces, errores/cancelación, texto largo, Retina, payload imagen/texto y respuestas tardías/timeout. Los proveedores de mapas/redirecciones se simulan; no envían mensajes ni consultan mapas reales.
+
+Windows: 187 comprobaciones estructurales, generador reproducible y git diff --check sin errores. CI generó el artefacto share-card-preview con dos PNG ficticios; se inspeccionaron nombre normal/largo, salto de líneas, elipsis, contraste de cabecera, pin, márgenes y pie/atribución. Los defectos visuales iniciales se corrigieron antes de esta validación. El compositor y sus fixtures son idénticos al código de las imágenes revisadas. Las tarjetas finales se descargaron para revisión local; no representan una ubicación real del propietario.
+
+Persisten advertencias anteriores del delegado MainActor de AddressSearch para Swift 6 y mensajes de herramientas AppIntents/XCTest; la configuración sigue en Swift 5. El último commit solo registra documentación y evidencia, sin cambiar el código validado.
+
+PR #6 preparado para revisión; integración en main, build firmado y prueba por el propietario en iPhone pendientes. La aceptación debe comprobar que WhatsApp recibe imagen y texto/enlace, que el enlace abre el pin guardado y que funcionan cancelar/volver/reintentar con mapas reales. No se promete vista previa automática del enlace ni entrega remota por completar la hoja de iOS. El hallazgo previo de contactos frecuentes con envío diferido se conserva sin atribuirle una corrección.

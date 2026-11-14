@@ -13,7 +13,7 @@
 | HU05 | Encontrar registros | Buscar nombre, dirección, notas, categoría o etiquetas; ignorar tildes y mayúsculas; combinar filtros | Implementado, por validar |
 | HU06 | Consultar lista y mapa | Mismos resultados filtrados; abrir ficha desde lista o marcador; vacío con acción clara | Implementado, por validar |
 | HU07 | Editar y eliminar | Cancelar edición conserva datos; borrar exige confirmación; error de guardado no se oculta | Implementado, por validar |
-| HU08 | Compartir sitio | Acciones directas sin duplicados; compartir texto con nombre, dirección y URL universal mediante hoja iOS; copiar nombre/dirección/enlace con confirmación; no incluir notas privadas | Implementado, por validar |
+| HU08 | Compartir sitio | Compartir enlace y tarjeta con mapa como acciones directas; revisar tarjeta y enviar imagen más texto/enlace mediante hoja iOS; copiar con confirmación; no incluir notas privadas | Implementado, por validar |
 | HU09 | Iniciar indicaciones | Abrir destino en Apple Maps o Google Maps mediante URL; navegador como alternativa del enlace | Implementado, por validar |
 | HU10 | Respaldar y restaurar | Exportar todos; validar JSON y versión; confirmar importación; mismo UUID se omite | Implementado, por validar |
 | HU11 | Aprovechar enlace pegado | Extraer coordenadas explícitas de formatos admitidos; enlaces pegados conservan la ruta manual; extensión recibe y expande enlaces limitados; revisar antes de guardar | Implementado, por validar |
@@ -67,3 +67,11 @@ Se considera posible duplicado un punto a 50 m o menos, el mismo nombre normaliz
 Crear/recibir permite abrir el existente, revisar y confirmar Actualizar ubicación o Guardar otro sitio. Actualizar conserva UUID, creación, nombre, notas, etiquetas, categoría y favorito; aplica coordenadas y dirección/enlace no vacíos. Editar un sitio excluye su UUID del aviso y permite guardar sus propios cambios sin fusionarlo con otro. Cancelar conserva agenda y pendiente.
 
 La intención de incorporación se registra antes de modificar la agenda y se marca completada antes de retirar el pendiente. Una intención incompleta exige revisión explícita; si el sitio vinculado existe, se abre su estado guardado. Repetir una entrada completada no sobrescribe ni resucita un sitio eliminado. No se cambia el esquema SwiftData. La copia de seguridad JSON no incluye pendientes ni confirmaciones internas.
+
+## Dos opciones de compartir — 14 de noviembre de 2026
+
+Compartir enlace abre directamente la hoja nativa con nombre, dirección y URL. Una ficha de Google /maps/place con pin explícito a 1 m o menos del punto guardado puede conservarse, sin query ni fragmento. Para enlaces cortos admitidos, se comprueba la redirección con el resolver HEAD existente antes de reutilizar el enlace limpio. Un viewport, consulta textual, ruta, host no admitido, error de red o pin distinto usa el enlace por coordenadas guardadas. Cancelar o editar/salir invalida la preparación pendiente. No se promete que WhatsApp genere una vista previa automática.
+
+Compartir tarjeta con mapa muestra una vista previa con mapa de Apple, marcador en el punto guardado, nombre, dirección disponible y coordenadas. Generación puntual, cancelable y con límite de 15 segundos; sin GPS. Mantener completo el mapa y su atribución. Los textos largos se limitan visualmente con elipsis, conservando el texto completo permitido en el mensaje. Compartir entrega imagen más texto con enlace por coordenadas a la hoja iOS; no es una ubicación nativa/interactiva de WhatsApp. Cada app receptora decide cómo conservar imagen y texto, por validar en dispositivo.
+
+Si el mapa falla, se permite reintentar, compartir solo enlace o copiarlo con confirmación. La tarjeta permanece únicamente en memoria de la app, sin guardarla automáticamente en Fotos, respaldo o servidor. No compartir notas, etiquetas, categoría, favorito ni origen de una ruta. No interpretar completar la hoja de iOS como confirmación de entrega remota.
