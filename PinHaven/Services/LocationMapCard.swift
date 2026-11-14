@@ -66,7 +66,8 @@ enum LocationMapCardComposer {
         let format = UIGraphicsImageRendererFormat(); format.scale = 1; format.opaque = true
         return UIGraphicsImageRenderer(size: size, format: format).image { renderer in
             UIColor.white.setFill(); renderer.fill(CGRect(origin: .zero, size: size))
-            teal.withAlphaComponent(0.08).setFill(); renderer.fill(CGRect(x: 0, y: 0, width: width, height: 96))
+            UIColor(red: 0.93, green: 0.98, blue: 0.98, alpha: 1).setFill()
+            renderer.fill(CGRect(x: 0, y: 0, width: width, height: 96))
             draw("PinHaven", at: CGRect(x: padding, y: 27, width: 300, height: 48),
                  font: .systemFont(ofSize: 36, weight: .bold), color: teal)
             draw("UN LUGAR PARA RECORDAR", at: CGRect(x: 440, y: 38, width: 592, height: 32),
@@ -78,14 +79,14 @@ enum LocationMapCardComposer {
             drawPin(at: CGPoint(x: mapRect.minX + pin.x * scale, y: mapRect.minY + pin.y * scale),
                     context: renderer.cgContext)
             draw(content.name, at: CGRect(x: padding, y: nameY, width: bodyWidth, height: nameHeight),
-                 font: nameFont, color: ink)
+                 font: nameFont, color: ink, lines: 3)
             if !content.address.isEmpty {
                 draw(content.address, at: CGRect(x: padding, y: addressY, width: bodyWidth, height: addressHeight),
-                     font: addressFont, color: .darkGray)
+                     font: addressFont, color: .darkGray, lines: 5)
             }
             draw(content.coordinates, at: CGRect(x: padding, y: coordinatesY, width: bodyWidth, height: 44),
                  font: .monospacedDigitSystemFont(ofSize: 28, weight: .regular), color: .darkGray)
-            teal.withAlphaComponent(0.15).setFill()
+            UIColor(red: 0.83, green: 0.92, blue: 0.92, alpha: 1).setFill()
             renderer.fill(CGRect(x: padding, y: footerY - 12, width: bodyWidth, height: 2))
             draw("Abre el enlace que acompaña esta tarjeta", at: CGRect(x: padding, y: footerY + 10, width: bodyWidth, height: 42),
                  font: .systemFont(ofSize: 30, weight: .semibold), color: teal)
@@ -100,10 +101,14 @@ enum LocationMapCardComposer {
         return ceil(min(CGFloat(lines) * font.lineHeight, max(font.lineHeight, measured)))
     }
 
-    private static func draw(_ text: String, at rect: CGRect, font: UIFont, color: UIColor) {
-        let style = NSMutableParagraphStyle(); style.lineBreakMode = .byTruncatingTail
-        (text as NSString).draw(with: rect, options: [.usesLineFragmentOrigin, .usesFontLeading],
-            attributes: [.font: font, .foregroundColor: color, .paragraphStyle: style], context: nil)
+    private static func draw(_ text: String, at rect: CGRect, font: UIFont, color: UIColor, lines: Int = 1) {
+        let label = UILabel(frame: rect)
+        label.text = text; label.font = font; label.textColor = color
+        label.numberOfLines = lines; label.lineBreakMode = .byTruncatingTail
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        context.saveGState(); context.translateBy(x: rect.minX, y: rect.minY)
+        label.drawText(in: CGRect(origin: .zero, size: rect.size))
+        context.restoreGState()
     }
 
     private static func drawPin(at point: CGPoint, context: CGContext) {
