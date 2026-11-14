@@ -102,6 +102,10 @@ final class LocationSharingTests: XCTestCase {
         XCTAssertTrue(items.first is UIImage)
         XCTAssertEqual(items.last as? String, normal.text)
         XCTAssertEqual(LocationSharePayload(text: normal.text).activityItems.count, 1)
+        let retina = UIImage(cgImage: try XCTUnwrap(snapshot.image.cgImage), scale: 2, orientation: .up)
+        let retinaCard = try LocationMapCardComposer.render(normal,
+            snapshot: LocationMapSnapshot(image: retina, pin: CGPoint(x: 270, y: 160)))
+        XCTAssertEqual(retinaCard.size, image.size)
         try XCTUnwrap(image.pngData()).write(to: FileManager.default.temporaryDirectory.appendingPathComponent("PinHavenCardPreview.png"))
 
         var long = record()

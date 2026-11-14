@@ -21,8 +21,9 @@ private final class AppleLocationMapSnapshotProvider: LocationMapSnapshotProvide
         let coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
         let options = MKMapSnapshotter.Options()
         options.region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 900, longitudinalMeters: 900)
-        options.size = CGSize(width: 1080, height: 640)
-        options.scale = 1
+        // Logical phone-sized map at 2x: street labels remain readable in the shared card.
+        options.size = CGSize(width: 540, height: 320)
+        options.scale = 2
         options.mapType = .standard
         options.showsBuildings = true
         options.traitCollection = UITraitCollection(userInterfaceStyle: .light)
