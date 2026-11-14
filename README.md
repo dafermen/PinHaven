@@ -2,7 +2,7 @@
 
 **Your places, always close.** Agenda personal de ubicaciones para iPhone, desarrollada en Swift y SwiftUI. Guarda un restaurante, una entrada o un punto sin dirección postal y recupéralo por su nombre, notas o etiquetas.
 
-**Estado: 0.1.0 — compilación y 39 XCTest aprobados en CI macOS el 13 de noviembre de 2026.** Incluye app y extensión. Bandeja, duplicados y consultas de dirección necesitan aceptación real en iPhone. Localización pendiente. Este repositorio contiene código, no un instalador IPA.
+**Estado: 0.1.0 — compilación y 51 XCTest aprobados en CI macOS el 14 de noviembre de 2026.** Incluye app y extensión. Compartir tarjeta/enlace, bandeja, duplicados y consultas de dirección necesitan aceptación real en iPhone. Localización pendiente. Este repositorio contiene código, no un instalador IPA.
 
 ## Identidad e idiomas
 

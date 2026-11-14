@@ -1,0 +1,30 @@
+PinHaven — Compartir enlace y tarjeta con mapa
+Fecha local: 2026-11-14, America/New_York
+
+Código validado: 47b96c6ebedd23e1ecf531aaac0c63bd45d5f564
+CI: https://github.com/dafermen/PinHaven/actions/runs/43624490587
+Job: 132537191418
+Xcode 16.4, SDK iPhoneSimulator 18.5, CODE_SIGNING_ALLOWED=NO
+Resultado: app/extensión compiladas; 51 XCTest; cero fallos; TEST SUCCEEDED.
+
+Windows: python scripts/validate_repository.py
+187 comprobaciones estructurales; proyecto regenerado y reproducible.
+git diff --check: sin errores.
+Sin Xcode/Swift local en Windows. Compilación y XCTest proceden de CI macOS.
+
+12 pruebas nuevas: campos privados excluidos; URL por punto guardado;
+ficha Google comprobada/limpia; pin movido, viewport, ruta, origen, host no admitido;
+enlace corto, error sin red y cancelación; contenido inválido;
+composición normal/textos largos/Retina y payload imagen más texto;
+pin fuera de mapa; proveedor simulado, error, cancelación, respuesta antigua y timeout.
+
+Artefacto CI: share-card-preview (14126045390), dos PNG con mapa sintético y datos ficticios.
+Inspección visual: cabecera contrastada; nombre/dirección largos en varias líneas
+y elipsis final; pin, márgenes y pie visibles; sin notas privadas.
+No son capturas de una agenda real ni verifican cartografía de Apple por red.
+Los cambios posteriores al código validado solo registran documentación/evidencia.
+
+Pendiente: integrar PR #6, build firmado y prueba de imagen/texto/enlace en WhatsApp iPhone.
+Sin mensajes reales enviados por las pruebas ni verificación de entrega remota.
+Sin migración SwiftData, servicios propios, cuenta WhatsApp Business, permisos Fotos/Contactos
+ni corrección del hallazgo previo de envío diferido por contactos frecuentes.
