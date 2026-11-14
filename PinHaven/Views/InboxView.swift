@@ -58,7 +58,8 @@ struct InboxView: View {
             .task { reload() }
             .refreshable { reload() }
             .sheet(item: $selected, onDismiss: { reload() }) { capture in
-                PlaceEditor(incoming: capture.record) { record in
+                let target = reviewTarget(for: capture)
+                PlaceEditor(place: target, incoming: target == nil ? capture.record : nil) { record in
                     try SharedInboxImport.accept(record, captureID: capture.id, inbox: SharedInbox.live(), into: context)
                 }
             }
@@ -78,9 +79,19 @@ struct InboxView: View {
     }
 
     private func status(_ capture: SharedCapture) -> String {
+        if let inbox = try? SharedInbox.live(), let receipt = try? inbox.receipt(for: capture.id) {
+            return receipt.completed ? "Ya incorporado; reintentar retirará el pendiente."
+                : "Incorporación interrumpida: comprueba el sitio guardado antes de confirmar."
+        }
         if places.contains(where: { $0.id == capture.id }) { return "Ya guardado; reintentar terminará la incorporación." }
         return PlaceDuplicates.matches(capture.record, among: places.map(\.record)).isEmpty
             ? "Pendiente de incorporación" : "Posible duplicado: revisa antes de guardar."
+    }
+
+    private func reviewTarget(for capture: SharedCapture) -> Place? {
+        guard let inbox = try? SharedInbox.live(), let receipt = try? inbox.receipt(for: capture.id),
+              !receipt.completed else { return nil }
+        return places.first(where: { $0.id == receipt.placeID })
     }
 
     private func reload() {

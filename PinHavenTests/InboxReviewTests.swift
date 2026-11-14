@@ -142,10 +142,10 @@ final class InboxReviewTests: XCTestCase {
         let first = try SharedInboxImport.consume(inbox, into: context)
         XCTAssertEqual(first.failed, 1)
         XCTAssertEqual(try inbox.files().count, 1)
-        XCTAssertEqual(try context.fetch(FetchDescriptor<Place>()).count, 1)
+        XCTAssertEqual(try context.fetch(FetchDescriptor<Place>()).count, 0)
         try FileManager.default.removeItem(at: blocker)
         let retry = try SharedInboxImport.consume(inbox, into: context)
-        XCTAssertEqual(retry.added, 0); XCTAssertEqual(retry.failed, 0)
+        XCTAssertEqual(retry.added, 1); XCTAssertEqual(retry.failed, 0)
         XCTAssertEqual(try context.fetch(FetchDescriptor<Place>()).count, 1)
         XCTAssertTrue(try inbox.files().isEmpty)
     }
@@ -171,17 +171,35 @@ final class InboxReviewTests: XCTestCase {
         let received = record("Provider", lat: 40.0001)
         _ = try LocalStore.importBackup(PlaceBackup(places: [existing]), into: context)
         try inbox.enqueue(SharedCapture(record: received))
-        let blocker = inbox.directory.appendingPathComponent("Processed")
-        try Data("not a directory".utf8).write(to: blocker)
-        XCTAssertThrowsError(try SharedInboxImport.accept(PlaceDuplicates.updatingLocation(existing, with: received),
-            captureID: received.id, inbox: inbox, into: context))
-        try FileManager.default.removeItem(at: blocker)
+        // Simulate exit after saving a corrected, distant point but before the completion receipt.
+        var corrected = received; corrected.latitude = 42; corrected.sourceURL = ""
+        let updated = PlaceDuplicates.updatingLocation(existing, with: corrected)
+        try inbox.recordReceipt(captureID: received.id, placeID: existing.id, completed: false)
+        let target = try XCTUnwrap(context.fetch(FetchDescriptor<Place>()).first)
+        target.apply(updated); try context.save()
         let retry = try SharedInboxImport.consume(inbox, into: context)
-        XCTAssertEqual(retry.added, 0); XCTAssertEqual(retry.duplicates, 1)
+        XCTAssertEqual(retry.added, 0); XCTAssertEqual(retry.failed, 1)
         XCTAssertEqual(try inbox.files().count, 1)
         let saved = try context.fetch(FetchDescriptor<Place>())
-        XCTAssertEqual(saved.count, 1); XCTAssertEqual(saved.first?.latitude, received.latitude)
+        XCTAssertEqual(saved.count, 1); XCTAssertEqual(saved.first?.latitude, corrected.latitude)
         XCTAssertEqual(saved.first?.name, existing.name)
+        try SharedInboxImport.accept(updated, captureID: received.id, inbox: inbox, into: context)
+        XCTAssertTrue(try inbox.files().isEmpty)
+        XCTAssertEqual(try inbox.receipt(for: received.id)?.completed, true)
+    }
+
+    @MainActor func testIntentWithoutSavedPlaceRequiresExplicitReview() throws {
+        let inbox = inbox(); defer { try? FileManager.default.removeItem(at: inbox.directory) }
+        let container = try container(); let context = ModelContext(container); context.autosaveEnabled = false
+        let received = record()
+        try inbox.enqueue(SharedCapture(record: received))
+        try inbox.recordReceipt(captureID: received.id, placeID: received.id, completed: false)
+        let retry = try SharedInboxImport.consume(inbox, into: context)
+        XCTAssertEqual(retry.failed, 1); XCTAssertEqual(retry.added, 0)
+        XCTAssertTrue(try context.fetch(FetchDescriptor<Place>()).isEmpty)
+        try SharedInboxImport.accept(received, captureID: received.id, inbox: inbox, into: context)
+        XCTAssertEqual(try context.fetch(FetchDescriptor<Place>()).count, 1)
+        XCTAssertTrue(try inbox.files().isEmpty)
     }
 
     @MainActor func testInvalidReviewDoesNotMutateStoreOrAcknowledge() throws {

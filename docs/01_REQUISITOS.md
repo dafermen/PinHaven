@@ -66,4 +66,4 @@ Se considera posible duplicado un punto a 50 m o menos, el mismo nombre normaliz
 
 Crear/recibir permite abrir el existente, revisar y confirmar Actualizar ubicación o Guardar otro sitio. Actualizar conserva UUID, creación, nombre, notas, etiquetas, categoría y favorito; aplica coordenadas y dirección/enlace no vacíos. Editar un sitio excluye su UUID del aviso y permite guardar sus propios cambios sin fusionarlo con otro. Cancelar conserva agenda y pendiente.
 
-La confirmación de incorporación se registra localmente antes de retirar el pendiente. Repetir una entrada completada no sobrescribe ni resucita un sitio eliminado. No se cambia el esquema SwiftData. La copia de seguridad JSON no incluye pendientes ni confirmaciones internas.
+La intención de incorporación se registra antes de modificar la agenda y se marca completada antes de retirar el pendiente. Una intención incompleta exige revisión explícita; si el sitio vinculado existe, se abre su estado guardado. Repetir una entrada completada no sobrescribe ni resucita un sitio eliminado. No se cambia el esquema SwiftData. La copia de seguridad JSON no incluye pendientes ni confirmaciones internas.

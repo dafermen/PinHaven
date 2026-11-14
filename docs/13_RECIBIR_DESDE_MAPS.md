@@ -40,7 +40,7 @@ La app y extensión usan MARKETING_VERSION y CURRENT_PROJECT_VERSION coherentes.
 
 La base SwiftData permanece en Application Support/PinHaven/places.store dentro de la app. No se migra ni se cambia su esquema. Solo la bandeja PendingPlaces se comparte por App Group; un JSON por UUID se escribe atómicamente y se excluye de respaldos automáticos, con protección completa de archivo.
 
-La app valida versión, tamaño (128 KiB), UUID/nombre de archivo, origen y campos antes de importar. Primero guarda en SwiftData, escribe una confirmación local con UUID de captura/sitio y luego retira la entrada. Reintentar una confirmación completada no sobrescribe, duplica ni resucita el sitio. Si falla escribir la confirmación tras actualizar un sitio, el pendiente requiere revisión. Se procesan hasta 200 entradas por activación para limitar trabajo de arranque.
+La app valida versión, tamaño (128 KiB), UUID/nombre de archivo, origen y campos antes de importar. Registra una intención incompleta con UUID de captura/sitio, guarda en SwiftData, marca la confirmación completada y retira la entrada. Reintentar una confirmación completada no sobrescribe, duplica ni resucita el sitio. Una intención incompleta exige revisión; si el sitio vinculado existe, la revisión abre sus datos guardados para comprobarlos. Se procesan hasta 200 entradas por activación para limitar trabajo de arranque.
 
 ## Revisar pendientes y posibles duplicados
 

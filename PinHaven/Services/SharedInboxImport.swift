@@ -10,6 +10,11 @@ enum SharedInboxImport {
             do {
                 let records = try context.fetch(FetchDescriptor<Place>()).map(\.record)
                 let capture = try inbox.read(file)
+                // A previous explicit correction may have moved far from the original capture.
+                // Never infer its outcome from distance; require review of an unfinished attempt.
+                if let receipt = try inbox.receipt(for: capture.id), !receipt.completed {
+                    failed += 1; continue
+                }
                 if try finishPrevious(capture.id, inbox: inbox, records: records) { continue }
                 if !PlaceDuplicates.matches(capture.record, among: records).isEmpty {
                     duplicates += 1; continue
@@ -30,7 +35,8 @@ enum SharedInboxImport {
     }
 
     private static func finishPrevious(_ id: UUID, inbox: SharedInbox, records: [PlaceRecord]) throws -> Bool {
-        if try inbox.receipt(for: id) != nil {
+        if let receipt = try inbox.receipt(for: id) {
+            guard receipt.completed else { return false }
             // Even if the final place was later deleted, a retry must not resurrect it.
             try inbox.acknowledge(id); return true
         }
@@ -43,6 +49,8 @@ enum SharedInboxImport {
 
     private static func persist(_ record: PlaceRecord, captureID: UUID, inbox: SharedInbox, into context: ModelContext) throws {
         guard record.isValid else { throw InboxError.invalid }
+        // Persist intent before touching SwiftData. An incomplete receipt always stays for review.
+        try inbox.recordReceipt(captureID: captureID, placeID: record.id, completed: false)
         do {
             if let existing = try context.fetch(FetchDescriptor<Place>()).first(where: { $0.id == record.id }) {
                 existing.apply(record)

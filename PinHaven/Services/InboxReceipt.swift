@@ -5,6 +5,7 @@ struct InboxReceipt: Codable {
     var schemaVersion = 1
     let captureID: UUID
     let placeID: UUID
+    let completed: Bool
 }
 
 extension SharedInbox {
@@ -24,13 +25,13 @@ extension SharedInbox {
         return receipt
     }
 
-    func recordReceipt(captureID: UUID, placeID: UUID) throws {
+    func recordReceipt(captureID: UUID, placeID: UUID, completed: Bool = true) throws {
         try FileManager.default.createDirectory(at: receiptsDirectory, withIntermediateDirectories: true,
             attributes: [.protectionKey: FileProtectionType.complete])
         var folder = receiptsDirectory
         var attributes = URLResourceValues(); attributes.isExcludedFromBackup = true
         try folder.setResourceValues(attributes)
-        let data = try JSONEncoder().encode(InboxReceipt(captureID: captureID, placeID: placeID))
+        let data = try JSONEncoder().encode(InboxReceipt(captureID: captureID, placeID: placeID, completed: completed))
         try data.write(to: receiptsDirectory.appendingPathComponent(captureID.uuidString + ".json"),
                        options: [.atomic, .completeFileProtection])
     }
